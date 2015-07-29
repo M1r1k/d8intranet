@@ -116,12 +116,9 @@ views.field.numeric:
     format_plural:
       type: boolean
       label: 'Format plural'
-    format_plural_singular:
-      type: label
-      label: 'Singular form'
-    format_plural_plural:
-      type: label
-      label: 'Plural form'
+    format_plural_string:
+      type: plural_label
+      label: 'Plural variants'
     prefix:
       type: label
       label: 'Prefix'
@@ -171,10 +168,6 @@ views.field.url:
       type: boolean
       label: 'Display as link'
 
-views.field.xss:
-  type: views_field
-  label: 'Xss'
-
 views.field.language:
   type: views_field
   label: 'Language'
@@ -182,6 +175,23 @@ views.field.language:
     native_language:
       type: boolean
       label: 'Display in native language'
+
+
+views.field.entity_link:
+  type: views_field
+  label: 'Entity link'
+  mapping:
+    text:
+      type: label
+      label: 'Text to display'
+
+views.field.entity_link_delete:
+  type: views.field.entity_link
+  label: 'Entity delete link'
+
+views.field.entity_link_edit:
+  type: views.field.entity_link
+  label: 'Entity edit link'
 
 views.field.bulk_form:
   type: views_field_bulk_form

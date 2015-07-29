@@ -29,14 +29,19 @@ class Xss {
    * Based on kses by Ulf Harnhammar, see http://sourceforge.net/projects/kses.
    * For examples of various XSS attacks, see: http://ha.ckers.org/xss.html.
    *
-   * This code does five things:
+   * This method is preferred to
+   * \Drupal\Component\Utility\SafeMarkup::xssFilter() when the result is not
+   * being used directly in the rendering system (for example, when its result
+   * is being combined with other strings before rendering). This avoids
+   * bloating the safe string list with partial strings if the whole result will
+   * be marked safe.
+   *
+   * This code does four things:
    * - Removes characters and constructs that can trick browsers.
    * - Makes sure all HTML entities are well-formed.
    * - Makes sure all HTML tags and attributes are well-formed.
    * - Makes sure no HTML tags contain URLs with a disallowed protocol (e.g.
    *   javascript:).
-   * - Marks the sanitized, XSS-safe version of $string as safe markup for
-   *   rendering.
    *
    * @param $string
    *   The string with raw HTML in it. It will be stripped of everything that
@@ -49,7 +54,7 @@ class Xss {
    *   valid UTF-8.
    *
    * @see \Drupal\Component\Utility\Unicode::validateUtf8()
-   * @see \Drupal\Component\Utility\SafeMarkup
+   * @see \Drupal\Component\Utility\SafeMarkup::xssFilter()
    *
    * @ingroup sanitization
    */
@@ -79,7 +84,11 @@ class Xss {
     $splitter = function ($matches) use ($html_tags, $class) {
       return $class::split($matches[1], $html_tags, $class);
     };
-    return SafeMarkup::set(preg_replace_callback('%
+    // Strip any tags that are not in the whitelist, then mark the text as safe
+    // for output. All other known XSS vectors have been filtered out by this
+    // point and any HTML tags remaining will have been deliberately allowed, so
+    // it is acceptable to call SafeMarkup::set() on the resultant string.
+    return preg_replace_callback('%
       (
       <(?=[^a-zA-Z!/])  # a lone <
       |                 # or
@@ -88,7 +97,7 @@ class Xss {
       <[^>]*(>|$)       # a string that starts with a <, up until the > or the end of the string
       |                 # or
       >                 # just a >
-      )%x', $splitter, $string));
+      )%x', $splitter, $string);
   }
 
   /**
@@ -96,8 +105,15 @@ class Xss {
    *
    * Use only for fields where it is impractical to use the
    * whole filter system, but where some (mainly inline) mark-up
-   * is desired (so \Drupal\Component\Utility\String::checkPlain() is
+   * is desired (so \Drupal\Component\Utility\SafeMarkup::checkPlain() is
    * not acceptable).
+   *
+   * This method is preferred to
+   * \Drupal\Component\Utility\SafeMarkup::xssFilter() when the result is
+   * not being used directly in the rendering system (for example, when its
+   * result is being combined with other strings before rendering). This avoids
+   * bloating the safe string list with partial strings if the whole result will
+   * be marked safe.
    *
    * Allows all tags that can be used inside an HTML body, save
    * for scripts and styles.
@@ -107,6 +123,12 @@ class Xss {
    *
    * @return string
    *   The filtered string.
+   *
+   * @ingroup sanitization
+   *
+   * @see \Drupal\Component\Utility\SafeMarkup::xssFilter()
+   * @see \Drupal\Component\Utility\Xss::getAdminTagList()
+   *
    */
   public static function filterAdmin($string) {
     return static::filter($string, static::$adminTags);
@@ -139,11 +161,10 @@ class Xss {
       return '&lt;';
     }
 
-    if (!preg_match('%^<\s*(/\s*)?([a-zA-Z0-9\-]+)([^>]*)>?|(<!--.*?-->)$%', $string, $matches)) {
+    if (!preg_match('%^<\s*(/\s*)?([a-zA-Z0-9\-]+)\s*([^>]*)>?|(<!--.*?-->)$%', $string, $matches)) {
       // Seriously malformed.
       return '';
     }
-
     $slash = trim($matches[1]);
     $elem = &$matches[2];
     $attrlist = &$matches[3];
@@ -192,6 +213,7 @@ class Xss {
     $mode = 0;
     $attribute_name = '';
     $skip = FALSE;
+    $skip_protocol_filtering = FALSE;
 
     while (strlen($attributes) != 0) {
       // Was the last operation successful?
@@ -203,6 +225,20 @@ class Xss {
           if (preg_match('/^([-a-zA-Z]+)/', $attributes, $match)) {
             $attribute_name = strtolower($match[1]);
             $skip = ($attribute_name == 'style' || substr($attribute_name, 0, 2) == 'on');
+
+            // Values for attributes of type URI should be filtered for
+            // potentially malicious protocols (for example, an href-attribute
+            // starting with "javascript:"). However, for some non-URI
+            // attributes performing this filtering causes valid and safe data
+            // to be mangled. We prevent this by skipping protocol filtering on
+            // such attributes.
+            // @see \Drupal\Component\Utility\UrlHelper::filterBadProtocol()
+            // @see http://www.w3.org/TR/html4/index/attributes.html
+            $skip_protocol_filtering = substr($attribute_name, 0, 5) === 'data-' || in_array($attribute_name, array(
+              'title',
+              'alt',
+            ));
+
             $working = $mode = 1;
             $attributes = preg_replace('/^[-a-zA-Z]+/', '', $attributes);
           }
@@ -228,7 +264,7 @@ class Xss {
         case 2:
           // Attribute value, a URL after href= for instance.
           if (preg_match('/^"([^"]*)"(\s+|$)/', $attributes, $match)) {
-            $thisval = UrlHelper::filterBadProtocol($match[1]);
+            $thisval = $skip_protocol_filtering ? $match[1] : UrlHelper::filterBadProtocol($match[1]);
 
             if (!$skip) {
               $attributes_array[] = "$attribute_name=\"$thisval\"";
@@ -240,7 +276,7 @@ class Xss {
           }
 
           if (preg_match("/^'([^']*)'(\s+|$)/", $attributes, $match)) {
-            $thisval = UrlHelper::filterBadProtocol($match[1]);
+            $thisval = $skip_protocol_filtering ? $match[1] : UrlHelper::filterBadProtocol($match[1]);
 
             if (!$skip) {
               $attributes_array[] = "$attribute_name='$thisval'";
@@ -251,7 +287,7 @@ class Xss {
           }
 
           if (preg_match("%^([^\s\"']+)(\s+|$)%", $attributes, $match)) {
-            $thisval = UrlHelper::filterBadProtocol($match[1]);
+            $thisval = $skip_protocol_filtering ? $match[1] : UrlHelper::filterBadProtocol($match[1]);
 
             if (!$skip) {
               $attributes_array[] = "$attribute_name=\"$thisval\"";
@@ -299,6 +335,16 @@ class Xss {
    */
   protected static function needsRemoval($html_tags, $elem) {
     return !isset($html_tags[strtolower($elem)]);
+  }
+
+  /**
+   * Gets the list of html tags allowed by Xss::filterAdmin().
+   *
+   * @return array
+   *   The list of html tags allowed by filterAdmin().
+   */
+  public static function getAdminTagList() {
+    return static::$adminTags;
   }
 
 }

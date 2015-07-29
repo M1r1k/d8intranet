@@ -2,13 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\migrate_drupal\Tests\d6\MigrateMenuLinkTest
+ * Contains \Drupal\migrate_drupal\Tests\d6\MigrateMenuLinkTest.
  */
 
 namespace Drupal\migrate_drupal\Tests\d6;
-
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 
 /**
  * Menu link migration.
@@ -22,13 +19,16 @@ class MigrateMenuLinkTest extends MigrateDrupal6TestBase {
    *
    * @var array
    */
-  public static $modules = array('menu_ui');
+  public static $modules = array('link', 'menu_ui', 'menu_link_content');
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->installSchema('system', ['router']);
+    $this->installEntitySchema('menu_link_content');
 
     $menu = entity_create('menu', array('id' => 'secondary-links'));
     $menu->enforceIsNew(TRUE);
@@ -40,13 +40,8 @@ class MigrateMenuLinkTest extends MigrateDrupal6TestBase {
       ),
     ));
 
-    $migration = entity_load('migration', 'd6_menu_links');
-    $dumps = array(
-      $this->getDumpDirectory() . '/MenuLinks.php',
-    );
-    $this->prepare($migration, $dumps);
-    $executable = new MigrateExecutable($migration, $this);
-    $executable->import();
+    $this->loadDumps(['MenuLinks.php']);
+    $this->executeMigration('d6_menu_links');
   }
 
   public function testMenuLinks() {
@@ -77,7 +72,7 @@ class MigrateMenuLinkTest extends MigrateDrupal6TestBase {
     $this->assertIdentical(TRUE, $menu_link->isEnabled());
     $this->assertIdentical(FALSE, $menu_link->isExpanded());
     $this->assertIdentical(['attributes' => ['title' => '']], $menu_link->link->options);
-    $this->assertIdentical('http://drupal.org', $menu_link->link->uri);
+    $this->assertIdentical('https://www.drupal.org', $menu_link->link->uri);
     $this->assertIdentical(0, $menu_link->getWeight());
   }
 

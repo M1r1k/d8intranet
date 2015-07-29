@@ -7,6 +7,8 @@
 
 namespace Drupal\Core\StringTranslation;
 
+use Drupal\Component\Utility\SafeStringInterface;
+
 /**
  * Provides a class to wrap a translatable string.
  *
@@ -16,7 +18,7 @@ namespace Drupal\Core\StringTranslation;
  *
  * @see \Drupal\Core\Annotation\Translation
  */
-class TranslationWrapper {
+class TranslationWrapper implements SafeStringInterface {
   use StringTranslationTrait;
 
   /**
@@ -57,6 +59,39 @@ class TranslationWrapper {
     $this->string = $string;
     $this->arguments = $arguments;
     $this->options = $options;
+  }
+
+  /**
+   * Gets the untranslated string value stored in this translation wrapper.
+   *
+   * @return string
+   *   The string stored in this wrapper.
+   */
+  public function getUntranslatedString() {
+    return $this->string;
+  }
+
+  /**
+   * Gets a specific option from this translation wrapper.
+   *
+   * @param $name
+   *   Option name.
+   *
+   * @return mixed
+   *   The value of this option or empty string of option is not set.
+   */
+  public function getOption($name) {
+    return isset($this->options[$name]) ? $this->options[$name] : '';
+  }
+
+  /**
+   * Gets all options from this translation wrapper.
+   *
+   * @return mixed[]
+   *   The array of options.
+   */
+  public function getOptions() {
+    return $this->options;
   }
 
   /**

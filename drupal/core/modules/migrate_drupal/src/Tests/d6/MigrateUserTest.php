@@ -10,8 +10,6 @@ namespace Drupal\migrate_drupal\Tests\d6;
 use Drupal\user\Entity\User;
 use Drupal\file\Entity\File;
 use Drupal\Core\Database\Database;
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 use Drupal\user\RoleInterface;
 
 /**
@@ -40,6 +38,10 @@ class MigrateUserTest extends MigrateDrupal6TestBase {
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->installEntitySchema('file');
+    $this->installSchema('file', ['file_usage']);
+
     // Create the user profile field and instance.
     entity_create('field_storage_config', array(
       'entity_type' => 'user',
@@ -84,20 +86,18 @@ class MigrateUserTest extends MigrateDrupal6TestBase {
     file_put_contents($file->getFileUri(), file_get_contents('core/modules/simpletest/files/image-2.jpg'));
     $file->save();
 
-    // Load database dumps to provide source data.
-    $dumps = array(
-      $this->getDumpDirectory() . '/Filters.php',
-      $this->getDumpDirectory() . '/FilterFormats.php',
-      $this->getDumpDirectory() . '/Variable.php',
-      $this->getDumpDirectory() . '/ProfileFields.php',
-      $this->getDumpDirectory() . '/Permission.php',
-      $this->getDumpDirectory() . '/Role.php',
-      $this->getDumpDirectory() . '/Users.php',
-      $this->getDumpDirectory() . '/ProfileValues.php',
-      $this->getDumpDirectory() . '/UsersRoles.php',
-      $this->getDumpDirectory() . '/EventTimezones.php',
-    );
-    $this->loadDumps($dumps);
+    $this->loadDumps([
+      'Filters.php',
+      'FilterFormats.php',
+      'Variable.php',
+      'ProfileFields.php',
+      'Permission.php',
+      'Role.php',
+      'Users.php',
+      'ProfileValues.php',
+      'UsersRoles.php',
+      'EventTimezones.php',
+    ]);
 
     $id_mappings = array(
       'd6_user_role' => array(
@@ -121,10 +121,7 @@ class MigrateUserTest extends MigrateDrupal6TestBase {
 
     $this->prepareMigrations($id_mappings);
 
-    // Migrate users.
-    $migration = entity_load('migration', 'd6_user');
-    $executable = new MigrateExecutable($migration, $this);
-    $executable->import();
+    $this->executeMigration('d6_user');
   }
 
   /**
@@ -152,6 +149,7 @@ class MigrateUserTest extends MigrateDrupal6TestBase {
         $roles[] = reset($role);
       }
 
+      /** @var \Drupal\user\UserInterface $user */
       $user = User::load($source->uid);
       $this->assertIdentical($source->uid, $user->id());
       $this->assertIdentical($source->name, $user->label());
@@ -177,12 +175,9 @@ class MigrateUserTest extends MigrateDrupal6TestBase {
         $this->assertIdentical(basename($source->picture), $file->getFilename());
       }
 
-      // Use the UI to check if the password has been salted and re-hashed to
+      // Use the API to check if the password has been salted and re-hashed to
       // conform the Drupal >= 7.
-      $credentials = array('name' => $source->name, 'pass' => $source->pass_plain);
-      $this->drupalPostForm('user/login', $credentials, t('Log in'));
-      $this->assertNoRaw(t('Sorry, unrecognized username or password. <a href="@password">Have you forgotten your password?</a>', array('@password' => \Drupal::url('user.pass', [], array('query' => array('name' => $source->name))))));
-      $this->drupalLogout();
+      $this->assertTrue(\Drupal::service('password')->check($source->pass_plain, $user->getPassword()));
     }
   }
 

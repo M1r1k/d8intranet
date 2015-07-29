@@ -101,30 +101,6 @@ views.field.node:
       type: boolean
       label: 'Link this field to the original piece of content'
 
-views.field.node_link:
-  type: views_field
-  label: 'Node link'
-  mapping:
-    text:
-      type: label
-      label: 'Text to display'
-
-views.field.node_link_delete:
-  type: views_field
-  label: 'Node delete link'
-  mapping:
-    text:
-      type: label
-      label: 'Text to display'
-
-views.field.node_link_edit:
-  type: views_field
-  label: 'Node edit link'
-  mapping:
-    text:
-      type: label
-      label: 'Text to display'
-
 views.field.node_bulk_form:
   type: views_field_bulk_form
   label: 'Node bulk form'
@@ -136,14 +112,6 @@ views.field.node_path:
     absolute:
       type: boolean
       label: 'Use absolute link (begins with "http://")'
-
-views.field.node_revision:
-  type: views.field.node
-  label: 'Node revision'
-  mapping:
-    link_to_node_revision:
-      type: boolean
-      label: 'Link this field to its content revision'
 
 views.field.node_revision_link:
   type: views_field
@@ -168,14 +136,6 @@ views.field.node_revision_link_revert:
     text:
       type: label
       label: 'Text to display'
-
-views.field.node_type:
-  type: views.field.node
-  label: 'Node type'
-  mapping:
-    machine_name:
-      type: string
-      label: 'Output machine name'
 
 views.filter.node_access:
   type: views_filter

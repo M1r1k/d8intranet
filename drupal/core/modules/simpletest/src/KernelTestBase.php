@@ -7,12 +7,13 @@
 
 namespace Drupal\simpletest;
 
-use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Component\Utility\Variable;
 use Drupal\Core\Database\Database;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DrupalKernel;
 use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
+use Drupal\Core\Extension\ExtensionDiscovery;
 use Drupal\Core\KeyValueStore\KeyValueMemoryFactory;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Site\Settings;
@@ -245,7 +246,7 @@ EOD;
     // Tests based on this class are entitled to use Drupal's File and
     // StreamWrapper APIs.
     // @todo Move StreamWrapper management into DrupalKernel.
-    // @see https://drupal.org/node/2028109
+    // @see https://www.drupal.org/node/2028109
     file_prepare_directory($this->publicFilesDirectory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
     $this->settingsSet('file_public_path', $this->publicFilesDirectory);
     $this->streamWrappers = array();
@@ -267,7 +268,7 @@ EOD;
     // state variables in Drupal, stream wrappers are a global state construct
     // of PHP core, which has to be maintained manually.
     // @todo Move StreamWrapper management into DrupalKernel.
-    // @see https://drupal.org/node/2028109
+    // @see https://www.drupal.org/node/2028109
     foreach ($this->streamWrappers as $scheme => $type) {
       $this->unregisterStreamWrapper($scheme, $type);
     }
@@ -290,7 +291,7 @@ EOD;
     $this->container = $container;
 
     // Set the default language on the minimal container.
-    $this->container->setParameter('language.default_values', Language::$defaultValues);
+    $this->container->setParameter('language.default_values', $this->defaultLanguageData());
 
     $container->register('lock', 'Drupal\Core\Lock\NullLockBackend');
     $container->register('cache_factory', 'Drupal\Core\Cache\MemoryBackendFactory');
@@ -359,6 +360,16 @@ EOD;
   }
 
   /**
+   * Provides the data for setting the default language on the container.
+   *
+   * @return array
+   *   The data array for the default language.
+   */
+  protected function defaultLanguageData() {
+    return Language::$defaultValues;
+  }
+
+  /**
    * Installs default configuration for a given list of modules.
    *
    * @param array $modules
@@ -394,7 +405,7 @@ EOD;
    *   found in the module specified.
    */
   protected function installSchema($module, $tables) {
-    // drupal_get_schema_unprocessed() is technically able to install a schema
+    // drupal_get_module_schema() is technically able to install a schema
     // of a non-enabled module, but its ability to load the module's .install
     // file depends on many other factors. To prevent differences in test
     // behavior and non-reproducible test failures, we only allow the schema of
@@ -406,7 +417,7 @@ EOD;
     }
     $tables = (array) $tables;
     foreach ($tables as $table) {
-      $schema = drupal_get_schema_unprocessed($module, $table);
+      $schema = drupal_get_module_schema($module, $table);
       if (empty($schema)) {
         throw new \RuntimeException(format_string("Unknown '@table' table schema in '@module' module.", array(
           '@module' => $module,
@@ -415,10 +426,6 @@ EOD;
       }
       $this->container->get('database')->schema()->createTable($table, $schema);
     }
-    // We need to refresh the schema cache, as any call to drupal_get_schema()
-    // would not know of/return the schema otherwise.
-    // @todo Refactor Schema API to make this obsolete.
-    drupal_get_schema(NULL, TRUE);
     $this->pass(format_string('Installed %module tables: %tables.', array(
       '%tables' => '{' . implode('}, {', $tables) . '}',
       '%module' => $module,
@@ -448,7 +455,7 @@ EOD;
       $all_tables_exist = TRUE;
       foreach ($tables as $table) {
         if (!$db_schema->tableExists($table)) {
-          $this->fail(String::format('Installed entity type table for the %entity_type entity type: %table', array(
+          $this->fail(SafeMarkup::format('Installed entity type table for the %entity_type entity type: %table', array(
             '%entity_type' => $entity_type_id,
             '%table' => $table,
           )));
@@ -456,7 +463,7 @@ EOD;
         }
       }
       if ($all_tables_exist) {
-        $this->pass(String::format('Installed entity type tables for the %entity_type entity type: %tables', array(
+        $this->pass(SafeMarkup::format('Installed entity type tables for the %entity_type entity type: %tables', array(
           '%entity_type' => $entity_type_id,
           '%tables' => '{' . implode('}, {', $tables) . '}',
         )));
@@ -473,6 +480,14 @@ EOD;
    *   The new modules are only added to the active module list and loaded.
    */
   protected function enableModules(array $modules) {
+    // Perform an ExtensionDiscovery scan as this function may receive a
+    // profile that is not the current profile, and we don't yet have a cached
+    // way to receive inactive profile information.
+    // @todo Remove as part of https://www.drupal.org/node/2186491
+    $listing = new ExtensionDiscovery(\Drupal::root());
+    $module_list = $listing->scan('module');
+    // In ModuleHandlerTest we pass in a profile as if it were a module.
+    $module_list += $listing->scan('profile');
     // Set the list of modules in the extension handler.
     $module_handler = $this->container->get('module_handler');
 
@@ -482,7 +497,7 @@ EOD;
     $extensions = $active_storage->read('core.extension');
 
     foreach ($modules as $module) {
-      $module_handler->addModule($module, drupal_get_path('module', $module));
+      $module_handler->addModule($module, $module_list[$module]->getPath());
       // Maintain the list of enabled modules in configuration.
       $extensions['module'][$module] = 0;
     }
@@ -563,7 +578,7 @@ EOD;
     $content = $this->container->get('renderer')->renderRoot($elements);
     drupal_process_attached($elements);
     $this->setRawContent($content);
-    $this->verbose('<pre style="white-space: pre-wrap">' . String::checkPlain($content));
+    $this->verbose('<pre style="white-space: pre-wrap">' . SafeMarkup::checkPlain($content));
     return $content;
   }
 

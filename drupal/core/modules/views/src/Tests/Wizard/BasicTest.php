@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Definition of Drupal\views\Tests\Wizard\BasicTest.
+ * Contains \Drupal\views\Tests\Wizard\BasicTest.
  */
 
 namespace Drupal\views\Tests\Wizard;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Url;
 use Drupal\views\Views;
 
@@ -133,6 +133,7 @@ class BasicTest extends WizardTestBase {
 
     // Confirm that the block is available in the block administration UI.
     $this->drupalGet('admin/structure/block/list/' . $this->config('system.theme')->get('default'));
+    $this->clickLinkPartialName('Place block');
     $this->assertText($view3['label']);
 
     // Place the block.
@@ -207,7 +208,7 @@ class BasicTest extends WizardTestBase {
 
     foreach ($displays as $display) {
       foreach (array('query', 'exposed_form', 'pager', 'style', 'row') as $type) {
-        $this->assertFalse(empty($display['display_options'][$type]['options']), String::format('Default options found for @plugin.', array('@plugin' => $type)));
+        $this->assertFalse(empty($display['display_options'][$type]['options']), SafeMarkup::format('Default options found for @plugin.', array('@plugin' => $type)));
       }
     }
   }

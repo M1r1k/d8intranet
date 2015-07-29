@@ -2,12 +2,12 @@
 
 /**
  * @file
- * Definition of Drupal\filter\Tests\FilterAdminTest.
+ * Contains \Drupal\filter\Tests\FilterAdminTest.
  */
 
 namespace Drupal\filter\Tests;
 
-use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Component\Utility\Unicode;
 use Drupal\simpletest\WebTestBase;
 use Drupal\user\RoleInterface;
@@ -138,7 +138,7 @@ class FilterAdminTest extends WebTestBase {
     // Cannot use the assertNoLinkByHref method as it does partial url matching
     // and 'admin/config/content/formats/manage/' . $format_id . '/disable'
     // exists.
-    // @todo: See https://drupal.org/node/2031223 for the above
+    // @todo: See https://www.drupal.org/node/2031223 for the above.
     $edit_link = $this->xpath('//a[@href=:href]', array(
       ':href' => \Drupal::url('entity.filter_format.edit_form', ['filter_format' => $format_id])
     ));
@@ -312,7 +312,7 @@ class FilterAdminTest extends WebTestBase {
     $edit['body[0][format]'] = $plain;
     $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, t('Save'));
     $this->drupalGet('node/' . $node->id());
-    $this->assertText(String::checkPlain($text), 'The "Plain text" text format escapes all HTML tags.');
+    $this->assertText(SafeMarkup::checkPlain($text), 'The "Plain text" text format escapes all HTML tags.');
     $this->config('filter.settings')
       ->set('always_show_fallback_choice', FALSE)
       ->save();
@@ -359,6 +359,28 @@ class FilterAdminTest extends WebTestBase {
     );
     $this->drupalPostForm('admin/config/content/formats/manage/basic_html', $edit, t('Save configuration'));
     $this->assertNoRaw(t('The text format %format has been updated.', array('%format' => 'Basic HTML')));
+  }
+
+  /**
+   * Tests whether filter tips page is not HTML escaped.
+   */
+  function testFilterTipHtmlEscape() {
+    $this->drupalLogin($this->adminUser);
+    global $base_url;
+
+    // It is not possible to test the whole filter tip page.
+    // Therefore we test only some parts.
+    $link = '<a href="' . $base_url . '">' . SafeMarkup::checkPlain(\Drupal::config('system.site')->get('name')) . '</a>';
+    $ampersand = '&amp;';
+    $link_as_code = '<code>' . $link . '</code>';
+    $ampersand_as_code = '<code>' . $ampersand . '</code>';
+
+    $this->drupalGet('filter/tips');
+
+    $this->assertRaw('<td class="type">' . $link_as_code . '</td>');
+    $this->assertRaw('<td class="get">' . $link . '</td>');
+    $this->assertRaw('<td class="type">' . $ampersand_as_code . '</td>');
+    $this->assertRaw('<td class="get">' . $ampersand . '</td>');
   }
 
 }

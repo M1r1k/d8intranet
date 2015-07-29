@@ -7,21 +7,37 @@
 
 namespace Drupal\migrate_drupal\Tests\d6;
 
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 use Drupal\migrate\Entity\MigrationInterface;
+use Drupal\user\Entity\User;
 
 /**
  * Base class for Node migration tests.
  */
 abstract class MigrateNodeTestBase extends MigrateDrupal6TestBase {
 
-  static $modules = array('node');
+  static $modules = array('node', 'text', 'filter', 'entity_reference');
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->installEntitySchema('node');
+    $this->installConfig(['node']);
+    $this->installSchema('node', ['node_access']);
+    $this->installSchema('system', ['sequences']);
+
+    // Create a new user which needs to have UID 1, because that is expected by
+    // the assertions from
+    // \Drupal\migrate_drupal\Tests\d6\MigrateNodeRevisionTest.
+    User::create([
+      'uid' => 1,
+      'name' => $this->randomMachineName(),
+      'status' => 1,
+    ])->enforceIsNew(TRUE)->save();
+
+
     $node_type = entity_create('node_type', array('type' => 'test_planet'));
     $node_type->save();
     node_add_body_field($node_type);
@@ -78,21 +94,19 @@ abstract class MigrateNodeTestBase extends MigrateDrupal6TestBase {
     $node->enforceIsNew();
     $node->save();
 
-    // Load dumps.
-    $dumps = array(
-      $this->getDumpDirectory() . '/Node.php',
-      $this->getDumpDirectory() . '/NodeRevisions.php',
-      $this->getDumpDirectory() . '/ContentTypeStory.php',
-      $this->getDumpDirectory() . '/ContentTypeTestPlanet.php',
-      $this->getDumpDirectory() . '/NodeType.php',
-      $this->getDumpDirectory() . '/Variable.php',
-      $this->getDumpDirectory() . '/ContentNodeFieldInstance.php',
-      $this->getDumpDirectory() . '/ContentNodeField.php',
-      $this->getDumpDirectory() . '/ContentFieldTest.php',
-      $this->getDumpDirectory() . '/ContentFieldTestTwo.php',
-      $this->getDumpDirectory() . '/ContentFieldMultivalue.php',
-    );
-    $this->loadDumps($dumps);
+    $this->loadDumps([
+      'Node.php',
+      'NodeRevisions.php',
+      'ContentTypeStory.php',
+      'ContentTypeTestPlanet.php',
+      'NodeType.php',
+      'Variable.php',
+      'ContentNodeFieldInstance.php',
+      'ContentNodeField.php',
+      'ContentFieldTest.php',
+      'ContentFieldTestTwo.php',
+      'ContentFieldMultivalue.php',
+    ]);
   }
 
 }

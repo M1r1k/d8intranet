@@ -1,15 +1,23 @@
+/**
+ * @file
+ * Content Translation admin behaviors.
+ */
+
 (function ($, Drupal, drupalSettings) {
 
   "use strict";
 
   /**
    * Forces applicable options to be checked as translatable.
+   *
+   * @type {Drupal~behavior}
    */
   Drupal.behaviors.contentTranslationDependentOptions = {
     attach: function (context) {
       var $context = $(context);
       var options = drupalSettings.contentTranslationDependentOptions;
-      var $fields, dependent_columns;
+      var $fields;
+      var dependent_columns;
 
       function fieldsChangeHandler($fields, dependent_columns) {
         return function (e) {
@@ -65,6 +73,8 @@
 
   /**
    * Makes field translatability inherit bundle translatability.
+   *
+   * @type {Drupal~behavior}
    */
   Drupal.behaviors.contentTranslation = {
     attach: function (context) {

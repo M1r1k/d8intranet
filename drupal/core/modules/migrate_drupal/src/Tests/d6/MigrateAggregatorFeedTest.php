@@ -8,8 +8,6 @@
 namespace Drupal\migrate_drupal\Tests\d6;
 
 use Drupal\aggregator\Entity\Feed;
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 
 /**
  * Upgrade variables to aggregator_feed entities.
@@ -25,13 +23,9 @@ class MigrateAggregatorFeedTest extends MigrateDrupal6TestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $migration = entity_load('migration', 'd6_aggregator_feed');
-    $dumps = array(
-      $this->getDumpDirectory() . '/AggregatorFeed.php',
-    );
-    $this->prepare($migration, $dumps);
-    $executable = new MigrateExecutable($migration, $this);
-    $executable->import();
+    $this->installEntitySchema('aggregator_feed');
+    $this->loadDumps(['AggregatorFeed.php']);
+    $this->executeMigration('d6_aggregator_feed');
   }
 
   /**

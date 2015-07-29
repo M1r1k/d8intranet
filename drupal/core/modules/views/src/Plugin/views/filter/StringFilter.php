@@ -7,7 +7,7 @@
 
 namespace Drupal\views\Plugin\views\filter;
 
-use Drupal\Component\Utility\String as UtilityString;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -162,10 +162,10 @@ class StringFilter extends FilterPluginBase {
     $options = $this->operatorOptions('short');
     $output = '';
     if (!empty($options[$this->operator])) {
-      $output = UtilityString::checkPlain($options[$this->operator]);
+      $output = SafeMarkup::checkPlain($options[$this->operator]);
     }
     if (in_array($this->operator, $this->operatorValues(1))) {
-      $output .= ' ' . UtilityString::checkPlain($this->value);
+      $output .= ' ' . SafeMarkup::checkPlain($this->value);
     }
     return $output;
   }
@@ -320,12 +320,16 @@ class StringFilter extends FilterPluginBase {
 
   protected function opShorterThan($field) {
     $placeholder = $this->placeholder();
-    $this->query->addWhereExpression($this->options['group'], "LENGTH($field) < $placeholder", array($placeholder => $this->value));
+    // Type cast the argument to an integer because the SQLite database driver
+    // has to do some specific alterations to the query base on that data type.
+    $this->query->addWhereExpression($this->options['group'], "LENGTH($field) < $placeholder", array($placeholder => (int) $this->value));
   }
 
   protected function opLongerThan($field) {
     $placeholder = $this->placeholder();
-    $this->query->addWhereExpression($this->options['group'], "LENGTH($field) > $placeholder", array($placeholder => $this->value));
+    // Type cast the argument to an integer because the SQLite database driver
+    // has to do some specific alterations to the query base on that data type.
+    $this->query->addWhereExpression($this->options['group'], "LENGTH($field) > $placeholder", array($placeholder => (int) $this->value));
   }
 
   /**

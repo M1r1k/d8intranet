@@ -22,9 +22,10 @@ class LocalTasksTest extends WebTestBase {
   /**
    * Asserts local tasks in the page output.
    *
-   * @param array $hrefs
-   *   A list of expected link hrefs of local tasks to assert on the page (in
-   *   the given order).
+   * @param array $routes
+   *   A list of expected local tasks, prepared as an array of route names and
+   *   their associated route parameters, to assert on the page (in the given
+   *   order).
    * @param int $level
    *   (optional) The local tasks level to assert; 0 for primary, 1 for
    *   secondary. Defaults to 0.
@@ -47,16 +48,52 @@ class LocalTasksTest extends WebTestBase {
   }
 
   /**
+   * Ensures that some local task appears.
+   *
+   * @param string $title
+   *   The expected title.
+   *
+   * @return bool
+   *   TRUE if the local task exists on the page.
+   */
+  protected function assertLocalTaskAppers($title) {
+    // SimpleXML gives us the unescaped text, not the actual escaped markup,
+    // so use a pattern instead to check the raw content.
+    // This behaviour is a bug in libxml, see
+    // https://bugs.php.net/bug.php?id=49437.
+    return $this->assertPattern('@<a [^>]*>' . preg_quote($title, '@') . '</a>@');
+  }
+
+  /**
    * Tests the plugin based local tasks.
    */
   public function testPluginLocalTask() {
+    // Verify local tasks defined in the hook.
+    $this->drupalGet(Url::fromRoute('menu_test.tasks_default'));
+    $this->assertLocalTasks([
+      ['menu_test.tasks_default', []],
+      ['menu_test.router_test1', ['bar' => 'unsafe']],
+      ['menu_test.router_test1', ['bar' => '1']],
+      ['menu_test.router_test2', ['bar' => '2']],
+    ]);
+
+    // Verify that script tags are escaped on output.
+    $title = htmlspecialchars("Task 1 <script>alert('Welcome to the jungle!')</script>", ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $this->assertLocalTaskAppers($title);
+    $title = htmlspecialchars("<script>alert('Welcome to the derived jungle!')</script>", ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $this->assertLocalTaskAppers($title);
+
     // Verify that local tasks appear as defined in the router.
     $this->drupalGet(Url::fromRoute('menu_test.local_task_test_tasks_view'));
     $this->assertLocalTasks([
       ['menu_test.local_task_test_tasks_view', []],
-      ['menu_test.local_task_test_tasks_settings', []],
       ['menu_test.local_task_test_tasks_edit', []],
+      ['menu_test.local_task_test_tasks_settings', []],
+      ['menu_test.local_task_test_tasks_settings_dynamic', []],
     ]);
+
+    $title = htmlspecialchars("<script>alert('Welcome to the jungle!')</script>", ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $this->assertLocalTaskAppers($title);
 
     // Ensure the view tab is active.
     $result = $this->xpath('//ul[contains(@class, "tabs")]//li[contains(@class, "active")]/a');

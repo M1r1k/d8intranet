@@ -35,6 +35,9 @@ migrate.source.variable:
         status:
           type: boolean
           label: 'Status'
+        slash:
+          type: string
+          label: 'Slash'
 
 migrate.source.d6_comment:
   type: migrate_source_sql
@@ -142,17 +145,6 @@ migrate.source.d6_comment_variable:
     constants:
       type: migrate_entity_constant
       label: 'Constants'
-
-migrate.source.d6_contact_settings:
-  type: migrate_source_sql
-  label: 'Drupal 6 contact settings'
-  mapping:
-    variables:
-      type: sequence
-      label: 'Variables'
-      sequence:
-        type: string
-        label: 'Variable'
 
 migrate.source.d6_view_mode:
   type: migrate_source_sql
@@ -290,6 +282,9 @@ migrate_entity_constant:
     id:
       type: string
       label: 'ID'
+    target_entity_type:
+      type: string
+      label: 'Target entity type'
     view_mode:
       type: string
       label: 'View mode'
@@ -328,7 +323,7 @@ migrate_entity_constant:
       label: 'Parent'
     langcode:
       type: string
-      label: 'Type'
+      label: 'Language code'
     third_party_settings:
       type: sequence
       label: 'Settings'
@@ -360,3 +355,13 @@ migrate_entity_constant:
           sequence:
             type: string
             label: 'Settings'
+    selection_handler:
+      type: string
+      label: 'Entity reference selection handler'
+    auto_create:
+      type: boolean
+      label: 'Entity reference selection setting: Auto-create new entities'
+
+migrate.source.md_empty:
+  type: migrate.source.empty
+  label: 'Empty source for migrate_drupal migrations'

@@ -203,6 +203,8 @@ class EntityViewsData implements EntityHandlerInterface, EntityViewsDataInterfac
       }
     }
 
+    $this->addEntityLinks($data[$base_table]);
+
     // Load all typed data definitions of all fields. This should cover each of
     // the entity base, revision, data tables.
     $field_definitions = $this->entityManager->getBaseFieldDefinitions($this->entityType->id());
@@ -212,7 +214,7 @@ class EntityViewsData implements EntityHandlerInterface, EntityViewsDataInterfac
       // entity manager.
       // @todo We should better just rely on information coming from the entity
       //   storage.
-      // @todo https://drupal.org/node/2337511
+      // @todo https://www.drupal.org/node/2337511
       foreach ($table_mapping->getTableNames() as $table) {
         foreach ($table_mapping->getFieldNames($table) as $field_name) {
           $this->mapFieldDefinition($table, $field_name, $field_definitions[$field_name], $table_mapping, $data[$table]);
@@ -227,6 +229,44 @@ class EntityViewsData implements EntityHandlerInterface, EntityViewsDataInterfac
     });
 
     return $data;
+  }
+
+  /**
+   * Sets the entity links in case corresponding link templates exist.
+   *
+   * @param array $data
+   *   The views data of the base table.
+   */
+  protected function addEntityLinks(array &$data) {
+    $entity_type_id = $this->entityType->id();
+    $t_arguments = ['@entity_type_label' => $this->entityType->getLabel()];
+    if ($this->entityType->hasLinkTemplate('canonical')) {
+      $data['view_' . $entity_type_id] = [
+        'field' => [
+          'title' => $this->t('Link to @entity_type_label', $t_arguments),
+          'help' => $this->t('Provide a view link to the @entity_type_label.', $t_arguments),
+          'id' => 'entity_link',
+        ],
+      ];
+    }
+    if ($this->entityType->hasLinkTemplate('edit-form')) {
+      $data['edit_' . $entity_type_id] = [
+        'field' => [
+          'title' => $this->t('Link to edit @entity_type_label', $t_arguments),
+          'help' => $this->t('Provide an edit link to the @entity_type_label.', $t_arguments),
+          'id' => 'entity_link_edit',
+        ],
+      ];
+    }
+    if ($this->entityType->hasLinkTemplate('delete-form')) {
+      $data['delete_' . $entity_type_id] = [
+        'field' => [
+          'title' => $this->t('Link to delete @entity_type_label', $t_arguments),
+          'help' => $this->t('Provide a delete link to the @entity_type_label.', $t_arguments),
+          'id' => 'entity_link_delete',
+        ],
+      ];
+    }
   }
 
   /**
@@ -371,6 +411,7 @@ class EntityViewsData implements EntityHandlerInterface, EntityViewsDataInterfac
           case 'char':
           case 'string':
           case 'varchar':
+          case 'varchar_ascii':
           case 'tinytext':
           case 'text':
           case 'mediumtext':
@@ -467,8 +508,6 @@ class EntityViewsData implements EntityHandlerInterface, EntityViewsDataInterfac
     }
 
     if ($field_definition->getName() == $this->entityType->getKey('bundle')) {
-      // @todo Use the other bundle handlers, once
-      //   https://www.drupal.org/node/2322949 is in.
       $views_field['filter']['id'] = 'bundle';
     }
   }
@@ -494,15 +533,26 @@ class EntityViewsData implements EntityHandlerInterface, EntityViewsDataInterfac
   }
 
   /**
-   * Gets the table of an entity type to be used as base table in views.
+   * Processes the views data for a UUID field.
    *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type.
-   *
-   * @return string
-   *   The name of the base table in views.
+   * @param string $table
+   *   The table the field is added to.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   The field definition.
+   * @param array $views_field
+   *   The views field data.
+   * @param string $field_column_name
+   *   The field column being processed.
    */
-  protected function getViewsTableForEntityType(EntityTypeInterface $entity_type) {
+  protected function processViewsDataForUuid($table, FieldDefinitionInterface $field_definition, array &$views_field, $field_column_name) {
+    // It does not make sense for UUID fields to be click sortable.
+    $views_field['field']['click sortable'] = FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getViewsTableForEntityType(EntityTypeInterface $entity_type) {
     return $entity_type->getDataTable() ?: $entity_type->getBaseTable();
   }
 

@@ -8,6 +8,7 @@
 namespace Drupal\views\Tests;
 
 use Drupal\comment\Tests\CommentTestTrait;
+use Drupal\Component\Utility\Xss;
 use Drupal\views\Entity\View;
 use Drupal\views\Views;
 use Drupal\views\ViewExecutable;
@@ -97,7 +98,7 @@ class ViewExecutableTest extends ViewUnitTestBase {
   }
 
   /**
-   * Tests the views.exectuable container service.
+   * Tests the views.executable container service.
    */
   public function testFactoryService() {
     $factory = $this->container->get('views.executable');
@@ -326,7 +327,7 @@ class ViewExecutableTest extends ViewUnitTestBase {
     // Test the title methods.
     $title = $this->randomString();
     $view->setTitle($title);
-    $this->assertEqual($view->getTitle(), $title);
+    $this->assertEqual($view->getTitle(), Xss::filterAdmin($title));
   }
 
   /**

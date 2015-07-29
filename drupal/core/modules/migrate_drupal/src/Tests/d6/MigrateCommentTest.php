@@ -7,11 +7,7 @@
 
 namespace Drupal\migrate_drupal\Tests\d6;
 
-use Drupal\comment\Entity\Comment;
 use Drupal\comment\Tests\CommentTestTrait;
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 
 /**
  * Upgrade comments.
@@ -22,13 +18,18 @@ class MigrateCommentTest extends MigrateDrupal6TestBase {
 
   use CommentTestTrait;
 
-  static $modules = array('node', 'comment');
+  static $modules = array('node', 'comment', 'text', 'filter');
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->installEntitySchema('node');
+    $this->installEntitySchema('comment');
+    $this->installConfig(['node', 'comment']);
+
     entity_create('node_type', array('type' => 'page'))->save();
     entity_create('node_type', array('type' => 'story'))->save();
     $this->addDefaultCommentField('node', 'story');
@@ -55,29 +56,26 @@ class MigrateCommentTest extends MigrateDrupal6TestBase {
     );
     $this->prepareMigrations($id_mappings);
 
-    /** @var \Drupal\migrate\entity\Migration $migration */
-    $migration = entity_load('migration', 'd6_comment');
-
-    $dumps = array(
-      $this->getDumpDirectory() . '/Node.php',
-      $this->getDumpDirectory() . '/NodeRevisions.php',
-      $this->getDumpDirectory() . '/ContentTypeStory.php',
-      $this->getDumpDirectory() . '/ContentTypeTestPlanet.php',
-      $this->getDumpDirectory() . '/Variable.php',
-      $this->getDumpDirectory() . '/NodeType.php',
-      $this->getDumpDirectory() . '/Comments.php',
-    );
-    $this->prepare($migration, $dumps);
-    $executable = new MigrateExecutable($migration, $this);
-    $executable->import();
+    $this->loadDumps([
+      'Node.php',
+      'NodeRevisions.php',
+      'ContentTypeStory.php',
+      'ContentTypeTestPlanet.php',
+      'Variable.php',
+      'NodeType.php',
+      'Comments.php',
+    ]);
+    $this->executeMigration('d6_comment');
   }
 
   /**
    * Tests the Drupal 6 to Drupal 8 comment migration.
    */
   public function testComments() {
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $comment_storage */
+    $comment_storage = $this->container->get('entity.manager')->getStorage('comment');
     /** @var \Drupal\comment\CommentInterface $comment */
-    $comment = entity_load('comment', 1);
+    $comment = $comment_storage->load(1);
     $this->assertIdentical('The first comment.', $comment->getSubject());
     $this->assertIdentical('The first comment body.', $comment->comment_body->value);
     $this->assertIdentical('filtered_html', $comment->comment_body->format);
@@ -87,11 +85,11 @@ class MigrateCommentTest extends MigrateDrupal6TestBase {
     $this->assertIdentical('en', $comment->language()->getId());
     $this->assertIdentical('comment_no_subject', $comment->getTypeId());
 
-    $comment = entity_load('comment', 2);
+    $comment = $comment_storage->load(2);
     $this->assertIdentical('The response to the second comment.', $comment->subject->value);
     $this->assertIdentical('3', $comment->pid->target_id);
 
-    $comment = entity_load('comment', 3);
+    $comment = $comment_storage->load(3);
     $this->assertIdentical('The second comment.', $comment->subject->value);
     $this->assertIdentical('0', $comment->pid->target_id);
   }

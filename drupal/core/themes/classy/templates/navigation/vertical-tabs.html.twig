@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Default theme implementation for vertical tabs.
+ * Theme override for vertical tabs.
  *
  * Available variables
  * - attributes: A list of HTML attributes for the wrapper element.
@@ -10,4 +10,4 @@
  * @see template_preprocess_vertical_tabs()
  */
 #}
-<div data-vertical-tabs-panes{{ attributes }}>{{ children }}</div>
+<div{{ attributes.setAttribute('data-vertical-tabs-panes', TRUE) }}>{{ children }}</div>

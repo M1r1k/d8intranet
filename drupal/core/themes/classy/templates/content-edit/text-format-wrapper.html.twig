@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Default theme implementation for a text format-enabled form element.
+ * Theme override for a text format-enabled form element.
  *
  * Available variables:
  * - children: Text format element children.
@@ -13,7 +13,7 @@
  * @see template_preprocess_text_format_wrapper()
  */
 #}
-<div class="text-format-wrapper form-item">
+<div class="js-text-format-wrapper text-format-wrapper form-item">
   {{ children }}
   {% if description %}
     {%

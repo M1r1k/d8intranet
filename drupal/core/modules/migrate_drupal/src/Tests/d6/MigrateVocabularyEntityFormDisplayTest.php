@@ -7,9 +7,6 @@
 
 namespace Drupal\migrate_drupal\Tests\d6;
 
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
-
 /**
  * Vocabulary entity form display migration.
  *
@@ -22,7 +19,7 @@ class MigrateVocabularyEntityFormDisplayTest extends MigrateDrupal6TestBase {
    *
    * @var array
    */
-  static $modules = array('taxonomy', 'field');
+  static $modules = array('node', 'taxonomy', 'field', 'text', 'entity_reference');
 
   /**
    * {@inheritdoc}
@@ -33,7 +30,10 @@ class MigrateVocabularyEntityFormDisplayTest extends MigrateDrupal6TestBase {
     entity_create('field_storage_config', array(
       'entity_type' => 'node',
       'field_name' => 'tags',
-      'type' => 'taxonomy_term_reference',
+      'type' => 'entity_reference',
+      'settings' => array(
+        'target_type' => 'taxonomy_term',
+      ),
     ))->save();
 
     foreach (array('page', 'article', 'story') as $type) {
@@ -45,6 +45,15 @@ class MigrateVocabularyEntityFormDisplayTest extends MigrateDrupal6TestBase {
         'entity_type' => 'node',
         'bundle' => $type,
         'required' => 1,
+        'settings' => array(
+          'handler' => 'default',
+          'handler_settings' => array(
+            'target_bundles' => array(
+              'tags' => 'tags',
+            ),
+            'auto_create' => TRUE,
+          ),
+        ),
       ))->save();
     }
 
@@ -59,15 +68,8 @@ class MigrateVocabularyEntityFormDisplayTest extends MigrateDrupal6TestBase {
     );
     $this->prepareMigrations($id_mappings);
 
-    $migration = entity_load('migration', 'd6_vocabulary_entity_form_display');
-    $dumps = array(
-      $this->getDumpDirectory() . '/Vocabulary.php',
-      $this->getDumpDirectory() . '/VocabularyNodeTypes.php',
-    );
-    $this->prepare($migration, $dumps);
-    $executable = new MigrateExecutable($migration, $this);
-    $executable->import();
-
+    $this->loadDumps(['Vocabulary.php', 'VocabularyNodeTypes.php']);
+    $this->executeMigration('d6_vocabulary_entity_form_display');
   }
 
   /**

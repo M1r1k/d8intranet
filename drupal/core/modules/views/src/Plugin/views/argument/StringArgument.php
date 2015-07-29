@@ -7,6 +7,8 @@
 
 namespace Drupal\views\Plugin\views\argument;
 
+use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
@@ -176,7 +178,23 @@ class StringArgument extends ArgumentPluginBase {
    * $this->ensureMyTable() MUST have been called prior to this.
    */
   public function getFormula() {
-    return "SUBSTRING($this->tableAlias.$this->realField, 1, " . intval($this->options['limit']) . ")";
+    $formula = "SUBSTRING($this->tableAlias.$this->realField, 1, " . intval($this->options['limit']) . ")";
+
+    if ($this->options['case'] != 'none') {
+      // Support case-insensitive substring comparisons for SQLite by using the
+      // 'NOCASE_UTF8' collation.
+      // @see Drupal\Core\Database\Driver\sqlite\Connection::open()
+      if (Database::getConnection()->databaseType() == 'sqlite') {
+        $formula .= ' COLLATE NOCASE_UTF8';
+      }
+
+      // Support case-insensitive substring comparisons for PostgreSQL by
+      // converting the formula to lowercase.
+      if (Database::getConnection()->databaseType() == 'pgsql') {
+        $formula = 'LOWER(' . $formula . ')';
+      }
+    }
+    return $formula;
   }
 
   /**
@@ -194,6 +212,14 @@ class StringArgument extends ArgumentPluginBase {
     else {
       $this->value = array($argument);
       $this->operator = 'or';
+    }
+
+    // Support case-insensitive substring comparisons for PostgreSQL by
+    // converting the arguments to lowercase.
+    if ($this->options['case'] != 'none' && Database::getConnection()->databaseType() == 'pgsql') {
+      foreach ($this->value as $key => $value) {
+        $this->value[$key] = Unicode::strtolower($value);
+      }
     }
 
     if (!empty($this->definition['many to one'])) {
@@ -257,6 +283,12 @@ class StringArgument extends ArgumentPluginBase {
   }
 
   function title() {
+    // Support case-insensitive title comparisons for PostgreSQL by converting
+    // the title to lowercase.
+    if ($this->options['case'] != 'none' && Database::getConnection()->databaseType() == 'pgsql') {
+      $this->options['case'] = 'lower';
+    }
+
     $this->argument = $this->caseTransform($this->argument, $this->options['case']);
     if (!empty($this->options['transform_dash'])) {
       $this->argument = strtr($this->argument, '-', ' ');
@@ -285,7 +317,7 @@ class StringArgument extends ArgumentPluginBase {
    * Override for specific title lookups.
    */
   public function titleQuery() {
-    return array_map('\Drupal\Component\Utility\String::checkPlain', array_combine($this->value, $this->value));
+    return array_map('\Drupal\Component\Utility\SafeMarkup::checkPlain', array_combine($this->value, $this->value));
   }
 
   public function summaryName($data) {

@@ -22,13 +22,16 @@ class MigrateCckFieldValuesTest extends MigrateNodeTestBase {
    *
    * @var array
    */
-  public static $modules = array('node', 'text', 'link', 'file');
+  public static $modules = array('node', 'text', 'filter', 'link', 'file');
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->installEntitySchema('file');
+
     entity_create('field_storage_config', array(
       'entity_type' => 'node',
       'field_name' => 'field_test',
@@ -181,7 +184,7 @@ class MigrateCckFieldValuesTest extends MigrateNodeTestBase {
     $this->assertIdentical('This is a field with exclude unset.', $node->field_test_exclude_unset->value, 'Field with exclude unset is correct.');
 
     // Test that link fields are migrated.
-    $this->assertIdentical('http://drupal.org/project/drupal', $node->field_test_link->uri);
+    $this->assertIdentical('https://www.drupal.org/project/drupal', $node->field_test_link->uri);
     $this->assertIdentical('Drupal project page', $node->field_test_link->title);
     $this->assertIdentical(['target' => '_blank'], $node->field_test_link->options['attributes']);
 
@@ -190,8 +193,17 @@ class MigrateCckFieldValuesTest extends MigrateNodeTestBase {
     $this->assertIdentical('5', $node->field_test_filefield->target_id);
 
     $planet_node = Node::load(3);
-    $this->assertIdentical('33.00', $planet_node->field_multivalue->value);
-    $this->assertIdentical('44.00', $planet_node->field_multivalue[1]->value);
+    $value_1 = $planet_node->field_multivalue->value;
+    $value_2 = $planet_node->field_multivalue[1]->value;
+
+    // SQLite does not support scales for float data types so we need to convert
+    // the value manually.
+    if ($this->container->get('database')->driver() == 'sqlite') {
+      $value_1 = sprintf('%01.2f', $value_1);
+      $value_2 = sprintf('%01.2f', $value_2);
+    }
+    $this->assertIdentical('33.00', $value_1);
+    $this->assertIdentical('44.00', $value_2);
   }
 
 }

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\book\Tests\BookUninstallTest.
+ * Contains \Drupal\book\Tests\BookUninstallTest.
  */
 
 namespace Drupal\book\Tests;
@@ -30,7 +30,6 @@ class BookUninstallTest extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->installSchema('system', array('router'));
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installSchema('book', array('book'));
@@ -45,8 +44,8 @@ class BookUninstallTest extends KernelTestBase {
    */
   public function testBookUninstall() {
     // No nodes exist.
-    $module_data = _system_rebuild_module_data();
-    $this->assertFalse(isset($module_data['book']->info['required']), 'The book module is not required.');
+    $validation_reasons = \Drupal::service('module_installer')->validateUninstall(['book']);
+    $this->assertEqual([], $validation_reasons, 'The book module is not required.');
 
     $content_type = NodeType::create(array(
       'type' => $this->randomMachineName(),
@@ -63,9 +62,8 @@ class BookUninstallTest extends KernelTestBase {
     $node->save();
 
     // One node in a book but not of type book.
-    $module_data = _system_rebuild_module_data();
-    $this->assertTrue($module_data['book']->info['required'], 'The book module is required.');
-    $this->assertEqual($module_data['book']->info['explanation'], t('To uninstall Book, delete all content that is part of a book.'));
+    $validation_reasons = \Drupal::service('module_installer')->validateUninstall(['book']);
+    $this->assertEqual(['To uninstall Book, delete all content that is part of a book'], $validation_reasons['book']);
 
     $book_node = Node::create(array('type' => 'book'));
     $book_node->book['bid'] = FALSE;
@@ -73,15 +71,13 @@ class BookUninstallTest extends KernelTestBase {
 
     // Two nodes, one in a book but not of type book and one book node (which is
     // not in a book).
-    $module_data = _system_rebuild_module_data();
-    $this->assertTrue($module_data['book']->info['required'], 'The book module is required.');
-    $this->assertEqual($module_data['book']->info['explanation'], t('To uninstall Book, delete all content that is part of a book.'));
+    $validation_reasons = \Drupal::service('module_installer')->validateUninstall(['book']);
+    $this->assertEqual(['To uninstall Book, delete all content that is part of a book'], $validation_reasons['book']);
 
     $node->delete();
     // One node of type book but not actually part of a book.
-    $module_data = _system_rebuild_module_data();
-    $this->assertTrue($module_data['book']->info['required'], 'The book module is required.');
-    $this->assertEqual($module_data['book']->info['explanation'], t('To uninstall Book, delete all content that has the Book content type.'));
+    $validation_reasons = \Drupal::service('module_installer')->validateUninstall(['book']);
+    $this->assertEqual(['To uninstall Book, delete all content that has the Book content type'], $validation_reasons['book']);
 
     $book_node->delete();
     // No nodes exist therefore the book module is not required.
@@ -92,8 +88,8 @@ class BookUninstallTest extends KernelTestBase {
     $node->save();
     // One node exists but is not part of a book therefore the book module is
     // not required.
-    $module_data = _system_rebuild_module_data();
-    $this->assertFalse(isset($module_data['book']->info['required']), 'The book module is not required.');
+    $validation_reasons = \Drupal::service('module_installer')->validateUninstall(['book']);
+    $this->assertEqual([], $validation_reasons, 'The book module is not required.');
 
     // Uninstall the Book module and check the node type is deleted.
     \Drupal::service('module_installer')->uninstall(array('book'));

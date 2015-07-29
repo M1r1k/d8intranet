@@ -7,11 +7,13 @@
 
 namespace Drupal\block;
 
-use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Provides a Block view builder.
@@ -36,12 +38,6 @@ class BlockViewBuilder extends EntityViewBuilder {
    * {@inheritdoc}
    */
   public function viewMultiple(array $entities = array(), $view_mode = 'full', $langcode = NULL) {
-    // @todo Remove when https://www.drupal.org/node/2453059 lands.
-    $default_cache_contexts = [
-      'languages',
-      'theme',
-    ];
-
     /** @var \Drupal\block\BlockInterface[] $entities */
     $build = array();
     foreach ($entities as  $entity) {
@@ -51,6 +47,9 @@ class BlockViewBuilder extends EntityViewBuilder {
       $base_id = $plugin->getBaseId();
       $derivative_id = $plugin->getDerivativeId();
       $configuration = $plugin->getConfiguration();
+
+      $cache_tags = Cache::mergeTags($this->getCacheTags(), $entity->getCacheTags());
+      $cache_tags = Cache::mergeTags($cache_tags, $plugin->getCacheTags());
 
       // Create the render array for the block as a whole.
       // @see template_preprocess_block().
@@ -70,32 +69,21 @@ class BlockViewBuilder extends EntityViewBuilder {
         '#derivative_plugin_id' => $derivative_id,
         '#id' => $entity->id(),
         '#cache' => [
-          'contexts' => Cache::mergeContexts($default_cache_contexts, $plugin->getCacheContexts()),
-          'tags' => Cache::mergeTags(
-            $this->getCacheTags(), // Block view builder cache tag.
-            $entity->getCacheTags(), // Block entity cache tag.
-            $plugin->getCacheTags() // Block plugin cache tags.
+          'keys' => ['entity_view', 'block', $entity->id()],
+          'contexts' => Cache::mergeContexts(
+            $entity->getCacheContexts(),
+            $plugin->getCacheContexts()
           ),
+          'tags' => $cache_tags,
           'max-age' => $plugin->getCacheMaxAge(),
+        ],
+        '#pre_render' => [
+          [$this, 'buildBlock'],
         ],
         // Add the entity so that it can be used in the #pre_render method.
         '#block' => $entity,
       );
-      $build[$entity_id]['#configuration']['label'] = String::checkPlain($configuration['label']);
-
-      if ($plugin->isCacheable()) {
-        $build[$entity_id]['#pre_render'][] = array($this, 'buildBlock');
-        // Generic cache keys, with the block plugin's custom keys appended.
-        $default_cache_keys = array(
-          'entity_view',
-          'block',
-          $entity->id(),
-        );
-        $build[$entity_id]['#cache']['keys'] = array_merge($default_cache_keys, $plugin->getCacheKeys());
-      }
-      else {
-        $build[$entity_id] = $this->buildBlock($build[$entity_id]);
-      }
+      $build[$entity_id]['#configuration']['label'] = SafeMarkup::checkPlain($configuration['label']);
 
       // Don't run in ::buildBlock() to ensure cache keys can be altered. If an
       // alter hook wants to modify the block contents, it can append another
@@ -119,7 +107,7 @@ class BlockViewBuilder extends EntityViewBuilder {
     // Remove the block entity from the render array, to ensure that blocks
     // can be rendered without the block config entity.
     unset($build['#block']);
-    if (!empty($content)) {
+    if ($content !== NULL && !Element::isEmpty($content)) {
       // Place the $content returned by the block plugin into a 'content' child
       // element, as a way to allow the plugin to have complete control of its
       // properties and rendering (e.g., its own #theme) without conflicting
@@ -138,6 +126,8 @@ class BlockViewBuilder extends EntityViewBuilder {
       }
       $build['content'] = $content;
     }
+    // Either the block's content is completely empty, or it consists only of
+    // cacheability metadata.
     else {
       // Abort rendering: render as the empty string and ensure this block is
       // render cached, so we can avoid the work of having to repeatedly
@@ -147,6 +137,15 @@ class BlockViewBuilder extends EntityViewBuilder {
         '#markup' => '',
         '#cache' => $build['#cache'],
       );
+      // If $content is not empty, then it contains cacheability metadata, and
+      // we must merge it with the existing cacheability metadata. This allows
+      // blocks to be empty, yet still bubble cacheability metadata, to indicate
+      // why they are empty.
+      if (!empty($content)) {
+        CacheableMetadata::createFromRenderArray($build)
+          ->merge(CacheableMetadata::createFromRenderArray($content))
+          ->applyTo($build);
+      }
     }
     return $build;
    }

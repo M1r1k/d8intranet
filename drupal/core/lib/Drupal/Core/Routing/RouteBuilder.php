@@ -45,13 +45,6 @@ class RouteBuilder implements RouteBuilderInterface, DestructableInterface {
   protected $dispatcher;
 
   /**
-   * The yaml discovery used to find all the .routing.yml files.
-   *
-   * @var \Drupal\Component\Discovery\YamlDiscovery
-   */
-  protected $yamlDiscovery;
-
-  /**
    * The module handler.
    *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
@@ -175,9 +168,13 @@ class RouteBuilder implements RouteBuilderInterface, DestructableInterface {
           'defaults' => array(),
           'requirements' => array(),
           'options' => array(),
+          'host' => NULL,
+          'schemes' => array(),
+          'methods' => array(),
+          'condition' => '',
         );
 
-        $route = new Route($route_info['path'], $route_info['defaults'], $route_info['requirements'], $route_info['options']);
+        $route = new Route($route_info['path'], $route_info['defaults'], $route_info['requirements'], $route_info['options'], $route_info['host'], $route_info['schemes'], $route_info['methods'], $route_info['condition']);
         $collection->add($name, $route);
       }
     }
@@ -232,10 +229,10 @@ class RouteBuilder implements RouteBuilderInterface, DestructableInterface {
    *   The defined routes, keyed by provider.
    */
   protected function getRouteDefinitions() {
-    if (!isset($this->yamlDiscovery)) {
-      $this->yamlDiscovery = new YamlDiscovery('routing', $this->moduleHandler->getModuleDirectories());
-    }
-    return $this->yamlDiscovery->findAll();
+    // Always instantiate a new YamlDiscovery object so that we always search on
+    // the up-to-date list of modules.
+    $discovery = new YamlDiscovery('routing', $this->moduleHandler->getModuleDirectories());
+    return $discovery->findAll();
   }
 
 }

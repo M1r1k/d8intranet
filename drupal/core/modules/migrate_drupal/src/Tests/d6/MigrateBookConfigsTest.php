@@ -8,9 +8,6 @@
 namespace Drupal\migrate_drupal\Tests\d6;
 
 use Drupal\config\Tests\SchemaCheckTestTrait;
-use Drupal\migrate\MigrateMessage;
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 
 /**
  * Upgrade variables to book.settings.yml.
@@ -26,20 +23,15 @@ class MigrateBookConfigsTest extends MigrateDrupal6TestBase {
    *
    * @var array
    */
-  public static $modules = array('book');
+  public static $modules = array('book', 'system', 'node', 'field', 'text', 'entity_reference');
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-    $migration = entity_load('migration', 'd6_book_settings');
-    $dumps = array(
-      $this->getDumpDirectory() . '/Variable.php',
-    );
-    $this->prepare($migration, $dumps);
-    $executable = new MigrateExecutable($migration, new MigrateMessage());
-    $executable->import();
+    $this->loadDumps(['Variable.php']);
+    $this->executeMigration('d6_book_settings');
   }
 
   /**

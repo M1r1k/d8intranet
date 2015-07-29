@@ -8,7 +8,6 @@
 namespace Drupal\comment;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
-use Drupal\Component\Utility\String;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -160,7 +159,7 @@ class CommentManager implements CommentManagerInterface {
     }
 
     if ($this->authenticatedCanPostComments) {
-      // We cannot use drupal_get_destination() because these links
+      // We cannot use the redirect.destination service here because these links
       // sometimes appear on /node and taxonomy listing pages.
       if ($entity->get($field_name)->getFieldDefinition()->getSetting('form_location') == CommentItemInterface::FORM_SEPARATE_PAGE) {
         $comment_reply_parameters = [
@@ -196,7 +195,7 @@ class CommentManager implements CommentManagerInterface {
    */
   public function getCountNewComments(EntityInterface $entity, $field_name = NULL, $timestamp = 0) {
     // @todo Replace module handler with optional history service injection
-    //   after http://drupal.org/node/2081585
+    //   after https://www.drupal.org/node/2081585.
     if ($this->currentUser->isAuthenticated() && $this->moduleHandler->moduleExists('history')) {
       // Retrieve the timestamp at which the current user last viewed this entity.
       if (!$timestamp) {
@@ -210,7 +209,7 @@ class CommentManager implements CommentManagerInterface {
           }
           else {
             // Default to 30 days ago.
-            // @todo Remove once http://drupal.org/node/1029708 lands.
+            // @todo Remove once https://www.drupal.org/node/1029708 lands.
             $timestamp = COMMENT_NEW_LIMIT;
           }
         }

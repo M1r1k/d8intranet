@@ -8,9 +8,6 @@
 namespace Drupal\migrate_drupal\Tests\d6;
 
 use Drupal\aggregator\Entity\Item;
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 
 /**
  * Upgrade aggregator items.
@@ -26,6 +23,9 @@ class MigrateAggregatorItemTest extends MigrateDrupal6TestBase {
    */
   protected function setUp() {
     parent::setUp();
+    $this->installEntitySchema('aggregator_feed');
+    $this->installEntitySchema('aggregator_item');
+
     // Add some id mappings for the dependant migrations.
     $id_mappings = array(
       'd6_aggregator_feed' => array(
@@ -44,14 +44,8 @@ class MigrateAggregatorItemTest extends MigrateDrupal6TestBase {
     ));
     $entity->enforceIsNew();
     $entity->save();
-    /** @var \Drupal\migrate\entity\Migration $migration */
-    $migration = entity_load('migration', 'd6_aggregator_item');
-    $dumps = array(
-      $this->getDumpDirectory() . '/AggregatorItem.php',
-    );
-    $this->prepare($migration, $dumps);
-    $executable = new MigrateExecutable($migration, $this);
-    $executable->import();
+    $this->loadDumps(['AggregatorItem.php']);
+    $this->executeMigration('d6_aggregator_item');
   }
 
   /**

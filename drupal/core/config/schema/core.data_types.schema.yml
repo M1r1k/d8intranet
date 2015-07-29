@@ -1,6 +1,6 @@
 # Base types provided by Drupal core.
 
-# Read https://drupal.org/node/1905070 for more details about configuration
+# Read https://www.drupal.org/node/1905070 for more details about configuration
 # schema, types and type resolution.
 
 # Undefined type used by the system to assign to elements at any level where
@@ -56,6 +56,11 @@ label:
   label: 'Label'
   translatable: true
 
+# String containing plural variants, separated by EXT.
+plural_label:
+  type: label
+  label: 'Plural variants'
+
 # Internal Drupal path
 path:
   type: string
@@ -80,6 +85,14 @@ color_hex:
   label: 'Color'
 
 # Complex extended data types:
+
+# Root of a configuration object.
+config_object:
+  type: mapping
+  mapping:
+    langcode:
+      type: string
+      label: 'Language code'
 
 # Mail text with subject and body parts.
 mail:
@@ -121,7 +134,7 @@ action_configuration_default:
     type: string
 
 theme_settings:
-  type: mapping
+  type: config_object
   mapping:
     favicon:
       type: mapping
@@ -182,12 +195,6 @@ theme_settings:
       label: 'Third party settings'
       sequence:
         type: theme_settings.third_party.[%key]
-
-theme_breakpoints_default:
-  type: sequence
-  sequence:
-    type: string
-    label: 'Breakpoint value'
 
 views_field_bulk_form:
   type: views_field
@@ -262,7 +269,7 @@ config_entity:
       label: 'UUID'
     langcode:
       type: string
-      label: 'Default language'
+      label: 'Language code'
     status:
       type: boolean
       label: 'Status'
@@ -295,12 +302,6 @@ block_settings:
         max_age:
           type: integer
           label: 'Maximum age'
-        contexts:
-          type: sequence
-          label: 'Vary by context'
-          sequence:
-            type: string
-            label: 'Context'
     status:
       type: boolean
       label: 'Status'
@@ -422,9 +423,6 @@ core.date_format.*:
     pattern:
       type: date_format
       label: 'PHP date format'
-    langcode:
-      type: string
-      label: 'Default language'
 
 # Generic field settings schemas.
 
@@ -452,6 +450,9 @@ field.storage_settings.string:
     case_sensitive:
       type: boolean
       label: 'Case sensitive'
+    is_ascii:
+      type: boolean
+      label: 'Contains US ASCII characters only'
 
 field.field_settings.string:
   type: mapping

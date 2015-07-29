@@ -8,9 +8,7 @@
 namespace Drupal\block\Tests;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Cache\Cache;
 use Drupal\simpletest\WebTestBase;
-use Drupal\Component\Utility\String;
 use Drupal\block\Entity\Block;
 use Drupal\user\RoleInterface;
 
@@ -37,7 +35,7 @@ class BlockTest extends BlockTestBase {
     );
     // Set the block to be hidden on any user path, and to be shown only to
     // authenticated users.
-    $edit['visibility[request_path][pages]'] = 'user*';
+    $edit['visibility[request_path][pages]'] = '/user*';
     $edit['visibility[request_path][negate]'] = TRUE;
     $edit['visibility[user_role][roles][' . RoleInterface::AUTHENTICATED_ID . ']'] = TRUE;
     $this->drupalGet('admin/structure/block/add/' . $block_name . '/' . $default_theme);
@@ -315,12 +313,11 @@ class BlockTest extends BlockTestBase {
 
     // Enable page caching.
     $config = $this->config('system.performance');
-    $config->set('cache.page.use_internal', 1);
     $config->set('cache.page.max_age', 300);
     $config->save();
 
     // Place the "Powered by Drupal" block.
-    $block = $this->drupalPlaceBlock('system_powered_by_block', array('id' => 'powered', 'cache' => array('max_age' => 315360000)));
+    $block = $this->drupalPlaceBlock('system_powered_by_block', array('id' => 'powered'));
 
     // Prime the page cache.
     $this->drupalGet('<front>');
@@ -337,11 +334,13 @@ class BlockTest extends BlockTestBase {
       'config:block_list',
       'block_view',
       'config:block.block.powered',
+      'config:user.role.anonymous',
       'rendered',
     );
     sort($expected_cache_tags);
+    $keys = \Drupal::service('cache_contexts_manager')->convertTokensToKeys(['languages:language_interface', 'theme', 'user.permissions'])->getKeys();
     $this->assertIdentical($cache_entry->tags, $expected_cache_tags);
-    $cache_entry = \Drupal::cache('render')->get('entity_view:block:powered:en:classy');
+    $cache_entry = \Drupal::cache('render')->get('entity_view:block:powered:' . implode(':', $keys));
     $expected_cache_tags = array(
       'block_view',
       'config:block.block.powered',
@@ -361,7 +360,7 @@ class BlockTest extends BlockTestBase {
     $this->assertEqual($this->drupalGetHeader('X-Drupal-Cache'), 'HIT');
 
     // Place the "Powered by Drupal" block another time; verify a cache miss.
-    $block_2 = $this->drupalPlaceBlock('system_powered_by_block', array('id' => 'powered-2', 'cache' => array('max_age' => 315360000)));
+    $block_2 = $this->drupalPlaceBlock('system_powered_by_block', array('id' => 'powered-2'));
     $this->drupalGet('<front>');
     $this->assertEqual($this->drupalGetHeader('X-Drupal-Cache'), 'MISS');
 
@@ -376,6 +375,7 @@ class BlockTest extends BlockTestBase {
       'block_view',
       'config:block.block.powered',
       'config:block.block.powered-2',
+      'config:user.role.anonymous',
       'rendered',
     );
     sort($expected_cache_tags);
@@ -386,7 +386,8 @@ class BlockTest extends BlockTestBase {
       'rendered',
     );
     sort($expected_cache_tags);
-    $cache_entry = \Drupal::cache('render')->get('entity_view:block:powered:en:classy');
+    $keys = \Drupal::service('cache_contexts_manager')->convertTokensToKeys(['languages:language_interface', 'theme', 'user.permissions'])->getKeys();
+    $cache_entry = \Drupal::cache('render')->get('entity_view:block:powered:' . implode(':', $keys));
     $this->assertIdentical($cache_entry->tags, $expected_cache_tags);
     $expected_cache_tags = array(
       'block_view',
@@ -394,7 +395,8 @@ class BlockTest extends BlockTestBase {
       'rendered',
     );
     sort($expected_cache_tags);
-    $cache_entry = \Drupal::cache('render')->get('entity_view:block:powered-2:en:classy');
+    $keys = \Drupal::service('cache_contexts_manager')->convertTokensToKeys(['languages:language_interface', 'theme', 'user.permissions'])->getKeys();
+    $cache_entry = \Drupal::cache('render')->get('entity_view:block:powered-2:' . implode(':', $keys));
     $this->assertIdentical($cache_entry->tags, $expected_cache_tags);
 
     // Now we should have a cache hit again.

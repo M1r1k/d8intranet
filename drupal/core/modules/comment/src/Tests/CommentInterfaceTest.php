@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Definition of Drupal\comment\Tests\CommentInterfaceTest.
+ * Contains \Drupal\comment\Tests\CommentInterfaceTest.
  */
 
 namespace Drupal\comment\Tests;
@@ -155,20 +155,20 @@ class CommentInterfaceTest extends CommentTestBase {
     $reply_loaded->setPublished(FALSE);
     $reply_loaded->save();
     $this->drupalGet('comment/reply/node/' . $this->node->id() . '/comment/' . $reply_loaded->id());
-    $this->assertText(t('The comment you are replying to does not exist.'), 'Replying to an unpublished comment');
+    $this->assertResponse(403);
 
     // Attempt to post to node with comments disabled.
     $this->node = $this->drupalCreateNode(array('type' => 'article', 'promote' => 1, 'comment' => array(array('status' => CommentItemInterface::HIDDEN))));
     $this->assertTrue($this->node, 'Article node created.');
     $this->drupalGet('comment/reply/node/' . $this->node->id() . '/comment');
-    $this->assertText('This discussion is closed', 'Posting to node with comments disabled');
+    $this->assertResponse(403);
     $this->assertNoField('edit-comment', 'Comment body field found.');
 
     // Attempt to post to node with read-only comments.
     $this->node = $this->drupalCreateNode(array('type' => 'article', 'promote' => 1, 'comment' => array(array('status' => CommentItemInterface::CLOSED))));
     $this->assertTrue($this->node, 'Article node created.');
     $this->drupalGet('comment/reply/node/' . $this->node->id() . '/comment');
-    $this->assertText('This discussion is closed', 'Posting to node with comments read-only');
+    $this->assertResponse(403);
     $this->assertNoField('edit-comment', 'Comment body field found.');
 
     // Attempt to post to node with comments enabled (check field names etc).
@@ -220,12 +220,12 @@ class CommentInterfaceTest extends CommentTestBase {
     $body_text = 'Lorem ipsum Lorem ipsum Loreming ipsum Lorem ipsum';
     $comment1 = $this->postComment(NULL, $body_text, '', TRUE);
     $this->assertTrue($this->commentExists($comment1), 'Form comment found.');
-    $this->assertEqual('Lorem ipsum Lorem ipsum', $comment1->getSubject());
+    $this->assertEqual('Lorem ipsum Lorem ipsum…', $comment1->getSubject());
 
     // Break at 29 characters where there's no boundary before that.
     $body_text2 = 'LoremipsumloremipsumLoremingipsumLoremipsum';
     $comment2 = $this->postComment(NULL, $body_text2, '', TRUE);
-    $this->assertEqual('LoremipsumloremipsumLoremingi', $comment2->getSubject());
+    $this->assertEqual('LoremipsumloremipsumLoreming…', $comment2->getSubject());
   }
 
   /**

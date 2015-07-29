@@ -9,6 +9,8 @@ namespace Drupal\system\Tests\Installer;
 
 use Drupal\simpletest\InstallerTestBase;
 use Drupal\Core\Database\Database;
+use Drupal\Core\DrupalKernel;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Tests the installer with an existing settings file.
@@ -31,12 +33,10 @@ class InstallerExistingSettingsTest extends InstallerTestBase {
       'required' => TRUE,
     );
 
-    // Actually the install profile should be skipped to because it is written
-    // to settings.php.
-    // @todo https://www.drupal.org/node/2451369 Fix install_profile so that it
-    //   is written to an existing settings.php if possible or if set used.
+    // During interactive install we'll change this to a different profile and
+    // this test will ensure that the new value is written to settings.php.
     $this->settings['settings']['install_profile'] = (object) array(
-      'value' => 'testing',
+      'value' => 'minimal',
       'required' => TRUE,
     );
 
@@ -50,14 +50,17 @@ class InstallerExistingSettingsTest extends InstallerTestBase {
       'required' => TRUE,
     );
 
+    // Use the kernel to find the site path because the site.path service should
+    // not be available at this point in the install process.
+    $site_path = DrupalKernel::findSitePath(Request::createFromGlobals());
     // Pre-configure config directories.
     $this->settings['config_directories'] = array(
       CONFIG_ACTIVE_DIRECTORY => (object) array(
-        'value' => conf_path() . '/files/config_active',
+        'value' => $site_path . '/files/config_active',
         'required' => TRUE,
       ),
       CONFIG_STAGING_DIRECTORY => (object) array(
-        'value' => conf_path() . '/files/config_staging',
+        'value' => $site_path . '/files/config_staging',
         'required' => TRUE,
       ),
     );
@@ -81,6 +84,7 @@ class InstallerExistingSettingsTest extends InstallerTestBase {
   public function testInstaller() {
     $this->assertUrl('user/1');
     $this->assertResponse(200);
+    $this->assertEqual('testing', drupal_get_profile(), 'Profile was changed from minimal to testing during interactive install.');
   }
 
 }

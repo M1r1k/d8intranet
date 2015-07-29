@@ -2,12 +2,12 @@
 
 /**
  * @file
- * Definition of Drupal\aggregator\Tests\AggregatorRenderingTest.
+ * Contains \Drupal\aggregator\Tests\AggregatorRenderingTest.
  */
 
 namespace Drupal\aggregator\Tests;
 
-use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\SafeMarkup;
 
 /**
  * Tests display of aggregator items on the page.
@@ -51,6 +51,11 @@ class AggregatorRenderingTest extends AggregatorTestBase {
     // Confirm that the block is now being displayed on pages.
     $this->drupalGet('test-page');
     $this->assertText($block->label(), 'Feed block is displayed on the page.');
+
+    // Confirm items appear as links.
+    $items = $this->container->get('entity.manager')->getStorage('aggregator_item')->loadByFeed($feed->id(), 1);
+    $links = $this->xpath('//a[@href = :href]', array(':href' => reset($items)->getLink()));
+    $this->assert(isset($links[0]), 'Item link found.');
 
     // Find the expected read_more link.
     $href = $feed->url();
@@ -96,7 +101,7 @@ class AggregatorRenderingTest extends AggregatorTestBase {
 
     // Check for presence of an aggregator pager.
     $this->drupalGet('aggregator');
-    $elements = $this->xpath("//ul[@class=:class]", array(':class' => 'pager__items'));
+    $elements = $this->xpath("//ul[contains(@class, :class)]", array(':class' => 'pager__items'));
     $this->assertTrue(!empty($elements), 'Individual source page contains a pager.');
 
     // Check for sources page title.
@@ -107,7 +112,7 @@ class AggregatorRenderingTest extends AggregatorTestBase {
     // Find the expected read_more link on the sources page.
     $href = $feed->url();
     $links = $this->xpath('//a[@href = :href]', array(':href' => $href));
-    $this->assertTrue(isset($links[0]), String::format('Link to href %href found.', array('%href' => $href)));
+    $this->assertTrue(isset($links[0]), SafeMarkup::format('Link to href %href found.', array('%href' => $href)));
     $cache_tags_header = $this->drupalGetHeader('X-Drupal-Cache-Tags');
     $cache_tags = explode(' ', $cache_tags_header);
     $this->assertTrue(in_array('aggregator_feed:' . $feed->id(), $cache_tags));
@@ -132,7 +137,7 @@ class AggregatorRenderingTest extends AggregatorTestBase {
 
     // Check for the presence of a pager.
     $this->drupalGet('aggregator/sources/' . $feed->id());
-    $elements = $this->xpath("//ul[@class=:class]", array(':class' => 'pager__items'));
+    $elements = $this->xpath("//ul[contains(@class, :class)]", array(':class' => 'pager__items'));
     $this->assertTrue(!empty($elements), 'Individual source page contains a pager.');
     $cache_tags = explode(' ', $this->drupalGetHeader('X-Drupal-Cache-Tags'));
     $this->assertTrue(in_array('aggregator_feed:' . $feed->id(), $cache_tags));

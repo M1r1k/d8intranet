@@ -2,21 +2,22 @@
 
 /**
  * @file
- * Definition of Drupal\comment\CommentForm.
+ * Contains \Drupal\comment\CommentForm.
  */
 
 namespace Drupal\comment;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\String;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -33,12 +34,20 @@ class CommentForm extends ContentEntityForm {
   protected $currentUser;
 
   /**
+   * The renderer.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity.manager'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('renderer')
     );
   }
 
@@ -49,26 +58,13 @@ class CommentForm extends ContentEntityForm {
    *   The entity manager service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
    */
-  public function __construct(EntityManagerInterface $entity_manager, AccountInterface $current_user) {
+  public function __construct(EntityManagerInterface $entity_manager, AccountInterface $current_user, RendererInterface $renderer) {
     parent::__construct($entity_manager);
     $this->currentUser = $current_user;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function init(FormStateInterface $form_state) {
-    $comment = $this->entity;
-
-    // Make the comment inherit the current content language unless specifically
-    // set.
-    if ($comment->isNew()) {
-      $language_content = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
-      $comment->langcode->value = $language_content->getId();
-    }
-
-    parent::init($form_state);
+    $this->renderer = $renderer;
   }
 
   /**
@@ -214,12 +210,9 @@ class CommentForm extends ContentEntityForm {
       '#access' => $is_admin,
     );
 
-    $form['#cache']['tags'] = Cache::mergeTags(
-      isset($form['#cache']['tags']) ? $form['#cache']['tags'] : [],
-      $config->getCacheTags(),
-      // The form depends on the field definition.
-      $field_definition->getConfig($entity->bundle())->getCacheTags()
-    );
+    $this->renderer->addCacheableDependency($form, $config);
+    // The form depends on the field definition.
+    $this->renderer->addCacheableDependency($form, $field_definition->getConfig($entity->bundle()));
 
     return parent::form($form, $form_state, $comment);
   }
@@ -249,7 +242,6 @@ class CommentForm extends ContentEntityForm {
       '#type' => 'submit',
       '#value' => $this->t('Preview'),
       '#access' => $preview_mode != DRUPAL_DISABLED,
-      '#validate' => array('::validate'),
       '#submit' => array('::submitForm', '::preview'),
     );
 
@@ -288,12 +280,14 @@ class CommentForm extends ContentEntityForm {
     // Validate the comment's subject. If not specified, extract from comment
     // body.
     if (trim($comment->getSubject()) == '') {
-      // The body may be in any format, so:
-      // 1) Filter it into HTML
-      // 2) Strip out all HTML tags
-      // 3) Convert entities back to plain-text.
-      $comment_text = $comment->comment_body->processed;
-      $comment->setSubject(Unicode::truncate(trim(String::decodeEntities(strip_tags($comment_text))), 29, TRUE));
+      if ($comment->hasField('comment_body')) {
+        // The body may be in any format, so:
+        // 1) Filter it into HTML
+        // 2) Strip out all HTML tags
+        // 3) Convert entities back to plain-text.
+        $comment_text = $comment->comment_body->processed;
+        $comment->setSubject(Unicode::truncate(trim(Html::decodeEntities(strip_tags($comment_text))), 29, TRUE, TRUE));
+      }
       // Edge cases where the comment body is populated only by HTML tags will
       // require a default subject.
       if ($comment->getSubject() == '') {
@@ -306,21 +300,22 @@ class CommentForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    */
-  public function validate(array $form, FormStateInterface $form_state) {
-    $comment = parent::validate($form, $form_state);
+  protected function getEditedFieldNames(FormStateInterface $form_state) {
+    return array_merge(['created', 'name'], parent::getEditedFieldNames($form_state));
+  }
 
-    // Customly trigger validation of manually added fields and add in
-    // violations.
-    $violations = $comment->created->validate();
-    foreach ($violations as $violation) {
+  /**
+   * {@inheritdoc}
+   */
+  protected function flagViolations(EntityConstraintViolationListInterface $violations, array $form, FormStateInterface $form_state) {
+    // Manually flag violations of fields not handled by the form display.
+    foreach ($violations->getByField('created') as $violation) {
       $form_state->setErrorByName('date', $violation->getMessage());
     }
-    $violations = $comment->name->validate();
-    foreach ($violations as $violation) {
+    foreach ($violations->getByField('name') as $violation) {
       $form_state->setErrorByName('name', $violation->getMessage());
     }
-
-    return $comment;
+    parent::flagViolations($violations, $form, $form_state);
   }
 
   /**

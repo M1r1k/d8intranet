@@ -31,6 +31,11 @@ function entity_render_cache_clear() {
  * @return array
  *   The bundle info for a specific entity type, or all entity types.
  *
+ * @deprecated in Drupal 8.x-dev and will be removed before Drupal 9.0.0. Use
+ *   \Drupal\Core\Entity\EntityManagerInterface::getBundleInfo() for a single
+ *   bundle, or \Drupal\Core\Entity\EntityManagerInterface::getAllBundleInfo()
+ *   for all bundles.
+ *
  * @see \Drupal\Core\Entity\EntityManagerInterface::getBundleInfo()
  * @see \Drupal\Core\Entity\EntityManagerInterface::getAllBundleInfo()
  */
@@ -213,6 +218,11 @@ function entity_delete_multiple($entity_type, array $ids) {
  *
  * @return \Drupal\Core\Entity\EntityInterface
  *   A new entity object.
+ *
+ * @deprecated in Drupal 8.x-dev, will be removed before Drupal 9.0.0. Use
+ *    the <EntityType>::create($values) method if the entity type is known or
+ *    \Drupal::entityManager()->getStorage($entity_type)->create($values) if the
+ *    entity type is variable.
  */
 function entity_create($entity_type, array $values = array()) {
   return \Drupal::entityManager()

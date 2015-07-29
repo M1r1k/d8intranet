@@ -22,7 +22,7 @@ class ToolbarController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
   public function subtreesJsonp() {
-    $subtrees = toolbar_get_rendered_subtrees();
+    list($subtrees, $cacheability) = toolbar_get_rendered_subtrees();
     $response = new JsonResponse($subtrees);
     $response->setCallback('Drupal.toolbar.setSubtrees.resolve');
 
@@ -46,14 +46,12 @@ class ToolbarController extends ControllerBase {
    *
    * @param string $hash
    *   The hash of the toolbar subtrees.
-   * @param string $langcode
-   *   The langcode of the requested site, NULL if none given.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function checkSubTreeAccess($hash, $langcode) {
-    return AccessResult::allowedIf($this->currentUser()->hasPermission('access toolbar') && $hash == _toolbar_get_subtrees_hash($langcode))->cachePerRole();
+  public function checkSubTreeAccess($hash) {
+    return AccessResult::allowedIf($this->currentUser()->hasPermission('access toolbar') && $hash == _toolbar_get_subtrees_hash()[0])->cachePerPermissions();
   }
 
 }

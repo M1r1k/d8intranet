@@ -7,8 +7,6 @@
 
 namespace Drupal\migrate_drupal\Tests\d6;
 
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -18,30 +16,29 @@ use Drupal\taxonomy\Entity\Term;
  */
 class MigrateTaxonomyTermTest extends MigrateDrupal6TestBase {
 
-  static $modules = array('taxonomy');
+  static $modules = array('taxonomy', 'text');
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->installEntitySchema('taxonomy_term');
+
     $this->prepareMigrations(array(
       'd6_taxonomy_vocabulary' => array(
         array(array(1), array('vocabulary_1_i_0_')),
         array(array(2), array('vocabulary_2_i_1_')),
         array(array(3), array('vocabulary_3_i_2_')),
     )));
-    /** @var \Drupal\migrate\entity\Migration $migration */
-    $migration = entity_load('migration', 'd6_taxonomy_term');
-    $dumps = array(
-      $this->getDumpDirectory() . '/TermData.php',
-      $this->getDumpDirectory() . '/TermHierarchy.php',
-      $this->getDumpDirectory() . '/Vocabulary.php',
-      $this->getDumpDirectory() . '/VocabularyNodeTypes.php',
-    );
-    $this->prepare($migration, $dumps);
-    $executable = new MigrateExecutable($migration, $this);
-    $executable->import();
+    $this->loadDumps([
+      'TermData.php',
+      'TermHierarchy.php',
+      'Vocabulary.php',
+      'VocabularyNodeTypes.php',
+    ]);
+    $this->executeMigration('d6_taxonomy_term');
   }
 
   /**
@@ -99,7 +96,7 @@ class MigrateTaxonomyTermTest extends MigrateDrupal6TestBase {
       }
       else {
         $parents = array();
-        foreach (taxonomy_term_load_parents($tid) as $parent) {
+        foreach (\Drupal::entityManager()->getStorage('taxonomy_term')->loadParents($tid) as $parent) {
           $parents[] = (int) $parent->id();
         }
         $this->assertIdentical($parents, $values['parent']);

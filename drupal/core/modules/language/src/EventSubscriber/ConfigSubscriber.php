@@ -9,9 +9,9 @@ namespace Drupal\language\EventSubscriber;
 
 use Drupal\Core\Language\LanguageDefault;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\PhpStorage\PhpStorageFactory;
 use Drupal\Core\Config\ConfigCrudEvent;
 use Drupal\Core\Config\ConfigEvents;
+use Drupal\language\ConfigurableLanguageManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -54,17 +54,16 @@ class ConfigSubscriber implements EventSubscriberInterface {
    */
   public function onConfigSave(ConfigCrudEvent $event) {
     $saved_config = $event->getConfig();
-    if ($saved_config->getName() == 'system.site' && $event->isChanged('langcode')) {
-      $language = $this->languageManager->getLanguage($saved_config->get('langcode'));
+    if ($saved_config->getName() == 'system.site' && $event->isChanged('default_langcode')) {
+      $language = $this->languageManager->getLanguage($saved_config->get('default_langcode'));
       // During an import the language might not exist yet.
       if ($language) {
         $this->languageDefault->set($language);
         $this->languageManager->reset();
         language_negotiation_url_prefixes_update();
       }
-      // Trigger a container rebuild on the next request by deleting compiled
-      // from PHP storage.
-      PhpStorageFactory::get('service_container')->deleteAll();
+      // Trigger a container rebuild on the next request by invalidating it.
+      ConfigurableLanguageManager::rebuildServices();
     }
   }
 

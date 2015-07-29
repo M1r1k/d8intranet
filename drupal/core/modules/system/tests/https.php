@@ -15,9 +15,6 @@ chdir('../../../..');
 
 $autoloader = require_once 'autoload.php';
 
-// Set a global variable to indicate a mock HTTPS request.
-$is_https_mock = empty($_SERVER['HTTPS']);
-
 // Change to HTTPS.
 $_SERVER['HTTPS'] = 'on';
 foreach ($_SERVER as &$value) {
@@ -25,10 +22,10 @@ foreach ($_SERVER as &$value) {
   $value = str_replace('http://', 'https://', $value);
 }
 
+$kernel = new TestKernel('testing', $autoloader, TRUE);
+
 $request = Request::createFromGlobals();
-$kernel = TestKernel::createFromRequest($request, $autoloader, 'testing', TRUE);
-$response = $kernel
-  ->handle($request)
-    // Handle the response object.
-    ->prepare($request)->send();
+$response = $kernel->handle($request);
+$response->send();
+
 $kernel->terminate($request, $response);

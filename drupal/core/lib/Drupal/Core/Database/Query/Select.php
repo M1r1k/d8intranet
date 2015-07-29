@@ -88,7 +88,7 @@ class Select extends Query implements SelectInterface {
   /**
    * Whether or not this query should be DISTINCT
    *
-   * @var boolean
+   * @var bool
    */
   protected $distinct = FALSE;
 
@@ -114,7 +114,7 @@ class Select extends Query implements SelectInterface {
 
   /**
    * Indicates if preExecute() has already been called.
-   * @var boolean
+   * @var bool
    */
   protected $prepared = FALSE;
 
@@ -461,6 +461,13 @@ class Select extends Query implements SelectInterface {
    */
   public function escapeLike($string) {
     return $this->connection->escapeLike($string);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function escapeField($string) {
+    return $this->connection->escapeField($string);
   }
 
   /**

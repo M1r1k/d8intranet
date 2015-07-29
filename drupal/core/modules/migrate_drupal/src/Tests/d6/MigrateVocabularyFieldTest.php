@@ -2,14 +2,12 @@
 
 /**
  * @file
- * Contains \Drupal\migrate_drupal\Tests\d6\MigrateVocabularyToFieldTest.
+ * Contains \Drupal\migrate_drupal\Tests\d6\MigrateVocabularyFieldTest.
  */
 
 namespace Drupal\migrate_drupal\Tests\d6;
 
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 
 /**
  * Vocabulary field migration.
@@ -23,7 +21,7 @@ class MigrateVocabularyFieldTest extends MigrateDrupal6TestBase {
    *
    * @var array
    */
-  static $modules = array('taxonomy', 'field');
+  static $modules = array('node', 'taxonomy', 'field', 'text', 'entity_reference');
 
   /**
    * {@inheritdoc}
@@ -45,14 +43,8 @@ class MigrateVocabularyFieldTest extends MigrateDrupal6TestBase {
       'vid' => 'test_vocab',
     ))->save();
 
-    $migration = entity_load('migration', 'd6_vocabulary_field');
-    $dumps = array(
-      $this->getDumpDirectory() . '/Vocabulary.php',
-      $this->getDumpDirectory() . '/VocabularyNodeTypes.php',
-    );
-    $this->prepare($migration, $dumps);
-    $executable = new MigrateExecutable($migration, $this);
-    $executable->import();
+    $this->loadDumps(['Vocabulary.php', 'VocabularyNodeTypes.php']);
+    $this->executeMigration('d6_vocabulary_field');
   }
 
   /**
@@ -63,8 +55,10 @@ class MigrateVocabularyFieldTest extends MigrateDrupal6TestBase {
     $field_storage_id = 'node.tags';
     $field_storage = FieldStorageConfig::load($field_storage_id);
     $this->assertIdentical($field_storage_id, $field_storage->id());
+
     $settings = $field_storage->getSettings();
-    $this->assertIdentical($settings['allowed_values'][0]['vocabulary'], 'tags', "Vocabulary has correct settings.");
+    $this->assertIdentical('taxonomy_term', $settings['target_type'], "Target type is correct.");
+
     $this->assertIdentical(array('node', 'tags'), entity_load('migration', 'd6_vocabulary_field')->getIdMap()->lookupDestinationID(array(4)), "Test IdMap");
   }
 

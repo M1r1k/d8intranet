@@ -83,21 +83,9 @@ views.argument_default.taxonomy_tid:
       type: string
       label: 'Multiple-value handling'
 
-views.field.term_link_edit:
-  type: views_field
-  label: 'Taxonomy language'
+views.field.term_name:
+  type: views.field.field
   mapping:
-    text:
-      type: label
-      label: 'Text to display'
-
-views.field.taxonomy:
-  type: views_field
-  label: 'Taxonomy language'
-  mapping:
-    link_to_taxonomy:
-      type: boolean
-      label: 'Link this field to its taxonomy term page'
     convert_spaces:
       type: boolean
       label: 'Convert spaces in term names to hyphens'

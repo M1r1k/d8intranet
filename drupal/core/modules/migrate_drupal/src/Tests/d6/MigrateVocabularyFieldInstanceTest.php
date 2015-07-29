@@ -9,8 +9,6 @@ namespace Drupal\migrate_drupal\Tests\d6;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\field\Entity\FieldConfig;
-use Drupal\migrate\MigrateExecutable;
-use Drupal\migrate_drupal\Tests\d6\MigrateDrupal6TestBase;
 
 /**
  * Vocabulary field instance migration.
@@ -24,7 +22,7 @@ class MigrateVocabularyFieldInstanceTest extends MigrateDrupal6TestBase {
    *
    * @var array
    */
-  static $modules = array('node', 'field', 'taxonomy');
+  static $modules = array('node', 'field', 'taxonomy', 'text', 'entity_reference');
 
   /**
    * {@inheritdoc}
@@ -38,6 +36,11 @@ class MigrateVocabularyFieldInstanceTest extends MigrateDrupal6TestBase {
 
     // Add some id mappings for the dependant migrations.
     $id_mappings = array(
+      'd6_node_type' => array(
+        array(array('article'), array('article')),
+        array(array('page'), array('page')),
+        array(array('story'), array('story')),
+      ),
       'd6_taxonomy_vocabulary' => array(
         array(array(4), array('tags')),
       ),
@@ -57,26 +60,15 @@ class MigrateVocabularyFieldInstanceTest extends MigrateDrupal6TestBase {
     entity_create('field_storage_config', array(
       'entity_type' => 'node',
       'field_name' => 'tags',
-      'type' => 'taxonomy_term_reference',
+      'type' => 'entity_reference',
       'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
       'settings' => array(
-        'allowed_values' => array(
-          array(
-            'vocabulary' => 'tags',
-            'parent' => 0,
-          ),
-        ),
+        'target_type' => 'taxonomy_term',
       ),
     ))->save();
 
-    $migration = entity_load('migration', 'd6_vocabulary_field_instance');
-    $dumps = array(
-      $this->getDumpDirectory() . '/Vocabulary.php',
-      $this->getDumpDirectory() . '/VocabularyNodeTypes.php',
-    );
-    $this->prepare($migration, $dumps);
-    $executable = new MigrateExecutable($migration, $this);
-    $executable->import();
+    $this->loadDumps(['Vocabulary.php', 'VocabularyNodeTypes.php']);
+    $this->executeMigration('d6_vocabulary_field_instance');
   }
 
   /**
@@ -92,6 +84,11 @@ class MigrateVocabularyFieldInstanceTest extends MigrateDrupal6TestBase {
     $field_id = 'node.page.tags';
     $field = FieldConfig::load($field_id);
     $this->assertIdentical($field_id, $field->id(), 'Field instance exists on page bundle.');
+
+    $settings = $field->getSettings();
+    $this->assertIdentical('default:taxonomy_term', $settings['handler'], 'The handler plugin ID is correct.');
+    $this->assertIdentical(['tags'], $settings['handler_settings']['target_bundles'], 'The target_bundle handler setting is correct.');
+    $this->assertIdentical(TRUE, $settings['handler_settings']['auto_create'], 'The "auto_create" setting is correct.');
 
     $this->assertIdentical(array('node', 'article', 'tags'), entity_load('migration', 'd6_vocabulary_field_instance')->getIdMap()->lookupDestinationID(array(4, 'article')));
   }

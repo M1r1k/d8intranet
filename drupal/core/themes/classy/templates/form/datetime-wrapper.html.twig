@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Default theme implementation of a datetime form wrapper.
+ * Theme override of a datetime form wrapper.
  *
  * Available variables:
  * - content: The form element to be output, usually a datelist, or datetime.
@@ -23,6 +23,11 @@
   <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
 {% endif %}
 {{ content }}
+{% if errors %}
+  <div class="form-item--error-message">
+    <strong>{{ errors }}</strong>
+  </div>
+{% endif %}
 {% if description %}
   <div class="description">{{ description }}</div>
 {% endif %}

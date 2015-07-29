@@ -8,70 +8,43 @@
 namespace Drupal\Core\Render;
 
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 
 /**
  * Value object used for bubbleable rendering metadata.
  *
  * @see \Drupal\Core\Render\RendererInterface::render()
  */
-class BubbleableMetadata {
+class BubbleableMetadata extends CacheableMetadata implements AttachmentsInterface {
 
-  /**
-   * Cache contexts.
-   *
-   * @var string[]
-   */
-  protected $contexts = [];
-
-  /**
-   * Cache tags.
-   *
-   * @var string[]
-   */
-  protected $tags = [];
-
-  /**
-   * Cache max-age.
-   *
-   * @var int
-   */
-  protected $maxAge = Cache::PERMANENT;
-
-  /**
-   * Attached assets.
-   *
-   * @var string[][]
-   */
-  protected $attached = [];
-
-  /**
-   * #post_render_cache metadata.
-   *
-   * @var array[]
-   */
-  protected $postRenderCache = [];
+  use AttachmentsTrait;
 
   /**
    * Merges the values of another bubbleable metadata object with this one.
    *
-   * @param \Drupal\Core\Render\BubbleableMetadata $other
+   * @param \Drupal\Core\Cache\CacheableMetadata $other
    *   The other bubbleable metadata object.
+   *
    * @return static
    *   A new bubbleable metadata object, with the merged data.
-   *
-   * @todo Add unit test for this in
-   *       \Drupal\Tests\Core\Render\BubbleableMetadataTest when
-   *       drupal_merge_attached() no longer is a procedural function and remove
-   *       the '@codeCoverageIgnore' annotation.
    */
-  public function merge(BubbleableMetadata $other) {
-    $result = new BubbleableMetadata();
-    $result->contexts = Cache::mergeContexts($this->contexts, $other->contexts);
-    $result->tags = Cache::mergeTags($this->tags, $other->tags);
-    $result->maxAge = Cache::mergeMaxAges($this->maxAge, $other->maxAge);
-    $result->attached = Renderer::mergeAttachments($this->attached, $other->attached);
-    $result->postRenderCache = NestedArray::mergeDeep($this->postRenderCache, $other->postRenderCache);
+  public function merge(CacheableMetadata $other) {
+    $result = parent::merge($other);
+
+    // This is called many times per request, so avoid merging unless absolutely
+    // necessary.
+    if ($other instanceof BubbleableMetadata) {
+      if (empty($this->attachments)) {
+        $result->attachments = $other->attachments;
+      }
+      elseif (empty($other->attachments)) {
+        $result->attachments = $this->attachments;
+      }
+      else {
+        $result->attachments = static::mergeAttachments($this->attachments, $other->attachments);
+      }
+    }
+
     return $result;
   }
 
@@ -82,11 +55,8 @@ class BubbleableMetadata {
    *   A render array.
    */
   public function applyTo(array &$build) {
-    $build['#cache']['contexts'] = $this->contexts;
-    $build['#cache']['tags'] = $this->tags;
-    $build['#cache']['max-age'] = $this->maxAge;
-    $build['#attached'] = $this->attached;
-    $build['#post_render_cache'] = $this->postRenderCache;
+    parent::applyTo($build);
+    $build['#attached'] = $this->attachments;
   }
 
   /**
@@ -98,188 +68,115 @@ class BubbleableMetadata {
    * @return static
    */
   public static function createFromRenderArray(array $build) {
-    $meta = new static();
-    $meta->contexts = (isset($build['#cache']['contexts'])) ? $build['#cache']['contexts'] : [];
-    $meta->tags = (isset($build['#cache']['tags'])) ? $build['#cache']['tags'] : [];
-    $meta->maxAge = (isset($build['#cache']['max-age'])) ? $build['#cache']['max-age'] : Cache::PERMANENT;
-    $meta->attached = (isset($build['#attached'])) ? $build['#attached'] : [];
-    $meta->postRenderCache = (isset($build['#post_render_cache'])) ? $build['#post_render_cache'] : [];
+    $meta = parent::createFromRenderArray($build);
+    $meta->attachments = (isset($build['#attached'])) ? $build['#attached'] : [];
     return $meta;
   }
 
   /**
-   * Gets cache tags.
+   * Creates a bubbleable metadata object from a depended object.
    *
-   * @return string[]
+   * @param \Drupal\Core\Cache\CacheableDependencyInterface|mixed $object
+   *   The object whose cacheability metadata to retrieve. If it implements
+   *   CacheableDependencyInterface, its cacheability metadata will be used,
+   *   otherwise, the passed in object must be assumed to be uncacheable, so
+   *   max-age 0 is set.
+   *
+   * @return static
    */
-  public function getCacheTags() {
-    return $this->tags;
-  }
+  public static function createFromObject($object) {
+    $meta = parent::createFromObject($object);
 
-  /**
-   * Adds cache tags.
-   *
-   * @param string[] $cache_tags
-   *   The cache tags to be added.
-   *
-   * @return $this
-   */
-  public function addCacheTags(array $cache_tags) {
-    $this->tags = Cache::mergeTags($this->tags, $cache_tags);
-    return $this;
-  }
-
-  /**
-   * Sets cache tags.
-   *
-   * @param string[] $cache_tags
-   *   The cache tags to be associated.
-   *
-   * @return $this
-   */
-  public function setCacheTags(array $cache_tags) {
-    $this->tags = $cache_tags;
-    return $this;
-  }
-
-  /**
-   * Gets cache contexts.
-   *
-   * @return string[]
-   */
-  public function getCacheContexts() {
-    return $this->contexts;
-  }
-
-  /**
-   * Adds cache contexts.
-   *
-   * @param string[] $cache_contexts
-   *   The cache contexts to be added.
-   *
-   * @return $this
-   */
-  public function addCacheContexts(array $cache_contexts) {
-    $this->contexts = Cache::mergeContexts($this->contexts, $cache_contexts);
-    return $this;
-  }
-
-  /**
-   * Sets cache contexts.
-   *
-   * @param string[] $cache_contexts
-   *   The cache contexts to be associated.
-   *
-   * @return $this
-   */
-  public function setCacheContexts(array $cache_contexts) {
-    $this->contexts = $cache_contexts;
-    return $this;
-  }
-
-  /**
-   * Gets the maximum age (in seconds).
-   *
-   * @return int
-   */
-  public function getCacheMaxAge() {
-    return $this->maxAge;
-  }
-
-  /**
-   * Sets the maximum age (in seconds).
-   *
-   * Defaults to Cache::PERMANENT
-   *
-   * @param int $max_age
-   *   The max age to associate.
-   *
-   * @return $this
-   *
-   * @throws \InvalidArgumentException
-   */
-  public function setCacheMaxAge($max_age) {
-    if (!is_int($max_age)) {
-      throw new \InvalidArgumentException('$max_age must be an integer');
+    if ($object instanceof AttachmentsInterface) {
+      $meta->attachments = $object->getAttachments();
     }
 
-    $this->maxAge = $max_age;
+    return $meta;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addCacheableDependency($other_object) {
+    parent::addCacheableDependency($other_object);
+
+    if ($other_object instanceof AttachmentsInterface) {
+      $this->addAttachments($other_object->getAttachments());
+    }
+
     return $this;
   }
 
   /**
-   * Gets assets.
+   * Merges two attachments arrays (which live under the '#attached' key).
+   *
+   * The values under the 'drupalSettings' key are merged in a special way, to
+   * match the behavior of:
+   *
+   * @code
+   *   jQuery.extend(true, {}, $settings_items[0], $settings_items[1], ...)
+   * @endcode
+   *
+   * This means integer indices are preserved just like string indices are,
+   * rather than re-indexed as is common in PHP array merging.
+   *
+   * Example:
+   * @code
+   * function module1_page_attachments(&$page) {
+   *   $page['a']['#attached']['drupalSettings']['foo'] = ['a', 'b', 'c'];
+   * }
+   * function module2_page_attachments(&$page) {
+   *   $page['#attached']['drupalSettings']['foo'] = ['d'];
+   * }
+   * // When the page is rendered after the above code, and the browser runs the
+   * // resulting <SCRIPT> tags, the value of drupalSettings.foo is
+   * // ['d', 'b', 'c'], not ['a', 'b', 'c', 'd'].
+   * @endcode
+   *
+   * By following jQuery.extend() merge logic rather than common PHP array merge
+   * logic, the following are ensured:
+   * - Attaching JavaScript settings is idempotent: attaching the same settings
+   *   twice does not change the output sent to the browser.
+   * - If pieces of the page are rendered in separate PHP requests and the
+   *   returned settings are merged by JavaScript, the resulting settings are
+   *   the same as if rendered in one PHP request and merged by PHP.
+   *
+   * @param array $a
+   *   An attachments array.
+   * @param array $b
+   *   Another attachments array.
    *
    * @return array
+   *   The merged attachments array.
    */
-  public function getAssets() {
-    return $this->attached;
-  }
-
-  /**
-   * Adds assets.
-   *
-   * @param array $assets
-   *   The associated assets to be attached.
-   *
-   * @return $this
-   */
-  public function addAssets(array $assets) {
-    $this->attached = NestedArray::mergeDeep($this->attached, $assets);
-    return $this;
-  }
-
-  /**
-   * Sets assets.
-   *
-   * @param array $assets
-   *   The associated assets to be attached.
-   *
-   * @return $this
-   */
-  public function setAssets(array $assets) {
-    $this->attached = $assets;
-    return $this;
-  }
-
-  /**
-   * Gets #post_render_cache callbacks.
-   *
-   * @return array
-   */
-  public function getPostRenderCacheCallbacks() {
-    return $this->postRenderCache;
-  }
-
-  /**
-   * Adds #post_render_cache callbacks.
-   *
-   * @param string $callback
-   *   The #post_render_cache callback that will replace the placeholder with
-   *   its eventual markup.
-   * @param array $context
-   *   An array providing context for the #post_render_cache callback.
-   *
-   * @see \Drupal\Core\Render\RendererInterface::generateCachePlaceholder()
-   *
-   * @return $this
-   */
-  public function addPostRenderCacheCallback($callback, array $context) {
-    $this->postRenderCache[$callback][] = $context;
-    return $this;
-  }
-
-  /**
-   * Sets #post_render_cache callbacks.
-   *
-   * @param array $post_render_cache_callbacks
-   *   The associated #post_render_cache callbacks to be executed.
-   *
-   * @return $this
-   */
-  public function setPostRenderCacheCallbacks(array $post_render_cache_callbacks) {
-    $this->postRenderCache = $post_render_cache_callbacks;
-    return $this;
+  public static function mergeAttachments(array $a, array $b) {
+    // If both #attached arrays contain drupalSettings, then merge them
+    // correctly; adding the same settings multiple times needs to behave
+    // idempotently.
+    if (!empty($a['drupalSettings']) && !empty($b['drupalSettings'])) {
+      $drupalSettings = NestedArray::mergeDeepArray(array($a['drupalSettings'], $b['drupalSettings']), TRUE);
+      // No need for re-merging them.
+      unset($a['drupalSettings']);
+      unset($b['drupalSettings']);
+    }
+    // Optimize merging of placeholders: no need for deep merging.
+    if (!empty($a['placeholders']) && !empty($b['placeholders'])) {
+      $placeholders = $a['placeholders'] + $b['placeholders'];
+      // No need for re-merging them.
+      unset($a['placeholders']);
+      unset($b['placeholders']);
+    }
+    // Apply the normal merge.
+    $a = array_merge_recursive($a, $b);
+    if (isset($drupalSettings)) {
+      // Save the custom merge for the drupalSettings.
+      $a['drupalSettings'] = $drupalSettings;
+    }
+    if (isset($placeholders)) {
+      // Save the custom merge for the placeholders.
+      $a['placeholders'] = $placeholders;
+    }
+    return $a;
   }
 
 }

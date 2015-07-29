@@ -2,14 +2,13 @@
 
 /**
  * @file
- * Definition of Drupal\search\Tests\SearchCommentTest.
+ * Contains \Drupal\search\Tests\SearchCommentTest.
  */
 
 namespace Drupal\search\Tests;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\comment\Tests\CommentTestTrait;
-use Drupal\Component\Utility\String;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\user\RoleInterface;
 
@@ -106,7 +105,7 @@ class SearchCommentTest extends SearchTestBase {
 
     // Make preview optional.
     $field = FieldConfig::loadByName('node', 'article', 'comment');
-    $field->settings['preview'] = DRUPAL_OPTIONAL;
+    $field->setSetting('preview', DRUPAL_OPTIONAL);
     $field->save();
 
     // Allow anonymous users to search content.
@@ -179,7 +178,7 @@ class SearchCommentTest extends SearchTestBase {
     // Create a node.
     // Make preview optional.
     $field = FieldConfig::loadByName('node', 'article', 'comment');
-    $field->settings['preview'] = DRUPAL_OPTIONAL;
+    $field->setSetting('preview', DRUPAL_OPTIONAL);
     $field->save();
     $this->node = $this->drupalCreateNode(array('type' => 'article'));
 

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Definition of Drupal\responsive_image\Tests\ResponsiveImageFieldDisplayTest.
+ * Contains \Drupal\responsive_image\Tests\ResponsiveImageFieldDisplayTest.
  */
 
 namespace Drupal\responsive_image\Tests;
@@ -63,6 +63,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
       'id' => 'style_one',
       'label' => 'Style One',
       'breakpoint_group' => 'responsive_image_test_module',
+      'fallback_image_style' => 'large',
     ));
   }
 
@@ -162,6 +163,8 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
    * Defaults to false.
    */
   protected function doTestResponsiveImageFieldFormatters($scheme, $empty_styles = FALSE) {
+    /** @var \Drupal\Core\Render\RendererInterface $renderer */
+    $renderer = $this->container->get('renderer');
     $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $field_name = Unicode::strtolower($this->randomMachineName());
     $this->createImageField($field_name, 'article', array('uri_scheme' => $scheme));
@@ -185,28 +188,22 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
       '#height' => 240,
       '#alt' => $alt,
     );
-    $default_output = str_replace("\n", NULL, drupal_render($image));
+    $default_output = str_replace("\n", NULL, $renderer->renderRoot($image));
     $this->assertRaw($default_output, 'Default formatter displaying correctly on full node view.');
 
     // Use the responsive image formatter linked to file formatter.
     $display_options = array(
       'type' => 'responsive_image',
       'settings' => array(
-        'image_link' => 'file'
+        'image_link' => 'file',
+        'responsive_image_style' => 'style_one',
       ),
     );
     $display = entity_get_display('node', 'article', 'default');
     $display->setComponent($field_name, $display_options)
       ->save();
 
-    $image = array(
-      '#theme' => 'image',
-      '#uri' => $image_uri,
-      '#width' => 360,
-      '#height' => 240,
-      '#alt' => $alt,
-    );
-    $default_output = '<a href="' . file_create_url($image_uri) . '">' . drupal_render($image) . '</a>';
+    $default_output = '<a href="' . file_create_url($image_uri) . '"><picture';
     $this->drupalGet('node/' . $nid);
     $cache_tags_header = $this->drupalGetHeader('X-Drupal-Cache-Tags');
     $this->assertTrue(!preg_match('/ image_style\:/', $cache_tags_header), 'No image style cache tag found.');
@@ -232,8 +229,6 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
     // Use the responsive image formatter with a responsive image style.
     $display_options['settings']['responsive_image_style'] = 'style_one';
     $display_options['settings']['image_link'] = '';
-    // Also set the fallback image style.
-    $display_options['settings']['fallback_image_style'] = 'large';
     $display->setComponent($field_name, $display_options)
       ->save();
 
@@ -286,7 +281,10 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         ),
       ),
     );
-    $default_output = drupal_render($fallback_image);
+    // The image.html.twig template has a newline after the <img> tag but
+    // responsive-image.html.twig doesn't have one after the fallback image, so
+    // we remove it here.
+    $default_output = trim($renderer->renderRoot($fallback_image));
     $this->assertRaw($default_output, 'Image style large formatter displaying correctly on full node view.');
 
     if ($scheme == 'private') {
@@ -345,7 +343,6 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
       'settings' => array(
         'image_link' => '',
         'responsive_image_style' => 'style_one',
-        'fallback_image_style' => 'medium',
       ),
     );
     $display = entity_get_display('node', 'article', 'default');
@@ -356,7 +353,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
     $this->drupalGet('node/' . $nid);
 
     // Assert an empty media attribute is not output.
-    $this->assertNoPattern('@srcset="data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== 1x".+?media="@');
+    $this->assertNoPattern('@srcset="data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== 1x".+?media=".+?/><source@');
 
     // Assert the media attribute is present if it has a value.
     $thumbnail_style = ImageStyle::load('thumbnail');
@@ -384,7 +381,6 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
       'settings' => array(
         'image_link' => $link_type,
         'responsive_image_style' => 'style_one',
-        'fallback_image_style' => 'large',
       ),
     );
     entity_get_display('node', 'article', 'default')
@@ -406,7 +402,6 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
       'settings' => array(
         'image_link' => $link_type,
         'responsive_image_style' => 'style_one',
-        'fallback_image_style' => 'large',
       ),
     );
     entity_get_display('node', 'article', 'default')

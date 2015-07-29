@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\responsive_image\ResponsiveImageStyleForm.
+ * Contains \Drupal\responsive_image\ResponsiveImageStyleForm.
  */
 
 namespace Drupal\responsive_image;
@@ -100,7 +100,21 @@ class ResponsiveImageStyleForm extends EntityForm {
 
     $image_styles = image_style_options(TRUE);
     $image_styles[RESPONSIVE_IMAGE_EMPTY_IMAGE] = $this->t('- empty image -');
-    $breakpoints = $this->breakpointManager->getBreakpointsByGroup($responsive_image_style->getBreakpointGroup());
+
+    $form['fallback_image_style'] = array(
+      '#title' => $this->t('Fallback image style'),
+      '#type' => 'select',
+      '#default_value' => $responsive_image_style->getFallbackImageStyle(),
+      '#options' => $image_styles,
+      '#required' => TRUE,
+    );
+
+    // By default, breakpoints are ordered from smallest weight to largest:
+    // the smallest weight is expected to have the smallest breakpoint width,
+    // while the largest weight is expected to have the largest breakpoint
+    // width. For responsive images, we need largest breakpoint widths first, so
+    // we need to reverse the order of these breakpoints.
+    $breakpoints = array_reverse($this->breakpointManager->getBreakpointsByGroup($responsive_image_style->getBreakpointGroup()));
     foreach ($breakpoints as $breakpoint_id => $breakpoint) {
       foreach ($breakpoint->getMultipliers() as $multiplier) {
         $label = $multiplier . ' ' . $breakpoint->getLabel() . ' [' . $breakpoint->getMediaQuery() . ']';
@@ -133,7 +147,8 @@ class ResponsiveImageStyleForm extends EntityForm {
   /**
    * {@inheritdoc}
    */
-  public function validate(array $form, FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
     // Only validate on edit.
     if ($form_state->hasValue('keyed_styles')) {
       // Check if another breakpoint group is selected.
