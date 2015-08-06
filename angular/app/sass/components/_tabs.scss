@@ -1,26 +1,62 @@
-.tabs {
-  $tabs-background: #ccc;
-  $tab-hover: #fff;
-  $links-main-color: #fff;
-  $links-hover-color: #000;
 
-  background-color: $tabs-background;
-  position: relative;
-  z-index: 42;
+// Tabs
+// -----------------------------------------------------------------------------
+.employees-tabs {
+  @extend %group;
+  @include font-size(24);
+  color: $tabs-color;
+  font-family: $fonts-sans-light;
+  margin-bottom: 15px;
 
-  li {
+  .item {
     float: left;
-    margin: 0;
-    padding: 0;
+  }
 
-    a {
-      @include links($links-main-color, $links-hover-color);
-      display: block;
-      padding: 10px 15px;
+  .link {
+    border-bottom: 1px solid;
+    color: $tabs-color;
+    display: block;
+    padding: 20px 80px;
+    cursor: pointer;
+    position: relative;
+
+
+    &:hover,
+    &.active {
+      color: $tabs-color-active;
+
+      &:after {
+        content: '';
+        position: absolute;
+        width: 17px;
+        height: 17px;
+        border: 1px solid;
+        border-bottom: 0;
+        border-left: 0;
+        transform: rotate(-45deg) translate(-50%, 0);
+        bottom: -3px;
+        left: 50%;
+        transition-duration: 0s;
+      }
     }
 
-    &:hover { background-color: $tab-hover; }
-    &.active { background-color: $tab-hover; }
+    // Themes
+    @each $theme, $map in $themes {
+      .#{$theme} & {
+        border-color: map-get($map, $header-divider);
+        color: map-get($map, $tabs-color);
+
+        &:hover,
+        &.active {
+          color: map-get($map, $tabs-color-active);
+        }
+
+        &:after {
+          border-color: map-get($map, $header-divider);
+          background: map-get($map, $site-bg);
+          transition-duration: 0s;
+        }
+      }
+    }
   }
 }
-

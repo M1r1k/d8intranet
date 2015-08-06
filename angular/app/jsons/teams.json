@@ -1,0 +1,363 @@
+{
+  "teams": [
+    {
+      "bosses": {
+        "team_title": "Top Management",
+        "type": "managers",
+        "weight": "10",
+        "members": [
+          {
+            "uid": [{"value": "1"}],
+            "field_first_name": [{"value": "Sergey"}],
+            "field_last_name":  [{"value": "Sorokin"}],
+            "field_job_title":  [{"value": "Ukraine department manager"}],
+            "field_user_image": [{"value": "../images/employees/sergey_s.jpg"}],
+            "position": "top_manager"
+          },
+
+          {
+            "uid": [{"value": "2"}],
+            "field_first_name": [{"value": "Olga"}],
+            "field_last_name":  [{"value": "Pilushenko"}],
+            "field_job_title":  [{"value": "Finance director"}],
+            "field_user_image": [{"value": "../images/employees/olya_p.jpg"}],
+            "position": "top_manager"
+          }
+        ]
+      },
+
+      "depleades": {
+        "team_title": "Departments leads",
+        "weight": "9",
+        "type": "leads",
+        "members": [
+          {
+            "uid": [{"value": "3"}],
+            "field_first_name": [{"value": "Roman"}],
+            "field_last_name":  [{"value": "Liashenko"}],
+            "field_job_title":  [{"value": "Head of PM"}],
+            "field_user_image": [{"value": "../images/employees/roman.jpg"}],
+            "position": "deplead"
+          },
+
+          {
+            "uid": [{"value": "4"}],
+            "field_first_name": [{"value": "Artem"}],
+            "field_last_name":  [{"value": "Miroshnyk"}],
+            "field_job_title":  [{"value": "Drupal tech lead"}],
+            "field_user_image": [{"value": "../images/employees/artem_m.jpg"}],
+            "position": "deplead"
+          },
+
+          {
+            "uid": [{"value": "5"}],
+            "field_first_name": [{"value": "Alexander"}],
+            "field_last_name":  [{"value": "Mikhutkin"}],
+            "field_job_title":  [{"value": "Frontend tech lead"}],
+            "field_user_image": [{"value": "../images/employees/alex.jpg"}],
+            "position": "deplead"
+          }
+        ]
+      },
+
+      "team1": {
+        "team_title": "Yuriy's Team",
+        "weight": "8",
+        "type": "team",
+        "members": [
+          {
+            "uid": [{"value": "6"}],
+            "field_first_name": [{"value": "Alyona"}],
+            "field_last_name": [{"value": "Angolenko"}],
+            "field_user_image": [{"value": "../images/employees/alyona.jpg"}],
+            "field_job_title": [{"value": "Project Manager"}],
+            "position": "pm"
+          },
+
+          {
+            "uid": [{"value": "7"}],
+            "field_first_name": [{"value": "Yuriy"}],
+            "field_last_name": [{"value": "Boychenko"}],
+            "field_user_image": [{"value": "../images/employees/yura.jpg"}],
+            "field_job_title": [{"value": "Team lead"}],
+            "position": "teamlead"
+          },
+
+          {
+            "uid": [{"value": "8"}],
+            "field_first_name": [{"value": "Nikolay"}],
+            "field_last_name": [{"value": "Serdyk"}],
+            "field_user_image": [{"value": "../images/employees/kolya.jpg"}],
+            "field_job_title": [{"value": "Frontend developer"}],
+            "position": "fronend"
+          },
+
+          {
+            "uid": [{"value": "9"}],
+            "field_first_name": [{"value": "Pavel"}],
+            "field_last_name": [{"value": "Loparev"}],
+            "field_user_image": [{"value": "../images/employees/pasha_l.jpg"}],
+            "field_job_title": [{"value": "Backend developer"}],
+            "position": "backend"
+          },
+
+          {
+            "uid": [{"value": "10"}],
+            "field_first_name": [{"value": "Olga"}],
+            "field_last_name": [{"value": "Rybak"}],
+            "field_user_image": [{"value": "../images/employees/olya_r.jpg"}],
+            "field_job_title": [{"value": "Backend developer"}],
+            "position": "backend"
+          },
+          {
+            "uid": [{"value": "11"}],
+            "field_first_name": [{"value": "Pavel"}],
+            "field_last_name": [{"value": "Druzhchenko"}],
+            "field_user_image": [{"value": "../images/employees/pasha_d.jpg"}],
+            "field_job_title": [{"value": "Quality assurance"}],
+            "position": "quality_assurance"
+          }
+        ]
+      },
+
+      "team2": {
+        "team_title": "Vitaliy's Team",
+        "weight": "7",
+        "type": "team",
+        "members": [
+          {
+            "uid": [{"value": "12"}],
+            "field_first_name": [{"value": "Ksenia"}],
+            "field_last_name": [{"value": "Akimova"}],
+            "field_user_image": [{"value": "../images/employees/ksenia.jpg"}],
+            "field_job_title": [{"value": "Project Manager"}],
+            "position": "pm"
+          },
+
+          {
+            "uid": [{"value": "13"}],
+            "field_first_name": [{"value": "Vitaliy"}],
+            "field_last_name": [{"value": "Sekan"}],
+            "field_user_image": [{"value": "../images/employees/vitasya.jpg"}],
+            "field_job_title": [{"value": "Team lead"}],
+            "position": "teamlead"
+          },
+
+          {
+            "uid": [{"value": "14"}],
+            "field_first_name": [{"value": "Yarik"}],
+            "field_last_name": [{"value": "Kharchenko"}],
+            "field_user_image": [{"value": "../images/employees/yarik.jpg"}],
+            "field_job_title": [{"value": "Backend developer"}],
+            "position": "backend"
+          },
+
+          {
+            "uid": [{"value": "15"}],
+            "field_first_name": [{"value": "Mike"}],
+            "field_last_name": [{"value": "Sokolovsky"}],
+            "field_user_image": [{"value": "../images/employees/mike.jpg"}],
+            "field_job_title": [{"value": "Backend developer"}],
+            "position": "backend"
+          },
+
+          {
+            "uid": [{"value": "16"}],
+            "field_first_name": [{"value": "Dmitry"}],
+            "field_last_name": [{"value": "Pertuk"}],
+            "field_user_image": [{"value": "../images/employees/dima.jpg"}],
+            "field_job_title": [{"value": "Frontend developer"}],
+            "position": "frontend"
+          },
+          {
+            "uid": [{"value": "17"}],
+            "field_first_name": [{"value": "Olya"}],
+            "field_last_name": [{"value": "Eryomenko"}],
+            "field_user_image": [{"value": "../images/employees/olya_y.jpg"}],
+            "field_job_title": [{"value": "Quality assurance"}],
+            "position": "quality_assurance"
+          }
+        ]
+      },
+
+      "team3": {
+        "team_title": "Temoor's Team",
+        "weight": "6",
+        "type": "team",
+        "members": [
+          {
+            "uid": [{"value": "18"}],
+            "field_first_name": [{"value": "Eugene"}],
+            "field_last_name": [{"value": "Andrushko"}],
+            "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+            "field_job_title": [{"value": "Project Manager"}],
+            "position": "pm"
+          },
+
+          {
+            "uid": [{"value": "19"}],
+            "field_first_name": [{"value": "Temoor"}],
+            "field_last_name": [{"value": "Gilmutdinov"}],
+            "field_user_image": [{"value": "../images/employees/temoor.jpg"}],
+            "field_job_title": [{"value": "Team lead"}],
+            "position": "teamlead"
+          },
+
+          {
+            "uid": [{"value": "18"}],
+            "field_first_name": [{"value": "Andrey"}],
+            "field_last_name": [{"value": "Koval"}],
+            "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+            "field_job_title": [{"value": "Project Manager"}],
+            "position": "pm"
+          },
+
+          {
+            "uid": [{"value": "20"}],
+            "field_first_name": [{"value": "Sergei"}],
+            "field_last_name": [{"value": "Semipyadniy"}],
+            "field_user_image": [{"value": "../images/employees/sergey_sem.jpg"}],
+            "field_job_title": [{"value": "Backend developer"}],
+            "position": "backend"
+          },
+
+          {
+            "uid": [{"value": "21"}],
+            "field_first_name": [{"value": "Vlad"}],
+            "field_last_name": [{"value": "Vasetskiy"}],
+            "field_user_image": [{"value": "../images/employees/vlad.jpg"}],
+            "field_job_title": [{"value": "Backend developer"}],
+            "position": "backend"
+          },
+
+          {
+            "uid": [{"value": "22"}],
+            "field_first_name": [{"value": "Artem"}],
+            "field_last_name": [{"value": "Vilkov"}],
+            "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+            "field_job_title": [{"value": "Backend developer"}],
+            "position": "backend"
+          },
+          {
+            "uid": [{"value": "23"}],
+            "field_first_name": [{"value": "Anna"}],
+            "field_last_name": [{"value": "Gutor"}],
+            "field_user_image": [{"value": "../images/employees/anya_g.jpg"}],
+            "field_job_title": [{"value": "Quality assurance"}],
+            "position": "quality_assurance"
+          }
+        ]
+      },
+
+      "team4": {
+        "team_title": "Sergey's Team",
+        "weight": "5",
+        "type": "team",
+        "members": [
+          {
+            "uid": [{"value": "24"}],
+            "field_first_name": [{"value": "Maxim"}],
+            "field_last_name": [{"value": "Ryzhkov"}],
+            "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+            "field_job_title": [{"value": "Project Manager"}],
+            "position": "pm"
+          },
+
+          {
+            "uid": [{"value": "25"}],
+            "field_first_name": [{"value": "Sergey"}],
+            "field_last_name": [{"value": "Bondarenko"}],
+            "field_user_image": [{"value": "../images/employees/sergey_bon.jpg"}],
+            "field_job_title": [{"value": "Team lead"}],
+            "position": "teamlead"
+          },
+
+          {
+            "uid": [{"value": "26"}],
+            "field_first_name": [{"value": "Vlad"}],
+            "field_last_name": [{"value": "Gajdamaka"}],
+            "field_user_image": [{"value": "../images/employees/vlad_g.jpg"}],
+            "field_job_title": [{"value": "Backend developer"}],
+            "position": "backend"
+          },
+
+          {
+            "uid": [{"value": "27"}],
+            "field_first_name": [{"value": "Valera"}],
+            "field_last_name": [{"value": "Garzha"}],
+            "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+            "field_job_title": [{"value": "Backend developer"}],
+            "position": "backend"
+          },
+
+          {
+            "uid": [{"value": "28"}],
+            "field_first_name": [{"value": "Anton"}],
+            "field_last_name": [{"value": "Rylov"}],
+            "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+            "field_job_title": [{"value": "Frontend developer"}],
+            "position": "frontend"
+          },
+          {
+            "uid": [{"value": "29"}],
+            "field_first_name": [{"value": "Alexander"}],
+            "field_last_name": [{"value": "Petrov"}],
+            "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+            "field_job_title": [{"value": "Quality assurance"}],
+            "position": "quality_assurance"
+          }
+        ]
+      },
+
+      "team5": {
+        "team_title": "General Team",
+        "weight": "4",
+        "type": "team",
+        "members": [
+          {
+            "uid": [{"value": "30"}],
+            "field_first_name": [{"value": "Marina"}],
+            "field_last_name": [{"value": "Zhydkikh"}],
+            "field_user_image": [{"value": "../images/employees/marina.jpg"}],
+            "field_job_title": [{"value": "Office manager"}],
+            "position": "office_manager"
+          },
+
+          {
+            "uid": [{"value": "31"}],
+            "field_first_name": [{"value": "Natasha"}],
+            "field_last_name": [{"value": "Drutsa"}],
+            "field_user_image": [{"value": "../images/employees/natasha.jpg"}],
+            "field_job_title": [{"value": "HR manager"}],
+            "position": "hr_manager"
+          },
+
+          {
+            "uid": [{"value": "32"}],
+            "field_first_name": [{"value": "Dmitry"}],
+            "field_last_name": [{"value": "Mitko"}],
+            "field_user_image": [{"value": "../images/employees/dima_m.jpg"}],
+            "field_job_title": [{"value": "System administrator"}],
+            "position": "sysadmin"
+          },
+
+          {
+            "uid": [{"value": "33"}],
+            "field_first_name": [{"value": "Anna"}],
+            "field_last_name": [{"value": "Plakhuta"}],
+            "field_user_image": [{"value": "../images/employees/anya.jpg"}],
+            "field_job_title": [{"value": "Content manager"}],
+            "position": "content_manager"
+          }
+        ]
+      }
+
+    }
+  ]
+}
+
+
+
+
+
+

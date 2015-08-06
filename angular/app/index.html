@@ -31,66 +31,96 @@
 
 <!-- Add your site or application content here -->
 
-<div class="wrapper container">
-  <!-- Site header-->
-  <header role="banner" class="header group"></header>
+<div class="global-wrapper">
+  <div class="wrapper container">
+    <!-- Site header-->
+    <header role="banner" class="header group"></header>
 
-  <!-- Site main container-->
-  <main role="main" class="main-content">
+    <!-- Site main container-->
+    <main role="main" class="main-content">
 
-    <aside class="sidebar" ng-controller="SidebarCtrl">
-      <a class="logo" href="/">
-        <img src="images/logo-blue.png" alt="FFW"/>
-      </a>
-      <a class="user-pic" href="#">
-        <!--<img src="images/users/alex.png" alt=""/>-->
-      </a>
+      <aside class="sidebar" ng-controller="SidebarCtrl">
+          <nav id="bt-menu" class="bt-menu bt-menu-close">
+            <a class="bt-menu-trigger"><span>Menu</span></a>
 
-      <ul>
-        <li ng-repeat="menuItem in menuItemsList">
-          <a class="sidebar-icon" href="{{menuItem.url}}">
-            <span class="{{menuItem.icon}}-icon"></span>
+            <ul class="user-data">
+              <!--<li><a class="logo" href="/">-->
+                <!--<img src="images/logo-blue.png" alt="FFW"/>-->
+              <!--</a></li>-->
+              <li>
+                <a class="user-pic" href="#">
+                  <img src="../images/employees/alex.jpg" ng-src="../images/employees/alex.jpg" alt="Alexander Mikhutkin">
+                </a>
+              </li>
+            </ul>
+
+
+            <ul class="menu-mobile">
+              <li ng-repeat="menuItem in menuItemsList">
+                <a class="sidebar-icon" href="{{menuItem.url}}">
+                  <span class="{{menuItem.icon}}-icon"></span>
+                </a>
+              </li>
+            </ul>
+            <div class="bt-overlay"></div>
+          </nav>
+
+        <div class="menu-desktop">
+          <a class="logo" href="/">
+            <img src="images/logo-blue.png" alt="FFW"/>
+          </a>
+          <a class="user-pic" href="#">
+            <img src="../images/employees/alex.jpg" ng-src="../images/employees/alex.jpg" alt="Alexander Mikhutkin">
+          </a>
+
+          <ul>
+            <li ng-repeat="menuItem in menuItemsList">
+              <a class="sidebar-icon" href="{{menuItem.url}}">
+                <span class="{{menuItem.icon}}-icon"></span>
             <span class="menu-item-title">
               {{menuItem.title}}
             </span>
+              </a>
+            </li>
+          </ul>
+          <a class="sidebar-icon roll-icon" roll-menu>
+            <span class="roll-menu-icon"></span>
           </a>
-        </li>
-      </ul>
-      <a class="sidebar-icon roll-icon" href="#">
-        <span class="roll-menu-icon"></span>
-      </a>
-
-
-    </aside>
-
-    <!-- Page contentainer -->
-    <div class="page-content-container">
-      <div class="page-container">
-
-        <!-- Page headline -->
-        <div class="page-header">
-          <div class="current-date-wrapper" ng-controller="GetDateCtrl">
-            <div class="date">
-              {{date | date:'EEEE d MMM y'}}
-            </div>
-            <div class="theme-switcher">
-              <div class="theme-switcher-btn"></div>
-            </div>
-          </div>
         </div>
 
-        <!-- Page content -->
-        <div ng-view></div>
+      </aside>
 
+      <!-- Page contentainer -->
+      <div class="page-content-container">
+        <div class="page-container">
+
+          <!-- Page headline -->
+          <div class="page-header">
+            <div class="current-date-wrapper" ng-controller="GetDateCtrl">
+              <div class="theme-switcher">
+                <div class="theme-switcher-btn"></div>
+              </div>
+
+              <div class="date">
+                {{date | date:'EEEE d MMM y'}}
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Page content -->
+          <!--<div ng-view ng-animate="animate"></div>-->
+          <div class="view-animate-container">
+            <div ng-view class="view-animate"></div>
+          </div>
+
+        </div>
       </div>
-    </div>
 
-  </main>
+    </main>
+  </div>
+
 </div>
-
-<!--<div class="container">-->
-  <!--<div ng-view=""></div>-->
-<!--</div>-->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>
@@ -109,7 +139,8 @@
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script
+    src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -122,11 +153,16 @@
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 <script src="scripts/app.js"></script>
 <script src="scripts/main.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/sidebar.js"></script>
 <script src="scripts/controllers/employees.js"></script>
+<script src="scripts/directives/inputEffects.js"></script>
+<script src="scripts/filters/usersFilters.js"></script>
 <!--<script src="scripts/controllers/users.js"></script>-->
 <!-- endbuild -->
 </body>

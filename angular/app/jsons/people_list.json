@@ -1,0 +1,385 @@
+{
+  "people": [
+    {
+      "uid": [{"value": "1"}],
+      "field_first_name": [{"value": "Sergey"}],
+      "field_last_name":  [{"value": "Sorokin"}],
+      "field_job_title":  [{"value": "Ukraine department manager"}],
+      "field_user_image": [{"value": "../images/employees/sergey_s.jpg"}],
+      "field_user_position": [{"value": "Top Manager"}],
+      "field_user_email":   [{"value": "sergei.sorokin@propeople.com.ua "}],
+      "field_user_phone":   [{"value": "+38 091 308 85 05"}],
+      "field_user_skype":   [{"value": "sergei.rakivnenko"}]
+    },
+
+    {
+      "uid": [{"value": "2"}],
+      "field_first_name": [{"value": "Olga"}],
+      "field_last_name":  [{"value": "Pilushenko"}],
+      "field_job_title":  [{"value": "Finance director"}],
+      "field_user_image": [{"value": "../images/employees/olya_p.jpg"}],
+      "field_user_position": [{"value": "Top Manager"}],
+      "field_user_email":   [{"value": "op@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 067 681 23 67"}],
+      "field_user_skype":   [{"value": "olga.piluchenko"}]
+    },
+
+    {
+      "uid": [{"value": "3"}],
+      "field_first_name": [{"value": "Roman"}],
+      "field_last_name":  [{"value": "Liashenko"}],
+      "field_job_title":  [{"value": "Head of PM"}],
+      "field_user_image": [{"value": "../images/employees/roman.jpg"}],
+      "field_user_position": [{"value": "Department Lead"}],
+      "field_user_email":   [{"value": "roman.lyashenko@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 066 488 06 08"}],
+      "field_user_skype":   [{"value": "sirko_el"}]
+    },
+
+    {
+      "uid": [{"value": "4"}],
+      "field_first_name": [{"value": "Artem"}],
+      "field_last_name":  [{"value": "Miroshnyk"}],
+      "field_job_title":  [{"value": "Drupal tech lead"}],
+      "field_user_image": [{"value": "../images/employees/artem_m.jpg"}],
+      "field_user_position": [{"value": "Department Lead"}],
+      "field_user_email":   [{"value": "artyom.miroshnik@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 095 233 84 01"}],
+      "field_user_skype":   [{"value": "miroshnik92"}]
+    },
+
+    {
+      "uid": [{"value": "5"}],
+      "field_first_name": [{"value": "Alexander"}],
+      "field_last_name":  [{"value": "Mikhutkin"}],
+      "field_job_title":  [{"value": "Frontend tech lead"}],
+      "field_user_image": [{"value": "../images/employees/alex.jpg"}],
+      "field_user_position": [{"value": "Department Lead"}],
+      "field_user_email":   [{"value": "alexander.mikhutkin@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 095 625 47 19"}],
+      "field_user_skype":   [{"value": "anmihutkin"}]
+    },
+
+    {
+      "uid": [{"value": "6"}],
+      "field_first_name": [{"value": "Alyona"}],
+      "field_last_name": [{"value": "Angolenko"}],
+      "field_user_image": [{"value": "../images/employees/alyona.jpg"}],
+      "field_user_position": [{"value": "Project manager"}],
+      "field_user_email":   [{"value": "angolenko.alyona@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 097 956 93 46"}],
+      "field_user_skype":   [{"value": "anmihutkin"}]
+    },
+
+    {
+      "uid": [{"value": "7"}],
+      "field_first_name": [{"value": "Yuriy"}],
+      "field_last_name": [{"value": "Boychenko"}],
+      "field_user_image": [{"value": "../images/employees/yura.jpg"}],
+      "field_user_position": [{"value": "Team lead"}],
+      "field_user_email":   [{"value": "boychenko.yuriy@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 068 411 70 85"}],
+      "field_user_skype":   [{"value": "yuboychenko"}]
+    },
+
+    {
+      "uid": [{"value": "8"}],
+      "field_first_name": [{"value": "Nikolay"}],
+      "field_last_name": [{"value": "Serdyk"}],
+      "field_user_image": [{"value": "../images/employees/kolya.jpg"}],
+      "field_user_position": [{"value": "Frontend developer"}],
+      "field_user_email":   [{"value": "nikolay.serdyk@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 068 31 00 943"}],
+      "field_user_skype":   [{"value": "nikola_xiii"}]
+    },
+
+    {
+      "uid": [{"value": "9"}],
+      "field_first_name": [{"value": "Pavel"}],
+      "field_last_name": [{"value": "Loparev"}],
+      "field_user_image": [{"value": "../images/employees/pasha_l.jpg"}],
+      "field_user_position": [{"value": "Backend developer"}],
+      "field_user_email":   [{"value": "pavel.loparev@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 066 293 65 43"}],
+      "field_user_skype":   [{"value": "pasherfluffy"}]
+    },
+
+    {
+      "uid": [{"value": "10"}],
+      "field_first_name": [{"value": "Olga"}],
+      "field_last_name": [{"value": "Rybak"}],
+      "field_user_image": [{"value": "../images/employees/olya_r.jpg"}],
+      "field_user_position": [{"value": "Backend developer"}],
+      "field_user_email":   [{"value": "olga.rybak@propeople.com.ua "}],
+      "field_user_phone":   [{"value": "+38 095 625 47 19"}],
+      "field_user_skype":   [{"value": "anmihutkin"}]
+    },
+
+    {
+      "uid": [{"value": "11"}],
+      "field_first_name": [{"value": "Pavel"}],
+      "field_last_name": [{"value": "Druzhchenko"}],
+      "field_user_image": [{"value": "../images/employees/pasha_d.jpg"}],
+      "field_user_position": [{"value": "Quality assurance"}],
+      "field_user_email":   [{"value": "pavel.druzhchenko@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 093 851 74 94"}],
+      "field_user_skype":   [{"value": "ayspirit"}]
+    },
+
+    {
+      "uid": [{"value": "12"}],
+      "field_first_name": [{"value": "Ksenia"}],
+      "field_last_name": [{"value": "Akimova"}],
+      "field_user_image": [{"value": "../images/employees/ksenia.jpg"}],
+      "field_user_position": [{"value": "Project manager"}],
+      "field_user_email":   [{"value": "ksenia.akimova@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 063 811 66 22"}],
+      "field_user_skype":   [{"value": "ksun......"}]
+    },
+
+    {
+      "uid": [{"value": "13"}],
+      "field_first_name": [{"value": "Vitaliy"}],
+      "field_last_name": [{"value": "Sekan"}],
+      "field_user_image": [{"value": "../images/employees/vitasya.jpg"}],
+      "field_user_position": [{"value": "Team lead"}],
+      "field_user_email":   [{"value": "vitaliy.sekan@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 091 309 13 99"}],
+      "field_user_skype":   [{"value": "geopgysicist0000"}]
+    },
+
+    {
+      "uid": [{"value": "14"}],
+      "field_first_name": [{"value": "Yarik"}],
+      "field_last_name": [{"value": "Kharchenko"}],
+      "field_user_image": [{"value": "../images/employees/yarik.jpg"}],
+      "field_user_position": [{"value": "Backend developer"}],
+      "field_user_email":   [{"value": "yaroslav.kharchenko@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 068 837 50 89"}],
+      "field_user_skype":   [{"value": "undertext"}]
+    },
+
+    {
+      "uid": [{"value": "15"}],
+      "field_first_name": [{"value": "Mike"}],
+      "field_last_name": [{"value": "Sokolovsky"}],
+      "field_user_image": [{"value": "../images/employees/mike.jpg"}],
+      "field_user_position": [{"value": "Backend developer"}],
+      "field_user_email":   [{"value": "mike.sokolovsky@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 099 569 65 16"}],
+      "field_user_skype":   [{"value": "lokeoke"}]
+    },
+
+    {
+      "uid": [{"value": "16"}],
+      "field_first_name": [{"value": "Dmitry"}],
+      "field_last_name": [{"value": "Pertuk"}],
+      "field_user_image": [{"value": "../images/employees/dima.jpg"}],
+      "field_user_position": [{"value": "Frontend developer"}],
+      "field_user_email":   [{"value": "dmitry.pertuk@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 067 199 77 33"}],
+      "field_user_skype":   [{"value": "petrukdemon"}]
+    },
+
+    {
+      "uid": [{"value": "17"}],
+      "field_first_name": [{"value": "Olya"}],
+      "field_last_name": [{"value": "Eryomenko"}],
+      "field_user_image": [{"value": "../images/employees/olya_y.jpg"}],
+      "field_user_position": [{"value": "Quality assurance"}],
+      "field_user_email":   [{"value": "olya.eryomenko@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 050 584 84 72"}],
+      "field_user_skype":   [{"value": "olya_eryomenko"}]
+    },
+
+    {
+      "uid": [{"value": "18"}],
+      "field_first_name": [{"value": "Eugene"}],
+      "field_last_name": [{"value": "Andrushko"}],
+      "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+      "field_user_position": [{"value": "Projects manager"}],
+      "field_user_email":   [{"value": "eugene.andrushko@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 093 708 77 30"}],
+      "field_user_skype":   [{"value": "zumbaz"}]
+    },
+
+    {
+      "uid": [{"value": "19"}],
+      "field_first_name": [{"value": "Temoor"}],
+      "field_last_name": [{"value": "Gilmutdinov"}],
+      "field_user_image": [{"value": "../images/employees/temoor.jpg"}],
+      "field_user_position": [{"value": "Team lead"}],
+      "field_user_email":   [{"value": "temoor.gilmutdinov@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 097 347 66 61"}],
+      "field_user_skype":   [{"value": "tamerlan19901"}]
+    },
+
+    {
+      "uid": [{"value": "20"}],
+      "field_first_name": [{"value": "Andrey"}],
+      "field_last_name": [{"value": "Koval"}],
+      "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+      "field_user_position": [{"value": "Projects manager"}],
+      "field_user_email":   [{"value": "andrey.koval@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 095 655 80 81"}],
+      "field_user_skype":   [{"value": "a.i.koval"}]
+    },
+
+    {
+      "uid": [{"value": "21"}],
+      "field_first_name": [{"value": "Sergei"}],
+      "field_last_name": [{"value": "Semipyadniy"}],
+      "field_user_image": [{"value": "../images/employees/sergey_sem.jpg"}],
+      "field_user_position": [{"value": "Backend developer"}],
+      "field_user_email":   [{"value": "sergei.semipyadniy@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 068 407 54 22"}],
+      "field_user_skype":   [{"value": "semipyadniy_347"}]
+    },
+
+    {
+      "uid": [{"value": "22"}],
+      "field_first_name": [{"value": "Vlad"}],
+      "field_last_name": [{"value": "Vasetskiy"}],
+      "field_user_image": [{"value": "../images/employees/vlad.jpg"}],
+      "field_user_position": [{"value": "Backend developer"}],
+      "field_user_email":   [{"value": "vlad.vasetskiy@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 098 388 32 53"}],
+      "field_user_skype":   [{"value": "err_or404"}]
+    },
+
+    {
+      "uid": [{"value": "23"}],
+      "field_first_name": [{"value": "Artem"}],
+      "field_last_name": [{"value": "Vilkov"}],
+      "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+      "field_user_position": [{"value": "Backend developer"}],
+      "field_user_email":   [{"value": "artem.vilkov@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 066 652 00 19"}],
+      "field_user_skype":   [{"value": "artem_07_93"}]
+    },
+
+    {
+      "uid": [{"value": "24"}],
+      "field_first_name": [{"value": "Anna"}],
+      "field_last_name": [{"value": "Gutor"}],
+      "field_user_image": [{"value": "../images/employees/anya_g.jpg"}],
+      "field_user_position": [{"value": "Quality assurance"}],
+      "field_user_email":   [{"value": "anna.gutor@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 096 311 41 75"}],
+      "field_user_skype":   [{"value": "kille4ka"}]
+    },
+
+    {
+      "uid": [{"value": "25"}],
+      "field_first_name": [{"value": "Maxim"}],
+      "field_last_name": [{"value": "Ryzhkov"}],
+      "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+      "field_user_position": [{"value": "Projects manager"}],
+      "field_user_email":   [{"value": "maxim.ryzhkov@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 050 320 88 80"}],
+      "field_user_skype":   [{"value": "max.rizhkov"}]
+    },
+
+    {
+      "uid": [{"value": "26"}],
+      "field_first_name": [{"value": "Sergey"}],
+      "field_last_name": [{"value": "Bondarenko"}],
+      "field_user_image": [{"value": "../images/employees/sergey_bon.jpg"}],
+      "field_user_position": [{"value": "Projects manager"}],
+      "field_user_email":   [{"value": "sergey.bondarenko@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 097 461 20 11"}],
+      "field_user_skype":   [{"value": "takemebabyonemoretime"}]
+    },
+
+    {
+      "uid": [{"value": "27"}],
+      "field_first_name": [{"value": "Vlad"}],
+      "field_last_name": [{"value": "Gajdamaka"}],
+      "field_user_image": [{"value": "../images/employees/vlad_g.jpg"}],
+      "field_user_position": [{"value": "Backend developer"}],
+      "field_user_email":   [{"value": "vlad.gajdamaka@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 099 530 61 92"}],
+      "field_user_skype":   [{"value": "gajdamaka_vova"}]
+    },
+
+    {
+      "uid": [{"value": "28"}],
+      "field_first_name": [{"value": "Valera"}],
+      "field_last_name": [{"value": "Garzha"}],
+      "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+      "field_user_position": [{"value": "Backend developer"}],
+      "field_user_email":   [{"value": "valera.garzha@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 095 065 09 82"}],
+      "field_user_skype":   [{"value": "mitsuroseba"}]
+    },
+
+    {
+      "uid": [{"value": "29"}],
+      "field_first_name": [{"value": "Anton"}],
+      "field_last_name": [{"value": "Rylov"}],
+      "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+      "field_user_position": [{"value": "Frontend developer"}],
+      "field_user_email":   [{"value": "anton.rylov@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 063 430 26 03"}],
+      "field_user_skype":   [{"value": "p.s.i.h_23"}]
+    },
+
+    {
+      "uid": [{"value": "30"}],
+      "field_first_name": [{"value": "Alexander"}],
+      "field_last_name": [{"value": "Petrov"}],
+      "field_user_image": [{"value": "../images/employees/no-photo.jpg"}],
+      "field_user_position": [{"value": "Quality assurance"}],
+      "field_user_email":   [{"value": "alexander.petrov@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 063 484 68 69"}],
+      "field_user_skype":   [{"value": "tw.petrov"}]
+    },
+
+    {
+      "uid": [{"value": "31"}],
+      "field_first_name": [{"value": "Marina"}],
+      "field_last_name": [{"value": "Zhydkikh"}],
+      "field_user_image": [{"value": "../images/employees/marina.jpg"}],
+      "field_user_position": [{"value": "Office manager"}],
+      "field_user_email":   [{"value": "marina.zhydkikh@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 067 524 30 99"}],
+      "field_user_skype":   [{"value": "hellosailorme"}]
+    },
+
+    {
+      "uid": [{"value": "32"}],
+      "field_first_name": [{"value": "Natasha"}],
+      "field_last_name": [{"value": "Drutsa"}],
+      "field_user_image": [{"value": "../images/employees/natasha.jpg"}],
+      "field_user_position": [{"value": "Office manager"}],
+      "field_user_email":   [{"value": "natasha.drutsa@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 095 027 02 06"}],
+      "field_user_skype":   [{"value": "natasha_drutsa"}]
+    },
+
+    {
+      "uid": [{"value": "33"}],
+      "field_first_name": [{"value": "Dmitry"}],
+      "field_last_name": [{"value": "Mitko"}],
+      "field_user_image": [{"value": "../images/employees/dima_m.jpg"}],
+      "field_user_position": [{"value": "System administrator"}],
+      "field_user_email":   [{"value": "dmitry.mitko@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 098 958 05 61"}],
+      "field_user_skype":   [{"value": "diam0n_ua"}]
+    },
+
+    {
+      "uid": [{"value": "34"}],
+      "field_first_name": [{"value": "Anna"}],
+      "field_last_name": [{"value": "Plakhuta"}],
+      "field_user_image": [{"value": "../images/employees/anya.jpg"}],
+      "field_user_position": [{"value": "Content manager"}],
+      "field_user_email":   [{"value": "anna.plakhuta@propeople.com.ua"}],
+      "field_user_phone":   [{"value": "+38 095 060 30 56"}],
+      "field_user_skype":   [{"value": "facebool:plackhuta.anna"}]
+    }
+  ]
+}
+
+
+

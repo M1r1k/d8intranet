@@ -23,9 +23,11 @@
   float: right;
   padding-top: 20px;
   font-weight: 400;
+  position: relative;
+  z-index: 1;
 
   @include susy-breakpoint(1024px, 24){
-    @include span(7 of 24);
+    @include span(12 of 24);
     @include last;
     padding-top: 40px;
   }
@@ -34,7 +36,7 @@
 // Date
 .date {
   @include font-size(26);
-  float: left;
+  float: right;
   margin-right: 10px;
 
   @include susy-breakpoint(768px, 24) {

@@ -31,5 +31,16 @@ angular.module('d8intranetApp')
       }
     ];
 
-  });
+  })
+
+.directive('rollMenu', ['$document', function($document){
+    return {
+      link: function(scope, element) {
+        element.on('click', function(){
+          //$('.main-content').toggleClass('roll-bar');
+          $('.global-wrapper').toggleClass('rolled-bar');
+        })
+      }
+    }
+  }]);
 

@@ -4,13 +4,15 @@
 
 //------------------------------------------------------------------------------
 // Grid
-@import '../bower_components/susy/sass/susy';
+@import '../../bower_components/susy/sass/susy';
 
 //------------------------------------------------------------------------------
 // Mixins & variables
 
 @import 'base/utils/variables';
 @import 'base/utils/mixins';
+@import 'base/utils/animation';
+@import 'base/utils/icons';
 
 //------------------------------------------------------------------------------
 // Vendor
@@ -25,6 +27,8 @@
 // Components
 @import 'components/fonts';
 @import 'components/employee';
+@import 'components/tabs';
+@import 'components/input-fields';
 
 //------------------------------------------------------------------------------
 // Partials
@@ -39,5 +43,4 @@
 // Pages
 @import 'pages/front';
 @import 'pages/employeers';
-
-
+@import 'pages/people-list';

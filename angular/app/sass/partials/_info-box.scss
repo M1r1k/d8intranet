@@ -6,15 +6,13 @@
   min-height: 235px;
   margin-bottom: 20px;
 
-
-  @include susy-breakpoint(1280px, 24){
+  @include susy-breakpoint(1280px, 24) {
     @include span(12);
     height: 235px;
     &:nth-child(2n) {
       @include last;
     }
   }
-
 
   // Theme
   @each $theme, $map in $themes {
@@ -37,80 +35,79 @@
 
 }
 
-  .employee {
-    @include font-size(15);
-    @extend %group;
-    position: relative;
-    line-height: 2;
-    z-index: 10;
+.employee {
+  @include font-size(15);
+  @extend %group;
+  position: relative;
+  line-height: 2;
+  z-index: 10;
+  display: block;
+  margin-bottom: 5px;
+  overflow: hidden;
+}
+
+.employee-link {
+  overflow: hidden;
+
+  &::before,
+  &::after {
     display: block;
-    margin-bottom: 5px;
-    overflow: hidden;
+    color: $white;
+    position: absolute;
+    height: 100%;
+    transition: all .3s ease-in-out;
+    opacity: 0;
   }
 
-  .employee-link {
-    overflow:hidden;
+  &::before {
+    background: #57646B;
+    width: 0%;
+    left: 2px;
+    top: 0;
+    border-radius: 22px;
+    font-family: fontello;
+    content: '\e800';
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 2px;
+    transition-delay: .1s;
 
-    &::before,
-    &::after {
-      display: block;
-      color: $white;
-      position: absolute;
-      height: 100%;
-      transition: all .3s ease-in-out;
-      opacity: 0;
-    }
-
-    &::before {
-      background: #57646B;
-      width: 0%;
-      left: 2px;
-      top: 0;
-      border-radius: 22px;
-      font-family: fontello;
-      content: '\e800';
-      text-align: right;
-      padding-right: 10px;
-      padding-top: 2px;
-      transition-delay: .1s;
-
-      // Themes
-      @each $theme, $map in $themes {
-        .#{$theme} & {
-          background: map-get($map, $sidebar-bg);
-        }
+    // Themes
+    @each $theme, $map in $themes {
+      .#{$theme} & {
+        background: map-get($map, $sidebar-bg);
       }
     }
-
-    &::after {
-      @include font-size(12);
-      content: 'View profile';
-      left: 0;
-      top: -10px;
-      overflow: hidden;
-      width: 80%;
-      height: 100%;
-      text-align: center;
-      line-height: 2.5;
-      transition: all .4s ease-in-out;
-      transition-delay: .1s;
-    }
-
-    &:hover {
-      &::before,
-      &::after { opacity: 1; }
-
-      &::before { width: 80%; }
-      &::after { top: 0; }
-    }
-
   }
 
+  &::after {
+    @include font-size(12);
+    content: 'View profile';
+    left: 0;
+    top: -10px;
+    overflow: hidden;
+    width: 80%;
+    height: 100%;
+    text-align: center;
+    line-height: 2.5;
+    transition: all .4s ease-in-out;
+    transition-delay: .1s;
+  }
+
+  &:hover {
+    &::before,
+    &::after { opacity: 1; }
+
+    &::before { width: 80%; }
+    &::after { top: 0; }
+  }
+
+}
 
 .employee-columns {
   .col {
 
-    @include susy-breakpoint(768px, 24){
+    @include susy-breakpoint(768px, 24) {
       width: 33.33%;
       float: left;
     }
@@ -127,7 +124,6 @@
   @each $theme, $map in $themes {
     .#{$theme} & {
       border-color: map-get($map, $block-divider);
-
     }
   }
 

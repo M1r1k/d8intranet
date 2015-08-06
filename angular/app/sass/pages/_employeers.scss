@@ -1,77 +1,15 @@
 // -----------------------------------------------------------------------------
-// Front page
-.employees-tabs {
-  @include font-size(24);
-  color: $tabs-color;
-  font-family: $sans;
-  margin-bottom: 15px;
+// Employees
 
-  .item {
-    float: left;
-  }
-
-  .link {
-    border-bottom: 1px solid $header-divider;
-    color: $tabs-color;
-    display: block;
-    padding: 20px 80px;
-    cursor: pointer;
-    position: relative;
-
-    &:hover,
-    &.active {
-      color: $tabs-color-active;
-
-      &:after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        bottom: -1px;
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAIAAAD3UuoiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTNGNUE1MkUwQUI4MTFFNUFBNkZDMEZBRTFFNTcwNUYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTNGNUE1MkYwQUI4MTFFNUFBNkZDMEZBRTFFNTcwNUYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxM0Y1QTUyQzBBQjgxMUU1QUE2RkMwRkFFMUU1NzA1RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxM0Y1QTUyRDBBQjgxMUU1QUE2RkMwRkFFMUU1NzA1RiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PrSEU70AAABdSURBVHjapMxbDoAwCERRe7dh2v1vS6v7KAk/xgdQJBMyH5NTtn4s5p19l7/WZs9wFSEkyiUhVbS7FhElYhFUXIu4YltMKYbFrPJlkVBeLXLK0yKt3Cz+KFdrCDAAoStHwKKzDNsAAAAASUVORK5CYII=') bottom center no-repeat;
-      }
-    }
-
-    // Themes
-    @each $theme, $map in $themes {
-      .#{$theme} & {
-        border-color: map-get($map, $header-divider);
-        color: map-get($map, $tabs-color);
-
-        &:hover,
-        &.active {
-          color: map-get($map, $tabs-color-active);
-        }
-      }
-    }
-  }
-}
-
-.dark .employees-tabs .link:hover:after,
-.dark .employees-tabs .link.active:after {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAIAAAD3UuoiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NTk1NTVGNUIwQUI1MTFFNTk0MTVBRThERkNDQzYxQUQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NTk1NTVGNUMwQUI1MTFFNTk0MTVBRThERkNDQzYxQUQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1OTU1NUY1OTBBQjUxMUU1OTQxNUFFOERGQ0NDNjFBRCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1OTU1NUY1QTBBQjUxMUU1OTQxNUFFOERGQ0NDNjFBRCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pks/PLUAAABaSURBVHjapMw5DsBACEPR5Csnoub+JWdKNDRRFmAYF5YL6+2quoURkavNLL6RKjbiXBNyxXdqUVEqFkUltagrscWUEljMKn8WDeXToqe8LdrKwzpWlLt1CjAA6ddFzg8MorEAAAAASUVORK5CYII=') bottom center no-repeat;
-}
-
-// Team list.
-.team-list {
-  border-top: 1px solid $header-divider;
-  margin-bottom: 50px;
+// Top leads
+// -----------------------------------------------------------------------------
+.leads,
+.managers {
+  border-top: 0;
+  margin-bottom: -1px;
+  padding-bottom: 50px;
   text-align: center;
-  font-size: 0;
-  line-height: 0;
-
-  &.fullsize {
-    border-top: 0;
-    margin-bottom: -1px;
-    padding-bottom: 50px;
-    border-bottom: 1px solid $header-divider;
-  }
-
-  .team-name {
-    @include font-size(22);
-    margin-top: 54px;
-  }
+  border-bottom: 1px solid;
 
   // Themes
   @each $theme, $map in $themes {
@@ -79,315 +17,203 @@
       border-color: map-get($map, $header-divider);
     }
   }
+
+  .user-name {
+    @include font-size(15);
+
+    @include susy-breakpoint(1280px) {
+      @include font-size(18);
+    }
+  }
+
+  .member {
+    @include span(5 of 20);
+    float: none;
+    display: inline-block;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    @include susy-breakpoint(1024px 1600px) {
+      text-align: left;
+    }
+  }
 }
 
-// Team list members.
-.team-list .member {
-  @include span(2 of 9);
-  display: inline-block;
-  float: none;
+.managers {
+  border-bottom: 0;
+}
+
+// All teams wrapper
+// -----------------------------------------------------------------------------
+// Team title
+.team-title {
+  @include font-size(20);
+  margin-top: 54px;
+  line-height: 1;
+  text-align: center;
+
+  @include susy-breakpoint(1280px) {
+    @include font-size(22);
+  }
+
+  @include susy-breakpoint(1024px 1600px) {
+    margin-top: 0;
+  }
+}
+
+// Teams styles and layouts
+.teams {
   font-size: 0;
-  margin-top: 50px;
+  margin-bottom: 100px;
 
-  &:nth-child(4n),
-  &:last-child {
-    margin-right: 0;
+  @include susy-breakpoint(1600px) {
+    text-align: center;
   }
 
-  .picture {
+  // Team member styles/layout
+  .member {
+    @include span(5 of 10);
+    @include font-size(13);
+    float: none;
     display: inline-block;
-    border-radius: 50%;
-    margin-bottom: 5px;
-    overflow: hidden;
-    position: relative;
-    width: 100px;
-    height: 100px;
-    background: url("../images/user-dummy.png") no-repeat 0 0 / 100% 100%;
+    text-align: left;
+    vertical-align: top;
+    margin-top: 50px;
+    line-height: 1.3em;
 
-    img {
-      max-width: 100%;
+    &:nth-child(4n) {
+      margin-right: 0;
     }
 
-    &:after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      border-radius: 50%;
-      width: 100%;
-      height: 100%;
-      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.68);
+    @include susy-breakpoint(1280px) {
+      @include font-size(15);
+    }
+
+    @include susy-breakpoint(320px 1600px) {
+      margin-top: 40px;
+
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+
+      // User data
+      figcaption {
+        display: inline-block;
+        vertical-align: middle;
+        max-width: 50%;
+      }
+    }
+
+    @include susy-breakpoint(1600px) {
+      @include span(2 of 9);
+      float: none;
+      text-align: center;
     }
   }
 
-  .description,
-  .name {
-    @include font-size(18);
-    font-family: $sans;
-    line-height: 1.3em;
+  .user-pic {
+    display: inline-block;
+    margin-bottom: 10px;
+
+    @include susy-breakpoint(768px 1279px) {
+      width: 80px;
+      height: 80px;
+    }
+
+    @include susy-breakpoint(640px 1600px) {
+      vertical-align: middle;
+      margin: 0 10px 0 0;
+    }
   }
 
   .description {
-    @include font-size(15);
+    @include font-size(13);
     font-family: $fonts-sans-light;
+
+    @include susy-breakpoint(1280px) {
+      @include font-size(15);
+    }
   }
 }
 
-// For full size team.
-.team-list.halfsize .team-leads {
-  overflow: hidden;
+// Single Team list styles
+// -----------------------------------------------------------------------------
+.team {
+  @include span(20 of 20);
+  @extend %group;
+  display: inline-block;
+  float: none !important;
+  vertical-align: top;
+  border-top: 1px solid $header-divider;
+  margin-bottom: 50px;
+  font-size: 0;
+  line-height: 0;
 
-  .member {
-    @include span(3 of 9);
-    display: inline-block;
-    float: none;
+  // Themes
+  @each $theme, $map in $themes {
+    .#{$theme} & {
+      border-color: map-get($map, $header-divider);
+    }
+  }
 
-    &:nth-child(3n) {
+  @include susy-breakpoint(1024px 1601px) {
+    @include span(10 of 20);
+    padding: 20px;
+    margin: 0;
+    border: 0;
+    width: 50%;
+
+    &:nth-child(2n+1),
+    &:nth-child(-n+3) {
+      background: #dadada;
+    }
+
+    &:first-child {
+      background: transparent;
+    }
+
+    &:nth-child(even) {
       margin-right: 0;
     }
   }
-}
 
-// For full half team.
-.halfsize {
-  @include span(9 of 19);
-  box-sizing: border-box;
-  float: left;
+  @include susy-breakpoint(1601px) {
+    @include span(9 of 20);
 
-  &:nth-child(2n+1) {
-    margin-right: 0;
-    float: right;
+    // Add padding-left to each 1-st 3-rd etc.
+    // Add margin from the right (1 column width)
+    &:nth-child(odd) {
+      @include prefix(1);
+      @include post(1);
+    }
+
+    // Add padding-right to each 2-nd 4-th etc.
+    &:nth-child(even) {
+      @include suffix(1);
+      margin-right: 0;
+    }
   }
 
-  @include susy-breakpoint(0 1280px) {
+  // Small member layout
+  .member {
+    @include span(5 of 10);
     float: none;
-    width: 100%;
 
-    &:nth-child(2n+1) {
+    @include susy-breakpoint(1601px) {
+      @include span(2 of 8);
       float: none;
     }
   }
-
-  .member .name {
-    @include font-size(15);
-    line-height: 1.6em;
-  }
-
-  .member .description {
-    @include font-size(14);
-    line-height: 1.5em;
-  }
 }
 
-.team-list.halfsize {
-  @include pad(1 of 19, 0);
-
-  &:nth-child(2n+1) {
-    @include pad(0, 1 of 19);
-  }
-}
-
-.people-list .item {
-  @include font-size(15);
-  line-height: 1.4;
-  overflow: hidden;
-  font-family: $sans;
-  margin-bottom: 15px;
-
-  .picture {
-    background: url("../images/user-dummy.png") no-repeat 0 0 / 100% 100%;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-    display: block;
-    float: left;
-    height: 70px;
-    width: 70px;
-
-    img {
-      max-width: 100%;
+// Team lead a bit bigger than team member
+.team-leads {
+  .member {
+    @include susy-breakpoint(1600px) {
+      @include span(3 of 8);
+      float: none;
     }
-
-    &:after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      border-radius: 50%;
-      width: 100%;
-      height: 100%;
-      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.68);
-    }
-  }
-
-  .user-info {
-    @include span(4 of 19);
-  }
-
-  .picture-box {
-    @include span(1 of 4);
-  }
-
-  .name {
-    @include span(3 of 4);
-    box-sizing: border-box;
-    float: left;
-    padding-left: 45px;
-    margin-right: 0;
-  }
-
-  .position,
-  .mail,
-  .phone,
-  .skype {
-    @include span(3 of 19);
-    box-sizing: border-box;
-    font-family: $fonts-sans-light;
-  }
-
-  .mail {
-    @include span(5 of 19);
-    padding-left: 37px;
-  }
-
-  .position {
-    @include span(2 of 19);
-  }
-
-  .phone .link,
-  .phone a {
-    color: $link;
-
-    &:hover {
-      color: $link-hover;
-    }
-  }
-
-  .table-cell-container {
-    display: table-cell;
-    width: inherit;
-    vertical-align: middle;
-    height: 70px;
-  }
-}
-
-.filter-field-container {
-  margin-bottom: 30px;
-  width: 468px;
-
-  .filter-field {
-    @include font-size(16);
-    font-family: $fonts-sans-light;
-    position: relative;
-    display: block;
-    padding: 0.8em;
-    border: none;
-    border-radius: 0;
-    z-index: 10;
-    width: 100%;
-    height: 50px;
-    background: transparent;
-    color: $site-font-color;
-    opacity: 1;
-    outline: 0;
-    -webkit-transition: opacity 0.3s;
-    transition: opacity 0.3s;
-    -webkit-appearance: none;
-
-    // Themes
-    @each $theme, $map in $themes {
-      .#{$theme} & {
-        color: map-get($map, $site-font-color);
-      }
-    }
-  }
-
-  .filter-label {
-    @include font-size(16);
-    color: $site-font-color;
-    display: block;
-    padding: 1em;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    position: relative;
-    width: 100%;
-    text-align: left;
-
-    &:before {
-      content: '';
-      position: absolute;
-      bottom: 100%;
-      left: 0;
-      width: 100%;
-      height: 50px;
-      background: $block-bg;
-      -webkit-transform: perspective(1000px) rotate3d(1, 0, 0, 90deg);
-      transform: perspective(1000px) rotate3d(1, 0, 0, 90deg);
-      -webkit-transform-origin: 50% 100%;
-      transform-origin: 50% 100%;
-      -webkit-transition: -webkit-transform 0.3s;
-      transition: transform 0.3s;
-
-      // Themes
-      @each $theme, $map in $themes {
-        .#{$theme} & {
-          background: map-get($map, $block-bg);
-        }
-      }
-    }
-
-    &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 0.25em;
-      background: #2a2a2a;
-      -webkit-transform-origin: 50% 0%;
-      transform-origin: 50% 0%;
-      -webkit-transition: -webkit-transform 0.3s;
-      transition: transform 0.3s;
-
-      // Themes
-      @each $theme, $map in $themes {
-        .#{$theme} & {
-          background: map-get($map, $block-bg);
-        }
-      }
-    }
-
-    // Themes
-    @each $theme, $map in $themes {
-      .#{$theme} & {
-        color: map-get($map, $site-font-color);
-      }
-    }
-  }
-
-  .filter-field:focus,
-  &.input-filled .filter-field {
-    opacity: 1;
-    -webkit-transition-delay: 0.3s;
-    transition-delay: 0.3s;
-    pointer-events: none;
-  }
-
-  .filter-field:focus + .filter-label:before,
-  &.input-filled .filter-label:before {
-    -webkit-transform: perspective(1000px) rotate3d(1, 0, 0, 0deg);
-    transform: perspective(1000px) rotate3d(1, 0, 0, 0deg);
-  }
-
-  .filter-field:focus +.filter-label:after,
-  &.input-filled .filter-label:after {
-    -webkit-transform: perspective(1000px) rotate3d(1, 0, 0, -90deg);
-    transform: perspective(1000px) rotate3d(1, 0, 0, -90deg);
   }
 }

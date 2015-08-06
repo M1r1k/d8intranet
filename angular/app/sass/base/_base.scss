@@ -9,23 +9,15 @@ $phone: 320px 12 !default;
 
 //------------------------------------------------------------------------------
 //Page
-
-html { @include font-size(); }
-
-html,
-body {
-//  transition: all .3s ease-in-out;
-  -webkit-font-smoothing: antialiased;
-}
-
 body {
   font-family: $sans;
   font-weight: 300;
+  font-size: 16px;
   min-width: 320px;
   -webkit-text-size-adjust: 100%;
   word-wrap: break-word;
   @include border-box-sizing;
-  transition: all .2s ease-in-out;
+//  transition: background  .1s ease-in-out;
 
   @each $theme, $map in $themes {
     .#{$theme} & {
@@ -33,6 +25,8 @@ body {
       color: map-get($map, $site-font-color);
     }
   }
+
+  background-color: rgba(0, 0, 0, .9);
 }
 
 

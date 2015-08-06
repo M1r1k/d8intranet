@@ -12,15 +12,19 @@
 
     <div class="employee-columns">
       <div class="col">
-        <div class="employee"
-            ng-repeat="(employee_key, employee) in user " ng-if='employee_key != "count"'>
+        <div class="employee" ng-repeat="(employee_key, employee) in user "
+            ng-if='employee_key != "count"'>
 
           <a href="" class="employee-link">
                   <span class="user-pic">
-                    <!--<img src="images/users/alyona.png" alt="Angolenko Alyona"/>-->
+                    <img ng-src="{{employee.field_user_image[0].value}}"
+                        alt="{{employee.field_firs_name[0].value}} {{employee.field_last_name[0].value}}"/>
+
                   </span>
-            <span class="user-name"> {{employee.field_firs_name[0].value}}</span>
-            <span class="user-name"> {{employee.field_last_name[0].value}}</span>
+            <span class="user-name">
+              {{employee.field_firs_name[0].value}} {{employee.field_last_name[0].value}}
+            </span>
+
           </a>
         </div>
       </div>

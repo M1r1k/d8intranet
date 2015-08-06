@@ -21,17 +21,29 @@ $susy: (
     ),
 );
 
+.leads,
 .container {
   @include container;
 }
 
 .page-content-container {
   @include container;
-//  margin-left: 115px;
 }
 
 .page-container {
-//  @include span(18);
-  @include pre(3);
+  @include span(20);
+  @include pre(2);
   @include post(2);
+
+  @include susy-breakpoint(640px 900px) {
+    @include span(18);
+    @include pre(3);
+    @include post(3);
+  }
+
+  @include susy-breakpoint(1280px) {
+    @include span(20);
+    @include pre(3);
+    @include post(1);
+  }
 }

@@ -1,0 +1,116 @@
+.filter-field-container {
+  margin-bottom: 30px;
+  width: 468px;
+
+  .filter-field {
+    @include font-size(16);
+    font-family: $fonts-sans-light;
+    position: relative;
+    display: block;
+    padding: 0.8em;
+    border: none;
+    border-radius: 0;
+    z-index: 10;
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    color: $site-font-color;
+    opacity: 1;
+    outline: 0;
+    -webkit-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    -webkit-appearance: none;
+
+    // Themes
+    @each $theme, $map in $themes {
+      .#{$theme} & {
+        color: map-get($map, $site-font-color);
+      }
+    }
+  }
+
+  .filter-label {
+    @include font-size(16);
+    color: $site-font-color;
+    display: block;
+    padding: 1em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-touch-callout: none;
+    user-select: none;
+    position: relative;
+    width: 100%;
+    text-align: left;
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background: $block-bg;
+      -webkit-transform: perspective(1000px) rotate3d(1, 0, 0, 90deg);
+      transform: perspective(1000px) rotate3d(1, 0, 0, 90deg);
+      -webkit-transform-origin: 50% 100%;
+      transform-origin: 50% 100%;
+      -webkit-transition: -webkit-transform 0.3s;
+      transition: transform 0.3s;
+
+      // Themes
+      @each $theme, $map in $themes {
+        .#{$theme} & {
+          background: map-get($map, $block-bg);
+        }
+      }
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0.25em;
+      background: #2a2a2a;
+      -webkit-transform-origin: 50% 0%;
+      transform-origin: 50% 0%;
+      -webkit-transition: -webkit-transform 0.3s;
+      transition: transform 0.3s;
+
+      // Themes
+      @each $theme, $map in $themes {
+        .#{$theme} & {
+          background: map-get($map, $block-bg);
+        }
+      }
+    }
+
+    // Themes
+    @each $theme, $map in $themes {
+      .#{$theme} & {
+        color: map-get($map, $site-font-color);
+      }
+    }
+  }
+
+  .filter-field:focus,
+  &.input-filled .filter-field {
+    opacity: 1;
+    -webkit-transition-delay: 0.3s;
+    transition-delay: 0.3s;
+    pointer-events: none;
+  }
+
+  .filter-field:focus + .filter-label:before,
+  &.input-filled .filter-label:before {
+    -webkit-transform: perspective(1000px) rotate3d(1, 0, 0, 0deg);
+    transform: perspective(1000px) rotate3d(1, 0, 0, 0deg);
+  }
+
+  .filter-field:focus + .filter-label:after,
+  &.input-filled .filter-label:after {
+    -webkit-transform: perspective(1000px) rotate3d(1, 0, 0, -90deg);
+    transform: perspective(1000px) rotate3d(1, 0, 0, -90deg);
+  }
+}

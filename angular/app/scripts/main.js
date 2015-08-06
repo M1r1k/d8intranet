@@ -6,14 +6,14 @@
   $(document).ready(function () {
     var siteWrapper = $('html');
 
-    siteWrapper.addClass('light');
+    siteWrapper.addClass('dark');
 
     $('.theme-switcher').click(function(){
-      if(siteWrapper.hasClass('light')){
-        siteWrapper.removeClass('light').addClass('dark');
+      if(siteWrapper.hasClass('dark')){
+        siteWrapper.removeClass('dark').addClass('light');
       }
       else {
-        siteWrapper.removeClass('dark').addClass('light');
+        siteWrapper.removeClass('light').addClass('dark');
       }
 
     });

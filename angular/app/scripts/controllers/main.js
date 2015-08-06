@@ -14,8 +14,6 @@ angular.module('d8intranetApp')
       url: '../../jsons/employees.json'
     }).success(function (response) {
         $scope.users = response.users;
-        console.log($scope.users);
-
         $scope.states = {};
 
         angular.forEach(response.users, function (user) {
@@ -35,9 +33,7 @@ angular.module('d8intranetApp')
           });
         });
 
-        console.log($scope.states);
-
-        function cardName (status) {
+        function cardName(status) {
           switch (status) {
             case 'day_off':
               return 'Day off';
@@ -57,16 +53,10 @@ angular.module('d8intranetApp')
             default:
               return '';
               break;
-
           }
         };
       }
     );
-
-    $scope.usersFilter = function (item) {
-      console.log(item);
-      return item.userStatus === 'sick' || item.userStatus === 'dayoff'
-    }
 
   })
 

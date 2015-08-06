@@ -1,29 +1,15 @@
 {
   "users": [
     {
-      "uid": [
-        {
-          "value": "1"
-        }
-      ],
-
-      "field_firs_name": [
-        {
-          "value": "Artem"
-        }
-      ],
-
-      "field_last_name": [
-        {
-          "value": "Miroshnik"
-        }
-      ],
-
+      "uid": [{"value": "1"}],
+      "field_firs_name": [{"value": "Alexander"}],
+      "field_last_name": [{"value": "Mikhutkin"}],
+      "field_user_image": [{"value": "../images/employees/alex.jpg"}],
       "status": [
         {
-          "day_off": "0",
+          "day_off": "1",
           "sick": "0",
-          "business_trip": "1",
+          "business_trip": "0",
           "remote_work": "0",
           "vacation": "0"
         }
@@ -31,54 +17,26 @@
     },
 
     {
-      "uid": [
-        {
-          "value": "2"
-        }
-      ],
-
-      "field_firs_name": [
-        {
-          "value": "Alex"
-        }
-      ],
-
-      "field_last_name": [
-        {
-          "value": "Mikhutkin"
-        }
-      ],
-
+      "uid": [{"value": "2"}],
+      "field_firs_name": [{"value": "Alyona"}],
+      "field_last_name": [{"value": "Angolenko"}],
+      "field_user_image": [{"value": "../images/employees/alyona.jpg"}],
       "status": [
         {
           "day_off": "0",
           "sick": "0",
-          "business_trip": "1",
-          "remote_work": "0",
+          "business_trip": "0",
+          "remote_work": "1",
           "vacation": "0"
         }
       ]
     },
 
     {
-      "uid": [
-        {
-          "value": "2"
-        }
-      ],
-
-      "field_firs_name": [
-        {
-          "value": "Vlad"
-        }
-      ],
-
-      "field_last_name": [
-        {
-          "value": "Vaseckiy"
-        }
-      ],
-
+      "uid": [{"value": "3"}],
+      "field_firs_name": [{"value": "Vlad"}],
+      "field_last_name": [{"value": "Vaseckiy"}],
+      "field_user_image": [{"value": "../images/employees/vlad.jpg"}],
       "status": [
         {
           "day_off": "0",

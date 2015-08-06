@@ -8,15 +8,39 @@
  * Controller of the d8intranetApp
  */
 angular.module('d8intranetApp')
-  .controller('EmployeesCtrl', function ($scope) {
-    $scope.users = [
-      { name: "Denis Bondarenko"},
-      { name: "Mikhail Sokolovskiy"}
-    ];
+  .controller('EmployeesCtrl', function ($scope, $http, $filter) {
 
-    $scope.filterFunction = function(element) {
-      return element.name.match(/^Ma/) ? true : false;
-    };
+    // Teams requests
+    $http({
+      method: 'GET',
+      url: '../../jsons/teams.json'
+    }).success(function (response) {
+      $scope.teams = response.teams;
+
+      $scope.regularTeams = {};
+      $scope.members = {};
+
+      // Created new object for all teams
+      // In case if lead team (director, dep lead) create separate object
+      // It's necessary to have separate leads and other teams for output
+      angular.forEach($scope.teams, function (team) {
+        angular.forEach(team, function (key, value) {
+          $scope.regularTeams[value] = key;
+        });
+      });
+    });
+
+
+
+    $http({
+      method: 'GET',
+      url: '../../jsons/people_list.json'
+    }).success(function (response) {
+      $scope.people = response.people;
+    });
+
+
+
 
     $scope.tabs = [{
       title: 'Teams',
@@ -32,23 +56,8 @@ angular.module('d8intranetApp')
       $scope.currentTab = tab.url;
     };
 
-    $scope.isActiveTab = function(tabUrl) {
+    $scope.isActiveTab = function (tabUrl) {
       return tabUrl == $scope.currentTab;
-    }
-  })
-  .directive('inputEffects', ['$document', function($document) {
-    return {
-      link: function(scope, element, attr) {
-        element.on('keyup blur', function () {
-          var currentValue = $(this).val();
-          var $parentContainer = $(this).parent();
-
-          if (currentValue.length > 0) {
-            $parentContainer.addClass('input-filled');
-          } else {
-            $parentContainer.removeClass('input-filled');
-          }
-        });
-      }
     };
-  }]);
+
+  });

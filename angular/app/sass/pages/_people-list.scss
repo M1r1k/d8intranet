@@ -1,0 +1,183 @@
+// -----------------------------------------------------------------------------
+// Employees List
+
+.teams-content {
+  position: relative;
+}
+
+.count-employees {
+  text-align: right;
+  margin: 0 0 40px 0;
+
+
+  @include susy-breakpoint(860px) {
+    position: absolute;
+    right: 0;
+    top: 0;
+    min-height: 50px;
+    margin: 0;
+    line-height: 50px;
+  }
+}
+
+.people-list {
+  margin-bottom: 150px;
+}
+
+.people-list .item {
+  @include font-size(15);
+  line-height: 1.4;
+  overflow: hidden;
+  font-family: $sans;
+  margin-bottom: 40px;
+
+  @include susy-breakpoint(768px) {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+
+  }
+
+  @include susy-breakpoint(1650px) {
+    width: 100%;
+    display: block;
+    margin-bottom: 0;
+  }
+
+
+  .user-pic {
+    margin-right: 20px;
+  }
+
+  .user-data-wrapper {
+    margin: -50px 0 0 124px;
+
+    @include susy-breakpoint(768px) {
+      margin: 0;
+    }
+  }
+
+
+
+  @include susy-breakpoint(1024px) {
+    .user-data-wrapper {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .user-info {
+      float: left;
+      width: 100%;
+    }
+  }
+
+  @include susy-breakpoint(1650px) {
+    .user-info {
+      @include span(4 of 19);
+      margin-bottom: 1.2rem;
+    }
+    .user-data-wrapper {
+      @include span(15 of 19);
+      @include last;
+    }
+
+    .user-pic {
+      width: 70px;
+      height: 70px;
+      margin-right: 10px;
+    }
+  }
+
+  .user-pic,
+  .user-name {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 50%;
+  }
+
+  .user-name {
+    @include font-size(20);
+
+    @include susy-breakpoint(768px) {
+      font-size: inherit;
+    }
+  }
+
+  .name {
+    @include span(2 of 4);
+    box-sizing: border-box;
+    float: left;
+    padding-left: 45px;
+    margin-right: 0;
+  }
+
+  .position,
+  .mail,
+  .phone,
+  .skype {
+    box-sizing: border-box;
+    font-family: $fonts-sans-light;
+
+    @include susy-breakpoint(1650px) {
+      @include span(3 of 19);
+    }
+  }
+
+  .mail {
+    @include font-size(14);
+
+    @include susy-breakpoint(1650px) {
+      @include span(5 of 15);
+    }
+  }
+
+  .skype {
+    @include susy-breakpoint(1650px) {
+      @include span(4 of 19);
+    }
+  }
+
+  .position {
+    @include font-size(20);
+    margin: 20px 0;
+
+    @include susy-breakpoint(768px) {
+      @include font-size(16);
+    }
+
+    @include susy-breakpoint(1650px) {
+      font-size: inherit;
+      @include span(3 of 15);
+      text-align: left;
+      margin: 0;
+    }
+  }
+
+  .phone a,
+  .phone .link {
+    // Themes
+    @each $theme, $map in $themes {
+      .#{$theme} & {
+        color: map-get($map, $link);
+      }
+    }
+
+    &:hover {
+      // Themes
+      @each $theme, $map in $themes {
+        .#{$theme} & {
+          color: map-get($map, $link-hover);
+        }
+      }
+    }
+  }
+
+  .table-cell-container {
+    @include susy-breakpoint(1650px) {
+      display: table-cell;
+      width: inherit;
+      vertical-align: middle;
+      height: 70px;
+    }
+  }
+}

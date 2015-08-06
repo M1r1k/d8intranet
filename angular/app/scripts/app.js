@@ -40,4 +40,4 @@ angular.module('d8intranetApp', [
       });
 
     $httpProvider.defaults.headers.common.Accept = 'application/hal+json';
-  })
+  });

@@ -1,287 +1,39 @@
-<div type="text/ng-template" id="views/teams.html">
-<div class="teams-content" >
-<div class="clearfix team-list fullsize">
-  <div class="team-leads">
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/1/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/2/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-  </div>
+<div type="text/ng-template" id="views/teams.html" class="teams">
 
-  <div class="team-members">
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/3/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <!--<img src="http://lorempixel.com/100/100/people/4/" alt="First Last name">-->
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/5/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/6/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-  </div>
-</div>
+  <!-- Leads container -->
+  <div class="view-animate-container">
 
-<div class="clearfix team-list halfsize">
-  <h2 class="team-name">Alyona’s Team</h2>
-  <div class="team-leads">
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/1/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/2/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-  </div>
+    <div class="container group">
+      <!-- leads class for managers-->
+        <!--managers for global managers-->
+        <div class="team-list"
+            ng-repeat="team in regularTeams | orderBy:'weight'"
+            ng-class="'{{team.type}}'">
+          <h2 class="team-title">{{team.team_title}}</h2>
 
-  <div class="team-members">
-    <figure class="member">
-      <div class="picture">
-        <!--<img src="http://lorempixel.com/100/100/people/3/" alt="First Last name">-->
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/4/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/5/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/6/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-  </div>
-</div>
+          <!-- team-leads class for leads-->
+          <!-- team-members class for mob-->
+          <!-- managers class for managers-->
+          <div class="container">
+            <figure class="member"
+                ng-repeat="member in team.members "
+                ng-class="'{{member.position}}'" >
+              <div class="user-pic">
+                <img ng-src="{{member.field_user_image[0].value}}"
+                     alt="{{member.field_first_name[0].value}}
+                     {{member.field_last_name[0].value}}"/>
+              </div>
+              <figcaption>
+                <h3 class="user-name">
+                  {{member.field_first_name[0].value}}
+                  {{member.field_last_name[0].value}} </h3>
+                <p class="description">{{member.field_job_title[0].value}}</p>
+              </figcaption>
+            </figure>
 
-<div class="clearfix team-list halfsize">
-  <h2 class="team-name">Alyona’s Team</h2>
-  <div class="team-leads">
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/1/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/2/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-  </div>
+          </div>
+        </div>
 
-  <div class="team-members">
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/3/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/4/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/5/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/6/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
+    </div>
   </div>
-</div>
-
-<div class="clearfix team-list halfsize">
-  <h2 class="team-name">Alyona’s Team</h2>
-  <div class="team-leads">
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/1/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/2/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-  </div>
-
-  <div class="team-members">
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/3/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/4/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/5/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/6/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-  </div>
-</div>
-
-<div class="clearfix team-list halfsize">
-  <h2 class="team-name">Alyona’s Team</h2>
-  <div class="team-leads">
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/1/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/2/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-    <figure class="member">
-      <div class="picture">
-        <img src="http://lorempixel.com/100/100/people/2/" alt="First Last name">
-      </div>
-      <figcaption>
-        <h3 class="name">Sorokin Sergey</h3>
-        <p class="description">Ukraine department manager</p>
-      </figcaption>
-    </figure>
-  </div>
-</div>
-</div>
 </div>

@@ -1,0 +1,33 @@
+//------------------------------------------------------------------------------
+// Images
+.font-icon {
+  font-family: fontello;
+}
+
+.mail-icon {
+  &::before {
+    @include font-size(20);
+    content: '\e80e';
+  }
+}
+
+.phone-icon {
+  &::before {
+    @include font-size(25);
+    content: '\e80f';
+  }
+}
+
+.skype-icon {
+  &::before {
+    @include font-size(22);
+    content: '\e810';
+  }
+}
+
+.people-list {
+  [class$='-icon'] {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
