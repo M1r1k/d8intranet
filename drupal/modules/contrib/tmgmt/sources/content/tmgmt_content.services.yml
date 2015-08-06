@@ -1,0 +1,6 @@
+services:
+  tmgmt_content.subscriber:
+    class: Drupal\tmgmt_content\Routing\TmgmtContentRouteSubscriber
+    arguments: ['@content_translation.manager']
+    tags:
+      - { name: event_subscriber }

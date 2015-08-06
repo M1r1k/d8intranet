@@ -3,8 +3,10 @@
 export PYTHONUNBUFFERED=1
 
 playbooks=(
-/var/www/drupal/reinstall.yml \
-/var/www/drupal/sniffers.yml \
+/var/www/docroot/reinstall.yml \
+/var/www/docroot/devops.yml \
+/var/www/docroot/sniffers.yml \
+/var/www/docroot/tests.yml \
 )
 
 for i in "${playbooks[@]}"

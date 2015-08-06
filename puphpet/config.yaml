@@ -1,28 +1,29 @@
 ---
 vagrantfile-local:
     vm:
-        box: ubuntu-precise12042-x64-vbox43
-        box_url: 'http://box.puphpet.com/ubuntu-precise12042-x64-vbox43.box'
-        hostname: null
+        box: ubuntu14.04LTS_cibox.box
+        box_url: 'http://128.199.55.125/ubuntu14.04LTS_cibox.box'
+        hostname: d8pp.dev
         network:
             private_network: 192.168.93.187
             forwarded_port:
                 CocLsFE7aIwA:
-                    host: '8098'
+                    host: '8081'
                     guest: '80'
                 CocLsFE7aIwE:
-                    host: '8099'
+                    host: '8083'
                     guest: '3306'
         provider:
             virtualbox:
                 modifyvm:
                     natdnshostresolver1: on
-                    memory: '4024'
+                    memory: '1024'
+                    name: 'd8pp'
                 setextradata:
                     VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root: 1
             lxc:
-                box: fgrehm/precise64-lxc
-                box_url: https://atlas.hashicorp.com/fgrehm/boxes/precise64-lxc/versions/1.2.0/providers/lxc.box
+                box: fgrehm/trusty64-lxc
+                box_url: https://vagrantcloud.com/fgrehm/boxes/trusty64-lxc/versions/1.2.0/providers/lxc.box
         provision:
             puppet:
                 manifests_path: puphpet/puppet
@@ -32,10 +33,10 @@ vagrantfile-local:
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            8Q9vTs08YuK2:
-                source: ./
-                target: /var/www
-                nfs: 'true'
+            - id: drupal
+              source: ./
+              target: /var/www
+              nfs: 'true'
         usable_port_range: 2200..2250
     ssh:
         host: null

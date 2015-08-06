@@ -19,7 +19,6 @@
       - php-apc
       - libapache2-mod-php5
       - php5-dev
-      - php-pear
     php_use_managed_ini: true
     php_display_errors: On
     php_error_reporting: '-1'
@@ -30,12 +29,13 @@
     php_upload_max_filesize: 64M
 
     php_enable_apc: true
+    php_apc_enabled_in_ini: true
     php_apc_cache_by_default: "1"
     php_apc_shm_size: "96M"
     php_apc_stat: "1"
     php_apc_enable_cli: "0"
 
   roles:
-    - { role: ansible-role-php }
-#    - { role: ansible-role-php-pecl }
-    - { role: ansible-role-php-xhprof }
+    - { role: ansible-role-php, tags: ["php-stack"] }
+    - { role: ansible-php-pear, tags: ["ansible-php-pear", "php-stack"] }
+    - { role: ansible-role-php-xhprof, tags: ["ansible-php-xhprof", "php-stack"] }

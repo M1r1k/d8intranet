@@ -9,11 +9,3 @@
     - { role: cibox-jetty-solr }
 
   # See ansible-jetty-solr/default/main.yml file with variable to configure Solr schema and module settings.
-  vars:
-    jetty_solr_module: 'apachesolr'
-    jetty_solr_module_config_path: 'solr-conf/solr-4.x'
-    jetty_solr_cores:
-      default:
-        name: default
-        config_version: '4.x'
-        module: apachesolr

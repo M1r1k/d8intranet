@@ -9,8 +9,8 @@
     - { role: cibox-drush }
 
   vars:
+    drush_install_mode: composer
     drush_composer_version: dev-master
-    drush_git_version: 7.0.x-dev
     drushrc:
       drush_usage_log: 1
       drush_usage_send: 1
