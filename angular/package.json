@@ -10,7 +10,10 @@
   "license": "MIT",
   "devDependencies": {
     "connect": "^3.3.4",
+    "commander": "^2.8.1",
     "connect-livereload": "^0.5.3",
+    "domelementtype": "^1.1.1",
+    "entities": "^1.1.1",
     "express": "^4.12.2",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^2.1.0",
@@ -33,7 +36,9 @@
     "gulp-stylus": "^2.0.1",
     "gulp-uglify": "^1.1.0",
     "http": "0.0.0",
+    "lodash": "^3.7",
     "st": "^0.5.3",
-    "tiny-lr": "^0.1.5"
+    "tiny-lr": "^0.1.5",
+    "uglify-js": "^2.2.5"
   }
 }
