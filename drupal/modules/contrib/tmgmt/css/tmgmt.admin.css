@@ -1,0 +1,118 @@
+/**
+ * @file
+ * CSS for the tmgmt admin pages.
+ */
+
+.tmgmt-ui-info-item {
+  float: left;
+  margin-right: 80px;
+}
+
+.tmgmt-ui-job-items-suggestions fieldset {
+  padding-top: 13px;
+}
+
+table.tmgmt-ui-review td {
+  vertical-align: top;
+}
+
+table.tmgmt-ui-review input.unreviewed {
+  text-decoration: line-through;
+}
+
+table.tmgmt-ui-review tbody th {
+  background: none;
+  font-weight: bold;
+}
+
+.tmgmt-ui-data-item-label .form-item {
+  /* Get the label out of way, so the status icon can be placed at the same
+  relative position */
+  position: absolute;
+}
+
+.tmgmt-ui-state {
+  /* Visually align the icon in the center between left table border and the
+     first textarea.*/
+  margin: 1.8em -10px 1em 0;
+  text-align: center;
+}
+
+.tmgmt-ui-state .tmgmt-ui-icon {
+  margin: 0 auto;
+}
+
+/* Base settings for the icon. */
+
+.tmgmt-ui-icon {
+  float: left;
+  color: #fff;
+  text-align: center;
+  border-style: solid;
+  box-shadow: 0 0 4px rgba(0,0,0,0.4);
+  -moz-box-shadow: 0 0 4px rgba(0,0,0,0.4);
+  -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.4);
+}
+
+/* Icon sizes. */
+.tmgmt-ui-icon-32 {
+  width: 32px;
+  height: 32px;
+  border-width: 1px;
+  line-height: 32px;
+  text-shadow: 0 -1px 0 rgba(0,0,0,0.5);
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
+.tmgmt-ui-icon.tmgmt-ui-icon-32 span {
+  font-size: 23px;
+}
+
+.tmgmt-source-status div, .tmgmt-item-status div {
+  float: left;
+}
+
+.tmgmt-legend-icon {
+  float: left;
+  margin: 2px 4px;
+  margin-left: 20px;
+}
+
+.tmgmt-sources-wrapper div.form-item {
+  float: left;
+  margin-right: 16px;
+}
+
+.tmgmt-sources-wrapper input.form-submit {
+  margin: 20px 0 0 0;
+}
+
+.tmgmt-source-operations-wrapper {
+  clear: both;
+}
+
+.view-tmgmt-node-source-overview .view-filters, .tmgmt-sources-wrapper {
+  margin-right: 310px;
+}
+
+.tmgmt-status {
+  font-weight: 700;
+  width: 100px;
+}
+
+.tmgmt-ui-data-item-actions div {
+  min-height: 63px;
+  position: relative;
+}
+
+.tmgmt-ui-data-item-actions div input {
+  position:absolute;
+  top: 50%;
+  text-align: center;
+}
+
+.tmgmt_validation_message {
+  width: 50%;
+  float: right;
+}

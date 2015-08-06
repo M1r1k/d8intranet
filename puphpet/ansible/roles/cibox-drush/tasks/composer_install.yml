@@ -11,10 +11,6 @@
   file: src=/usr/local/src/drush/drush dest=/usr/local/bin/drush state=link mode=755
   sudo: yes
 
-- name: Install dependency for drush
-  shell: "cd /usr/local/src/drush && composer install"
-  sudo: yes
-
 - name: "Get global Composer user home directory path."
   shell: cat /etc/passwd | grep -Ew {{ drush_composer_user }} | cut -d":" -f6
   register: drush_composer_user_home

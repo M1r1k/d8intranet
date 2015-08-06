@@ -1,0 +1,187 @@
+<?php
+
+/**
+ * @file lingotek.module
+ * 
+ * Implements Drupal-related hooks for the Lingotek Translation module.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\lingotek\Lingotek;
+use Drupal\lingotek\LingotekTranslatableEntity;
+use Drupal\lingotek\LingotekLocale;
+use Drupal\node\Form;
+
+/**
+ * Implements hook_permission().
+ */
+function lingotek_permission() {
+  return array(
+    'administer lingotek' => array(
+      'title' => t('Administer Lingotek'),
+      'description' => t('Access the administrative settings for the module.')
+    ),
+    'translation' => array(
+      'title' => t('Translate'),
+      'description' => t('Access to the translate content (e.g., the "Translations" tab will be available on nodes, comments will be translatable)')
+    ),
+    'manage projects' => array(
+      'title' => t('Project Management'),
+      'description' => t('Access the Lingotek tab on content types (Must also have permission to edit the content type in question).')
+    ),
+    'use lingotek developer tools' => array(
+      'title' => t('Developer'),
+      'description' => t('Access developer tools useful for detailed information and debugging')
+    ),
+  );
+}
+
+/**
+ * Implements hook_toolbar().
+ */
+function lingotek_toolbar() {
+  $items = array();
+  $items['translation'] = array(
+    '#type' => 'toolbar_item',
+    '#attached' => array(
+      'library' => array(
+        'lingotek/lingotek.icons',
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_entity_create().
+ */
+function lingotek_entity_create(EntityInterface $entity) {
+  // Only act on content entities.
+  if (!($entity instanceof ContentEntityInterface)) {
+    return;
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function lingotek_entity_update(EntityInterface $entity) {
+  // Only act on content entities.
+  if (!($entity instanceof ContentEntityInterface)) {
+    return;
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function lingotek_entity_delete(EntityInterface $entity) {
+  // Only act on content entities.
+  if (!($entity instanceof ContentEntityInterface)) {
+    return;
+  }
+  $container = \Drupal::getContainer();
+  $lte = LingotekTranslatableEntity::load($container, $entity);
+  // Delete the TMS document if it hasn't been disassociated
+  if ($lte->getDocId()) {
+    $response = $lte->delete(); 
+  }
+  // Delete the local metadata  
+  $lte->deleteMetadata();
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function lingotek_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  //TODO: see if there's a entity_form_alter()
+  $container = \Drupal::getContainer();
+  $L = $container->get('lingotek');
+  $profiles = $L->get('profile');
+  $entity = $form_state->getFormObject()->getEntity();
+  $lte = LingotekTranslatableEntity::load($container, $entity);
+  $default_profile  = Lingotek::PROFILE_AUTOMATIC;
+  $options = array();
+
+  // Use the entity's profile if set, else use the content type's profile
+  $entity_profile = $lte->getProfile();
+  if ($entity_profile != NULL) {
+    $default_profile = $entity_profile;
+  }
+  else {
+    if ($entity->getType() === 'article') {
+      $default_profile = $L->get('translate.entity.node.article');
+    }
+    elseif ($entity->getType() === 'page') {
+      $default_profile = $L->get('translate.entity.node.page');
+    }
+  }
+
+  foreach ($profiles as $profile) {
+    $options[$profile['id']] = ucwords($profile['name']);
+  }
+  
+  $form['lingotek_translation_management'] = array(
+    '#type' => 'details',
+    '#title' => t('Translation Management'),
+    '#description' => t('The Lingotek Translation module was developed to help you translate your site. The module integrates the Lingotek translation management system directly into Drupal, so that your users can leverage the power of Lingotek\'s translation tools and services without ever having to leave the comfort of your Drupal environment.'),
+    '#group' => 'advanced',
+  );
+
+  $form['lingotek_translation_management']['lingotek_translation_profile'] = array(
+    '#type' => 'select',
+    '#title' => t('Translation Profile'),
+    '#options' => $options,
+    '#default_value' => $default_profile,
+  );
+
+  foreach (array_keys($form['actions']) as $action) {
+    if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+      $form['actions'][$action]['#submit'][] = 'lingotek_form_node_form_submit';
+    }
+  }
+}
+
+function lingotek_form_node_form_submit ($form, FormStateInterface $form_state) {
+  $form_values = $form_state->getValues();
+  $container = \Drupal::getContainer();
+  $L = $container->get('lingotek');
+  $entity = $form_state->getFormObject()->getEntity();
+  $lte = LingotekTranslatableEntity::load($container, $entity);
+  $lte->setProfile($form_values['lingotek_translation_profile']);
+  $lte_auto_upload = $lte->hasAutomaticUpload();
+  $lte_status = $lte->getSourceStatus();
+  $entity_has_changed = $lte->hasEntityChanged();
+  
+  if ($lte_auto_upload) {
+    // New entity with auto-upload
+    if ($lte_status == NULL) {
+      $doc_id = $lte->upload();
+      drupal_set_message(t('<em>@node_title</em> sent to Lingotek successfully.', array('@node_title' => $entity->getTitle())));
+    }
+    // Updated entity with auto-upload
+    elseif ($entity_has_changed) {
+      $lte->setSourceStatus(Lingotek::STATUS_EDITED);
+      $response = $lte->update();
+      $lte->setTargetStatuses(Lingotek::STATUS_PENDING);
+      drupal_set_message(t('<em>@node_title</em> was updated and sent to Lingotek successfully.', array('@node_title' => $entity->getTitle())));
+    }
+  }
+  // Updated entity with manual-upload
+  elseif (!$lte_auto_upload){
+    if($entity_has_changed) {
+      $lte->setSourceStatus(Lingotek::STATUS_EDITED);
+      $lte->setTargetStatuses(Lingotek::STATUS_EDITED);
+    }
+  }
+}
+
+/**
+ * Iplements hook_contextual_links_view_alter
+ */
+function lingotek_contextual_links_view_alter(&$element, $items) {
+  // TODO
+}
+

@@ -8,8 +8,10 @@
 
   vars:
     apache_listen_port: 80
+    apache_listen_port_ssl: 443
     apache_create_vhosts: true
     apache_vhosts_filename: "vhosts.conf"
+    cibox_ssl_folder: /etc/apache/ssl
     apache_vhosts:
       - {
         servername: "drupal.d8pp.dev",
@@ -17,8 +19,8 @@
       }
     apache_mods_enabled:
       - rewrite.load
-      - headers.load
       - ssl.load
 
   roles:
+    - { role: cibox-ssl-config }
     - { role: ansible-role-apache }

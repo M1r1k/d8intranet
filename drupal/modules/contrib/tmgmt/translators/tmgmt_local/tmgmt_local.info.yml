@@ -1,0 +1,17 @@
+name: Local Translator
+description: 'Allows local users to provide translation services.'
+package: Translation Management
+# core: 8.x
+type: module
+
+dependencies:
+ - tmgmt
+ - tmgmt_language_combination
+
+configure: entity.tmgmt_translator.list
+
+# Information added by Drupal.org packaging script on 2015-08-03
+version: '8.x-1.x-dev'
+core: '8.x'
+project: 'tmgmt'
+datestamp: 1438630142
