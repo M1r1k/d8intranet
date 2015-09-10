@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function work_logging_schema() {
+  $schema = array();
+
+  $schema['user_work_time'] = array(
+    'description' => 'The base table for users work time.',
+    'fields' => array(
+      'uid' => array(
+        'description' => 'The {users}.uid that owns this record; initially, this is the user that created it.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'start_time' => array(
+        'description' => 'The Unix timestamp when the start buttons was clicked.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'end_time' => array(
+        'description' => 'The Unix timestamp when the end buttons was clicked.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'work_year' => array(
+        'description' => 'Year of the work event',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'work_month' => array(
+        'description' => 'Month of the work event(1-12)',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'work_day' => array(
+        'description' => 'Day of the work event(1-31)',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'work_event' => array('work_year','work_month','work_day'),
+    ),
+    'unique keys' => array(
+      'work_event_user' => array('uid', 'work_year','work_month','work_day'),
+    ),
+  );
+
+  return $schema;
+}

@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Contains intranet_helper.module
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use \Drupal\user\UserInterface;
+
+/**
+ * @param \Drupal\Core\Entity\EntityInterface[] $entities
+ * @param $entity_type_id
+ */
+function intranet_helper_entity_load(array $entities, $entity_type_id) {
+  foreach ($entities as $entity) {
+    if ($entity_type_id == 'user') {
+      $entity->statuses = intranet_helper_set_statuses($entity);
+    }
+  }
+}
+
+/**
+ * @param UserInterface $user
+ */
+function intranet_helper_set_statuses(UserInterface $user) {
+  return [
+    "day_off" => _intranet_helper_set_statuses(),
+    "sick" => _intranet_helper_set_statuses(),
+    "business_trip" => _intranet_helper_set_statuses(),
+    "remote_work" => _intranet_helper_set_statuses(),
+    "vacation" => _intranet_helper_set_statuses()
+  ];
+}
+
+function _intranet_helper_set_statuses() {
+  return round(rand() / getrandmax());
+}
+
+function intranet_helper_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'user') {
+    $fields['statuses'] = BaseFieldDefinition::create('user_statuses')
+      ->setLabel(t('Statuses'))
+      ->setDescription(t('Translator specific configuration and context information for this job.'))
+      ->setCardinality(1)
+      ->setReadOnly(TRUE)
+      ->setComputed(TRUE);
+
+    return $fields;
+  }
+}

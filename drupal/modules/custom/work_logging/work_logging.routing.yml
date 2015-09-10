@@ -1,0 +1,6 @@
+work_logging.user_checkin:
+  path: '/checkin'
+  defaults:
+    _controller: '\Drupal\work_logging\Controller\CheckInController::checkin'
+  requirements:
+    _custom_access: '\Drupal\work_logging\Controller\CheckInController::access'

@@ -1,0 +1,4 @@
+services:
+  work_logging.work_logger:
+    class: Drupal\work_logging\WorkLogger
+    arguments: ['@database', '@current_user']
