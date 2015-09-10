@@ -7,6 +7,7 @@
       "field_job_title":  [{"value": "Ukraine department manager"}],
       "field_user_image": [{"value": "../images/employees/sergey_s.jpg"}],
       "field_user_position": [{"value": "Top Manager"}],
+      "field_user_birthday": [{"value": "18.12.1986"}],
       "field_user_email":   [{"value": "sergei.sorokin@propeople.com.ua "}],
       "field_user_phone":   [{"value": "+38 091 308 85 05"}],
       "field_user_skype":   [{"value": "sergei.rakivnenko"}]
@@ -19,6 +20,7 @@
       "field_job_title":  [{"value": "Finance director"}],
       "field_user_image": [{"value": "../images/employees/olya_p.jpg"}],
       "field_user_position": [{"value": "Top Manager"}],
+      "field_user_birthday": [{"value": "24.11.1985"}],
       "field_user_email":   [{"value": "op@propeople.com.ua"}],
       "field_user_phone":   [{"value": "+38 067 681 23 67"}],
       "field_user_skype":   [{"value": "olga.piluchenko"}]
@@ -31,6 +33,7 @@
       "field_job_title":  [{"value": "Head of PM"}],
       "field_user_image": [{"value": "../images/employees/roman.jpg"}],
       "field_user_position": [{"value": "Department Lead"}],
+      "field_user_birthday": [{"value": "20.06.1986"}],
       "field_user_email":   [{"value": "roman.lyashenko@propeople.com.ua"}],
       "field_user_phone":   [{"value": "+38 066 488 06 08"}],
       "field_user_skype":   [{"value": "sirko_el"}]
@@ -43,6 +46,7 @@
       "field_job_title":  [{"value": "Drupal tech lead"}],
       "field_user_image": [{"value": "../images/employees/artem_m.jpg"}],
       "field_user_position": [{"value": "Department Lead"}],
+      "field_user_birthday": [{"value": "30.01.1992"}],
       "field_user_email":   [{"value": "artyom.miroshnik@propeople.com.ua"}],
       "field_user_phone":   [{"value": "+38 095 233 84 01"}],
       "field_user_skype":   [{"value": "miroshnik92"}]
@@ -55,9 +59,16 @@
       "field_job_title":  [{"value": "Frontend tech lead"}],
       "field_user_image": [{"value": "../images/employees/alex.jpg"}],
       "field_user_position": [{"value": "Department Lead"}],
+      "field_user_birthday": [{"value": "11.02.1987"}],
       "field_user_email":   [{"value": "alexander.mikhutkin@propeople.com.ua"}],
       "field_user_phone":   [{"value": "+38 095 625 47 19"}],
-      "field_user_skype":   [{"value": "anmihutkin"}]
+      "field_user_skype":   [{"value": "anmihutkin"}],
+      "field_user_drupal":   [{"value": "https://www.drupal.org/u/anmikhutkin"}],
+      "field_user_facebook":   [{"value": "https://www.facebook.com/anmihutkin"}],
+      "field_user_gplus":   [{"value": "https://plus.google.com/102658380831106540755"}],
+      "field_user_linkedin":   [{"value": "http://www.linkedin.com/profile/view?id=246404220"}],
+      "field_user_twitter":   [{"value": "https://twitter.com/anmihutkin"}],
+      "field_user_edu":   [{"value": "National Mining University, Dnipropetrovsk, 2003-2008, master degree"}]
     },
 
     {

@@ -27,7 +27,7 @@
   z-index: 1;
 
   @include susy-breakpoint(1024px, 24){
-    @include span(12 of 24);
+    @include span(16 of 24);
     @include last;
     padding-top: 40px;
   }

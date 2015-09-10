@@ -1,0 +1,55 @@
+<div type="text/ng-template" id="views/people.html">
+  <!-- Leads container -->
+  <div class="view-animate-container">
+
+    <div class="container group">
+
+      <div class="year-table">
+        <div class="table-headline">
+          <div class="user-dates">
+            <div class="user-name">Employee</div>
+            <div class="months">
+              <div class="month jan"><span class="dates">Jan</span></div>
+              <div class="month feb"><span class="dates">Feb</span></div>
+              <div class="month mar"><span class="dates">Mar</span></div>
+              <div class="month apr"><span class="dates">Apr</span></div>
+              <div class="month May"><span class="dates">May</span></div>
+              <div class="month June"><span class="dates">June</span></div>
+              <div class="month July"><span class="dates">July</span></div>
+              <div class="month Aug"><span class="dates">Aug</span></div>
+              <div class="month Sep"><span class="dates">Sep</span></div>
+              <div class="month Oct"><span class="dates">Oct</span></div>
+              <div class="month Nov"><span class="dates">Nov</span></div>
+              <div class="month Dec"><span class="dates">Dec</span></div>
+              <div class="month total"><span class="dates">Total</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-dates" ng-repeat="user in users">
+          <div class="user-name">{{user.field_last_name[0].value}}
+            {{user.field_first_name[0].value}}
+          </div>
+
+          <div class="months">
+            <div class="month" data-month="{{date.monthName}}"
+                ng-repeat="date in user.vacationDays">
+                <span class="dates" ng-if="date.datesInMonth">{{date.datesInMonth}}</span>
+              <span class="dates dates-numbers" ng-if="date.dayOff">
+                <span class="day_key" ng-repeat="(day_key, day) in date.dayOff">
+                  {{day_key}}: {{day}};
+                </span>
+              </span>
+            </div>
+
+            <div class="month total" data-month="Total:">
+
+              <span class="dates dates-total">{{user.daysOffTotal}}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

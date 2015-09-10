@@ -41,6 +41,10 @@ $switcher-btn: #b5b5b5;
 $tabs-color: #5f5e5e;
 $tabs-color-active: #e4e4e4;
 
+$table-row-bg: #282828;
+$table-row-bg-odd: #383838;
+$table-color: #fff;
+
 $themes: (
     'dark': (
         $site-bg: #3c3c3c,
@@ -53,6 +57,10 @@ $themes: (
         $site-font-color: #cfcfcf,
         $link: #66d5e9,
         $link-hover: #e9c366,
+
+      // Table colors
+        $table-row-bg: #282828,
+        $table-row-bg-odd: #383838,
 
       // Language switcher colors
         $switcher-bg: #404040,
@@ -73,6 +81,11 @@ $themes: (
         $site-font-color: #2e2e2e,
         $link: #498baf,
         $link-hover: #537786,
+
+      // Table colors
+        $table-row-bg: #a2aeb4,
+        $table-row-bg-odd: #cdd3d8,
+
       // Language switcher colors
         $switcher-bg: #f4f4f4,
         $switcher-border: #cbcdcd,

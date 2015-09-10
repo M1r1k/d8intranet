@@ -29,6 +29,8 @@
 @import 'components/employee';
 @import 'components/tabs';
 @import 'components/input-fields';
+@import 'components/table';
+@import 'components/loader';
 
 //------------------------------------------------------------------------------
 // Partials
@@ -44,3 +46,4 @@
 @import 'pages/front';
 @import 'pages/employeers';
 @import 'pages/people-list';
+@import 'pages/user';

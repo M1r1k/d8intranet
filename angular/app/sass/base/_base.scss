@@ -20,7 +20,7 @@ body {
 //  transition: background  .1s ease-in-out;
 
   @each $theme, $map in $themes {
-    .#{$theme} & {
+    &.#{$theme} {
       background: map-get($map, $site-bg);
       color: map-get($map, $site-font-color);
     }

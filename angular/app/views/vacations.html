@@ -1,0 +1,55 @@
+<div id="views/vacations.html" class="vacations">
+
+  <!-- Leads container -->
+  <div class="view-animate-container">
+
+    <div class="container group">
+
+      <ul class="legend">
+        <li class="leave-type pre-holiday-leave">Pre-holiday</li>
+        <li class="leave-type approved-paid-leave">Paid leave</li>
+        <li class="leave-type approved-unpaid-leave"> Unpaid leave</li>
+      </ul>
+
+      <div class="year-table">
+        <div class="table-headline">
+          <div class="user-dates">
+            <div class="user-name">Employee</div>
+            <div class="months">
+              <div class="month "><span class="dates">Jan</span></div>
+              <div class="month "><span class="dates">Feb</span></div>
+              <div class="month "><span class="dates">Mar</span></div>
+              <div class="month "><span class="dates">Apr</span></div>
+              <div class="month "><span class="dates">May</span></div>
+              <div class="month "><span class="dates">June</span></div>
+              <div class="month "><span class="dates">July</span></div>
+              <div class="month "><span class="dates">Aug</span></div>
+              <div class="month "><span class="dates">Sep</span></div>
+              <div class="month "><span class="dates">Oct</span></div>
+              <div class="month "><span class="dates">Nov</span></div>
+              <div class="month "><span class="dates">Dec</span></div>
+              <div class="month total"><span class="dates">Total</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-dates" ng-repeat="user in users">
+          <div class="user-name">{{user.field_last_name[0].value}} {{user.field_first_name[0].value}}</div>
+          <div class="months">
+            <div class="month flipper-container" data-month="{{date.monthName}}" ng-repeat="date in user.vacationDays">
+              <div class="flipper">
+              <span  class="dates front {{ date.state }}" ng-if="date.days">{{date.days}}</span>
+              <span class="dates back {{ date.state }}" ng-if="date.monthlyTotal">Sum: {{date.monthlyTotal}}</span>
+              </div>
+            </div>
+            <div class="month total" data-month="Total:">
+              <span class="dates dates-total">{{user.totalVacation}}</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

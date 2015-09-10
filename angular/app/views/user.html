@@ -1,0 +1,100 @@
+<div ng-controller="UserCtrl" class="user-page">
+
+  <div class="page-bg">
+    <div class="welcome-block">
+      <img ng-src="{{user.field_user_image[0].value}}" alt="Alex"/>
+
+      <div class="name">
+        {{user.field_first_name[0].value}} {{user.field_last_name[0].value}}
+      </div>
+      <div class="position">
+        {{user.field_user_position[0].value}}
+      </div>
+    </div>
+  </div>
+  <div class="page-container">
+
+    <div class="page-content">
+      <h1>Employee data</h1>
+
+        <div class="user-info">
+          <div class="user-data-group">
+            <span class="user-info-title">Position</span>
+            <span
+                class="user-info-value">{{user.field_user_position[0].value}}</span>
+          </div>
+
+          <div class="user-data-group">
+            <span class="user-info-title">First name</span>
+            <span
+                class="user-info-value">{{user.field_first_name[0].value}}</span>
+          </div>
+
+          <div class="user-data-group">
+            <span class="user-info-title">Last name</span>
+            <span
+                class="user-info-value">{{user.field_last_name[0].value}}</span>
+          </div>
+
+          <div class="user-data-group">
+            <span class="user-info-title">Birthday: </span>
+            <span
+                class="user-info-value">{{user.field_user_birthday[0].value}}</span>
+          </div>
+
+          <div class="user-data-group">
+            <span class="user-info-title">E-mail: </span>
+        <span class="user-info-value"><a
+            ng-href="mailto:{{user.mail[0].value}}">{{user.mail[0].value}}</a></span>
+          </div>
+
+          <div class="user-data-group">
+            <span class="user-info-title">Mobile: </span>
+            <span
+                class="user-info-value">{{user.field_phone_number[0].value}}</span>
+          </div>
+
+          <div class="user-data-group">
+            <span class="user-info-title">Skype: </span>
+            <span
+                class="user-info-value">{{user.field_user_skype[0].value}}</span>
+          </div>
+
+          <div class="user-data-group" ng-show="user.field_user_edu[0].value.length">
+            <span class="user-info-title">Education: </span>
+            <span
+                class="user-info-value">{{user.field_user_edu[0].value}}</span>
+          </div>
+
+        </div>
+
+        <div class="user-social-data">
+          <div class="experience">
+            Working at company: {{yearsOfWork}} years {{monthsOfWork}} months
+          </div>
+          <div class="social-list">
+            <h3>Social</h3>
+            <ul class="font-icon">
+              <li class="icon"><a ng-href="{{user.field_user_drupal[0].value}}"
+                  class="drupal-icon"></a></li>
+              <li class="icon"><a
+                  ng-href="{{user.field_user_facebook[0].value}}"
+                  class="facebook-icon"></a></li>
+              <li class="icon"><a ng-href="{{user.field_user_gplus[0].value}}"
+                  class="gplus-icon"></a></li>
+              <li class="icon"><a
+                  ng-href="{{user.field_user_linkedin[0].value}}"
+                  class="linkedin-icon"></a></li>
+              <li class="icon"><a ng-href="{{user.field_user_twitter[0].value}}"
+                  class="twitter-icon"></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <div class="more-come-soon">
+      More functionality will come...
+    </div>
+  </div>
+
+</div>

@@ -1,35 +1,58 @@
 //------------------------------------------------------------------------------
 // Throbber styles
 
-body > * {
-  opacity: 0;
-  transition: all .3s ease-in-out;
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .7);
+  z-index: 999;
+}
+.message {
+  background: #3ea83f;
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+//  width: 200px;
+//  height: 100px;
+  padding: 30px 50px;
+  text-transform: uppercase;
+  color: #000;
 }
 
-.loaded * > {
-  opacity: 1;
-
-  .loader {
-    display: none;
-  }
-}
-
-.cssanimations {
-  .loader {
-    animation: fadeIn .3s linear;
-    animation-delay: .5s;
-    animation-fill-mode: forwards;
-
-//  Here add link to your preloader
-//  background: url('../images/loader.gif') no-repeat;
-    background-size: contain;
-
-    height: 25px;
-    left: 0;
-    margin: -5px auto 0;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    width: 25px;
-  }
-}
+//body > * {
+//  opacity: 0;
+//  transition: all .3s ease-in-out;
+//}
+//
+//.loaded * > {
+//  opacity: 1;
+//
+//  .loader {
+//    display: none;
+//  }
+//}
+//
+//.cssanimations {
+//  .loader {
+//    animation: fadeIn .3s linear;
+//    animation-delay: .5s;
+//    animation-fill-mode: forwards;
+//
+////  Here add link to your preloader
+////  background: url('../images/loader.gif') no-repeat;
+//    background-size: contain;
+//
+//    height: 25px;
+//    left: 0;
+//    margin: -5px auto 0;
+//    position: absolute;
+//    right: 0;
+//    top: 50%;
+//    width: 25px;
+//  }
+//}

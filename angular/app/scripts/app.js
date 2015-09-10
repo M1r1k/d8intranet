@@ -29,10 +29,20 @@ angular.module('d8intranetApp', [
         templateUrl: 'views/employees.html',
         controller: 'EmployeesCtrl'
       })
+      .when('/user', {
+        url: "/user",
+        templateUrl: 'views/user.html',
+        controller: 'UserCtrl'
+      })
+      .when('/user/:userId', {
+        url: "/user/:userId",
+        templateUrl: 'views/user.html',
+        controller: 'ShowUserCtrl'
+      })
       .when('/vacation', {
         url: "/vacation",
         templateUrl: 'views/vacation.html',
-        controller: 'UsersCtrl'
+        controller: 'VacationCtrl'
       })
       .otherwise({
         redirectTo: '/main',

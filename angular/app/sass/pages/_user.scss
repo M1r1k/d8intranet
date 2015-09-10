@@ -1,0 +1,149 @@
+// -----------------------------------------------------------------------------
+// User page
+.user-page {
+  margin-bottom: 150px;
+
+  h1 {
+    @include font-size(48);
+    margin: 4rem 0;
+  }
+
+  .page-content {
+    @extend %group;
+    position: relative;
+  }
+}
+
+.page-bg {
+  min-height: 500px;
+  background: url(../images/user-page-bg.jpg) no-repeat;
+  position: relative;
+}
+
+.welcome-block {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: $white;
+
+  img {
+    width: 180px;
+    height: 180px;
+    border-radius: 100%;
+    margin-bottom: 20px;
+  }
+
+  .name {
+    @include font-size(24);
+    margin-bottom: 10px;
+  }
+  .position {
+    @include font-size(18);
+  }
+}
+
+.user-info {
+  margin-bottom: 4rem;
+
+  @include susy-breakpoint(1280px) {
+    @include span(13 of 19);
+  }
+}
+
+.user-social-data {
+  clear: both;
+  text-align: center;
+
+  @include susy-breakpoint(1280px) {
+    @include span(7 of 19);
+    position: absolute;
+    right: 0;
+    top: 5.7rem;
+    text-align: right;
+  }
+}
+
+.user-data-group {
+  @extend %group;
+  margin-bottom: 20px;
+}
+
+
+.user-info-title {
+  @include font-size(18);
+
+  margin-right: 20px;
+  line-height: 1.4;
+  display: block;
+  margin-bottom: 5px;
+
+
+  @include susy-breakpoint(768px) {
+    font-family: $fonts-sans-light;
+    float: left;
+    min-width: 125px;
+    margin-bottom: 0;
+  }
+
+  @include susy-breakpoint(1280px) {
+    @include font-size(20);
+  }
+}
+
+.user-info-value {
+  @include font-size(17);
+  font-family: $fonts-sans-light;
+  line-height: 1.2;
+
+  @include susy-breakpoint(1280px) {
+    @include font-size(26);
+    overflow: hidden;
+  }
+}
+
+.social-list li {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 1rem;
+}
+
+
+.user-social-data {
+
+  h3 {
+    @include font-size(30);
+    font-family: $fonts-sans-light;
+    margin: 2rem 0;
+  }
+
+
+  a {
+    padding: 10px 15px;
+    min-width: 50px;
+    border-radius: 4px;
+    display: block;
+    text-align: center;
+    transition: color .2s ease-out;
+
+    @each $theme, $map in $themes {
+      .#{$theme} & {
+        color: map-get($map, $header-divider);
+
+        &:hover {
+          color: map-get($map, $site-font-color);
+        }
+      }
+    }
+  }
+}
+
+.more-come-soon {
+  @include font-size(40);
+  clear: both;
+  text-align: center;
+  color: #000;
+  opacity: .3;
+  margin: 5rem 0;
+}

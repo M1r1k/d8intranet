@@ -1,21 +1,23 @@
-<h1 class="page-title">Dashboard</h1>
+<div class="page-container">
+  <h1 class="page-title">Dashboard</h1>
 
-<div class="page-content" ng-controller="MainCtrl">
+  <div class="page-content" ng-controller="MainCtrl">
 
-  <article class="info-box" ng-repeat="(key, user) in states">
-    <div class="info-box-headline">
-      <div class="counter">
-        {{user.count}} people
+    <article class="info-box" ng-repeat="(key, user) in states">
+      <div class="info-box-headline">
+        <div class="counter">
+          {{user.count}} people
+        </div>
+        <h1>{{key}}</h1>
       </div>
-      <h1>{{key}}</h1>
-    </div>
 
-    <div class="employee-columns">
-      <div class="col">
-        <div class="employee" ng-repeat="(employee_key, employee) in user "
-            ng-if='employee_key != "count"'>
+      <div class="employee-columns">
+        <div class="col">
+          <div class="employee" ng-repeat="(employee_key, employee) in user "
+              ng-if='employee_key != "count"'>
 
-          <a href="" class="employee-link">
+            <a href="#user/{{employee.uid[0].value}}" class="employee-link">
+
                   <span class="user-pic">
                     <img ng-src="{{employee.field_user_image[0].value}}"
                         alt="{{employee.field_firs_name[0].value}} {{employee.field_last_name[0].value}}"/>
@@ -25,10 +27,11 @@
               {{employee.field_firs_name[0].value}} {{employee.field_last_name[0].value}}
             </span>
 
-          </a>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-  </article>
+    </article>
 
+  </div>
 </div>

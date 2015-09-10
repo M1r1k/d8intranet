@@ -22,16 +22,22 @@
   <![endif]-->
 
 </head>
-<body ng-app="d8intranetApp">
+<body ng-app="d8intranetApp" ng-controller="pageLoad" ng-class="isDark ? 'dark' : 'light'"   >
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser.
   Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve
   your experience.</p>
 <![endif]-->
 
-<!-- Add your site or application content here -->
 
-<div class="global-wrapper">
+<!-- Add your site or application content here -->
+<div class="overlay" ng-if="messageRequest">
+  <div class="message">
+    Sending data...
+  </div>
+</div>
+
+<div class="global-wrapper"  >
   <div class="wrapper container">
     <!-- Site header-->
     <header role="banner" class="header group"></header>
@@ -40,42 +46,56 @@
     <main role="main" class="main-content">
 
       <aside class="sidebar" ng-controller="SidebarCtrl">
-          <nav id="bt-menu" class="bt-menu bt-menu-close">
-            <a class="bt-menu-trigger"><span>Menu</span></a>
+        <nav id="bt-menu" class="bt-menu bt-menu-close">
+          <a class="bt-menu-trigger" mobile-menu><span>Menu</span></a>
 
-            <ul class="user-data">
-              <!--<li><a class="logo" href="/">-->
-                <!--<img src="images/logo-blue.png" alt="FFW"/>-->
-              <!--</a></li>-->
-              <li>
-                <a class="user-pic" href="#">
-                  <img src="../images/employees/alex.jpg" ng-src="../images/employees/alex.jpg" alt="Alexander Mikhutkin">
-                </a>
-              </li>
-            </ul>
+          <ul class="user-data">
+            <!--<li><a class="logo" href="/">-->
+            <!--<img src="images/logo-blue.png" alt="FFW"/>-->
+            <!--</a></li>-->
+            <li>
+              <a class="user-pic" ng-href="#user/5">
+                <img src="../images/employees/alex.jpg"
+                    ng-src="../images/employees/alex.jpg"
+                    alt="Alexander Mikhutkin">
+              </a>
+            </li>
+          </ul>
 
-
-            <ul class="menu-mobile">
-              <li ng-repeat="menuItem in menuItemsList">
-                <a class="sidebar-icon" href="{{menuItem.url}}">
-                  <span class="{{menuItem.icon}}-icon"></span>
-                </a>
-              </li>
-            </ul>
-            <div class="bt-overlay"></div>
-          </nav>
+          <ul class="menu-mobile">
+            <li ng-repeat="menuItem in menuItemsList">
+              <a class="sidebar-icon" ui-route="{{menuItem.url}}"
+                  ng-class="{active: $uiRoute}">
+                <span class="{{menuItem.icon}}-icon"></span>
+              </a>
+            </li>
+          </ul>
+          <div class="bt-overlay"></div>
+        </nav>
 
         <div class="menu-desktop">
           <a class="logo" href="/">
             <img src="images/logo-blue.png" alt="FFW"/>
           </a>
-          <a class="user-pic" href="#">
-            <img src="../images/employees/alex.jpg" ng-src="../images/employees/alex.jpg" alt="Alexander Mikhutkin">
+          <a class="user-pic" ng-href="#user/5">
+            <img src="../images/employees/alex.jpg"
+                ng-src="../images/employees/alex.jpg" alt="Alexander Mikhutkin">
           </a>
 
+            <!--<a class="checkin" href="#" check-in>Check in</a>-->
+
+          <div ng-controller="checkIn">
+            <form ng-submit="checkIn()">
+              <button type="submit" class="checkin" data-checked="false">Check in
+              </button>
+            </form>
+          </div>
+
           <ul>
-            <li ng-repeat="menuItem in menuItemsList">
-              <a class="sidebar-icon" href="{{menuItem.url}}">
+            <li ng-repeat="menuItem in menuItemsList"
+                ui-route="{{menuItem.url}}"
+                ng-class="{active: isActive('/main')}">
+              <a class="sidebar-icon" ng-href="{{menuItem.url}}">
                 <span class="{{menuItem.icon}}-icon"></span>
             <span class="menu-item-title">
               {{menuItem.title}}
@@ -92,16 +112,16 @@
 
       <!-- Page contentainer -->
       <div class="page-content-container">
-        <div class="page-container">
+        <!--<div class="page-container">-->
 
           <!-- Page headline -->
-          <div class="page-header">
-            <div class="current-date-wrapper" ng-controller="GetDateCtrl">
-              <div class="theme-switcher">
-                <div class="theme-switcher-btn"></div>
+          <div class="page-header page-container">
+            <div class="current-date-wrapper">
+              <div class="theme-switcher" ng-click="setCookieData()">
+                <div class="theme-switcher-btn" ></div>
               </div>
 
-              <div class="date">
+              <div class="date" ng-controller="GetDateCtrl">
                 {{date | date:'EEEE d MMM y'}}
               </div>
 
@@ -114,7 +134,7 @@
             <div ng-view class="view-animate"></div>
           </div>
 
-        </div>
+        <!--</div>-->
       </div>
 
     </main>
@@ -137,18 +157,19 @@
 
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/angular/angular.js"></script>
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
 <script
-    src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-<script src="bower_components/angular-animate/angular-animate.js"></script>
-<script src="bower_components/angular-cookies/angular-cookies.js"></script>
-<script src="bower_components/angular-resource/angular-resource.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="bower_components/angular-touch/angular-touch.js"></script>
-<script src="bower_components/angular-ui/build/angular-ui.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="../bower_components/angular-animate/angular-animate.js"></script>
+<script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="../bower_components/angular-resource/angular-resource.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../bower_components/angular-touch/angular-touch.js"></script>
+<script src="../bower_components/angular-ui/build/angular-ui.js"></script>
+<script
+    src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -157,13 +178,14 @@
     src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script src="scripts/app.js"></script>
-<script src="scripts/main.js"></script>
+<script src="scripts/services/getJsons.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/sidebar.js"></script>
 <script src="scripts/controllers/employees.js"></script>
-<script src="scripts/directives/inputEffects.js"></script>
+<script src="scripts/controllers/vacation.js"></script>
+<script src="scripts/directives/sidebar.js"></script>
 <script src="scripts/filters/usersFilters.js"></script>
-<!--<script src="scripts/controllers/users.js"></script>-->
+<script src="scripts/controllers/user.js"></script>
 <!-- endbuild -->
 </body>
 </html>

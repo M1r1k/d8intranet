@@ -28,8 +28,6 @@ angular.module('d8intranetApp')
           filtered.push(value)
         }
       });
-
-
       return filtered;
     }
   });

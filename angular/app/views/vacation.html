@@ -1,1 +1,17 @@
-<p>This is the Vacation view.</p>
+<div class="page-container">
+  <h1 class="page-title">Vacations and Holidays</h1>
+
+  <div class="page-content">
+
+    <div class="employees-tabs">
+      <ul>
+        <li class="item" ng-repeat="tab in tabs">
+        <span class="link" ng-class="{active:isActiveTab(tab.url)}"
+            ng-click="onClickTab(tab)">{{tab.title}}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div ng-include="currentTab"></div>
+  </div>
+</div>

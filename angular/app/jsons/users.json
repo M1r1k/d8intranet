@@ -1,0 +1,138 @@
+[
+  {
+    "uid": [{"value": "4"}],
+    "uuid": [{"value": "37cc971e-1ef0-49f7-9358-88edda295464"}],
+    "langcode": [{"value": "en"}],
+    "preferred_langcode": [{"value": "en"}],
+    "preferred_admin_langcode": [],
+    "name": [{"value": "propraw"}],
+    "mail": [{"value": "propraw@example.com"}],
+    "timezone": [{"value": "UTC"}],
+    "status": [{"value": "1"}],
+    "created": [{"value": "1438871090"}],
+    "changed": [{"value": "1438871090"}],
+    "access": [{"value": "0"}],
+    "login": [{"value": "0"}],
+    "init": [],
+    "roles": [],
+    "default_langcode": [{"value": "1"}],
+    "statuses": [{
+        "day_off": 0,
+        "sick": 0,
+        "business_trip": 0,
+        "remote_work": 0,
+        "vacation": 1
+      }],
+    "field_came_to_propeople": [{"value": "2011-12-12"}],
+    "field_first_name": [{"value": "Artem"}],
+    "field_last_name": [{"value": "Miroshnik"}],
+    "field_job_title":  [{"value": "Drupal tech lead"}],
+    "field_user_position": [{"value": "Department Lead"}],
+    "field_user_birthday": [{"value": "30.01.1992"}],
+    "field_user_image": [{"value": "../images/employees/artem_m.jpg"}],
+    "field_github_id": [{"value": "www.github.com"}],
+    "field_drupal_org_id": [{"value": "www.drupal.org"}],
+    "field_user_skype":   [{"value": "miroshnik92"}],
+    "field_phone_number": [{"value": "+380 095 123 12 12"}],
+    "field_position": [{"value": 2}],
+    "field_team": [{"value": 1}],
+    "field_vacation": [
+      {
+        "start_vacation": 1420070400,
+        "end_vacation": 1420156800,
+        "state": "unpaid-leave"
+      },
+      {
+        "start_vacation": 1423699200,
+        "end_vacation": 1424044800,
+        "state": "paid-leave"
+      }],
+    "field_dayoff": [
+      {
+        "day_off": 1423699200,
+        "state": "Paid"
+      },
+      {
+        "day_off": 1426809600,
+        "state": "Unpaid"
+      },
+      {
+        "day_off": 1427155200,
+        "state": "Unpaid"
+      },
+      {
+        "day_off": 1427587200,
+        "state": "Paid"
+      }
+
+    ]
+  },
+
+  {
+    "uid": [{"value": "5"}],
+    "uuid": [{"value": "37cc971e-1ef0-49f7-9358-88edda295464"}],
+    "langcode": [{"value": "en"}],
+    "preferred_langcode": [{"value": "en"}],
+    "preferred_admin_langcode": [],
+    "name": [{"value": "propraw"}],
+    "mail": [{"value": "alexander.mikhutkin@propeople.com.ua"}],
+    "timezone": [{"value": "UTC"}],
+    "status": [{"value": "1"}],
+    "created": [{"value": "1438871090"}],
+    "changed": [{"value": "1438871090"}],
+    "access": [{"value": "0"}],
+    "login": [{"value": "0"}],
+    "init": [],
+    "roles": [],
+    "default_langcode": [{"value": "1"}],
+    "statuses": [{
+      "day_off": 0,
+      "sick": 0,
+      "business_trip": 0,
+      "remote_work": 1,
+      "vacation": 0
+    }],
+    "field_came_to_propeople": [{"value": "2011-12-15"}],
+    "field_first_name": [{"value": "Alexander"}],
+    "field_last_name": [{"value": "Mikhutkin"}],
+    "field_job_title":  [{"value": "Frontend tech lead"}],
+    "field_user_position": [{"value": "Department Lead"}],
+    "field_user_birthday": [{"value": "11.02.1987"}],
+    "field_user_image": [{"value": "../images/employees/alex.jpg"}],
+
+    "field_github_id": [{"value": "www.github.com"}],
+    "field_drupal_org_id": [{"value": "https://www.drupal.org/u/anmikhutkin"}],
+    "field_user_skype":   [{"value": "anmihutkin"}],
+
+    "field_phone_number": [{"value": "+38 095 625 47 19"}],
+    "field_position": [{"value": 2}],
+    "field_team": [{"value": 1}],
+    "field_user_edu":   [{"value": "National Mining University, Dnipropetrovsk, 2003-2008, master degree"}],
+    "field_vacation": [
+      {
+        "start_vacation": 1420070400,
+        "end_vacation": 1420156800,
+        "state": "paid-leave"
+      },
+      {
+        "start_vacation": 1423699200,
+        "end_vacation": 1424044800,
+        "state": "unpaid-leave"
+      }],
+
+    "field_dayoff": [
+      {
+        "day_off": 1428710400,
+        "state": "Paid"
+      },
+      {
+        "day_off": 1424044800,
+        "state": "Unpaid"
+      },
+      {
+        "day_off": 1429660800,
+        "state": "Unpaid"
+      }
+    ]
+  }
+]

@@ -9,7 +9,6 @@
  */
 angular.module('d8intranetApp')
   .controller('EmployeesCtrl', function ($scope, $http, $filter) {
-
     // Teams requests
     $http({
       method: 'GET',
@@ -30,17 +29,12 @@ angular.module('d8intranetApp')
       });
     });
 
-
-
     $http({
       method: 'GET',
       url: '../../jsons/people_list.json'
     }).success(function (response) {
       $scope.people = response.people;
     });
-
-
-
 
     $scope.tabs = [{
       title: 'Teams',

@@ -66,7 +66,7 @@ gulp.task('html', function (done) {
 gulp.task('sass', function (done) {
   gulp.src(paths.sass)
     .pipe(plumber())
-    .pipe(sass())
+    .pipe(sass(({errLogToConsole: true})))
     .pipe(prefix({ browsers: ['last 2 version'] }))
     .on('error', swallowError)
     .pipe(gulp.dest(paths.css))
@@ -99,7 +99,7 @@ gulp.task('watch', function () {
   livereload.listen();
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.sass, ['sass']);
-  gulp.watch(paths.scripts, ['scripts']);
+  //gulp.watch(paths.scripts, ['scripts']);
 });
 
 

@@ -4,35 +4,33 @@
   <div class="view-animate-container">
 
     <div class="container group">
-      <!-- leads class for managers-->
-        <!--managers for global managers-->
-        <div class="team-list"
-            ng-repeat="team in regularTeams | orderBy:'weight'"
-            ng-class="'{{team.type}}'">
-          <h2 class="team-title">{{team.team_title}}</h2>
+      <div class="team-list" ng-repeat="team in regularTeams | orderBy:'weight'"
+          ng-class="'{{team.type}}'">
+        <h2 class="team-title">{{team.team_title}}</h2>
 
-          <!-- team-leads class for leads-->
-          <!-- team-members class for mob-->
-          <!-- managers class for managers-->
-          <div class="container">
-            <figure class="member"
-                ng-repeat="member in team.members "
-                ng-class="'{{member.position}}'" >
-              <div class="user-pic">
-                <img ng-src="{{member.field_user_image[0].value}}"
-                     alt="{{member.field_first_name[0].value}}
+        <div class="container">
+          <figure class="member" ng-repeat="member in team.members "
+              ng-class="'{{member.position}}'">
+
+            <a ng-href="#user/{{member.uid[0].value}}">
+              <span class="user-wrapper">
+              <span class="user-pic">
+                <img ng-src="{{member.field_user_image[0].value}}" alt="{{member.field_first_name[0].value}}
                      {{member.field_last_name[0].value}}"/>
-              </div>
+              </span>
               <figcaption>
                 <h3 class="user-name">
                   {{member.field_first_name[0].value}}
                   {{member.field_last_name[0].value}} </h3>
+
                 <p class="description">{{member.field_job_title[0].value}}</p>
               </figcaption>
-            </figure>
+                </span>
+            </a>
+          </figure>
 
-          </div>
         </div>
+      </div>
 
     </div>
   </div>

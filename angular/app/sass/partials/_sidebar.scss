@@ -43,6 +43,31 @@
     height: 90px;
   }
 }
+
+.checkin {
+  @include font-size(15);
+  width: 80%;
+//  background: #ff9211;
+  // Themes
+  @each $theme, $map in $themes {
+    .#{$theme} & {
+      background: map-get($map, $link-hover);
+    }
+  }
+  color: $black !important;
+  border-radius: 3px;
+  padding: 10px 0;
+  display: block;
+  text-align: center;
+  margin: 0 auto 30px;
+  border: 0;
+  cursor: pointer;
+}
+
+.checked {
+  background: #23A170;
+}
+
 .menu-mobile {
   display: none;
 
@@ -230,11 +255,12 @@
 .bt-menu-trigger {
   position: fixed;
   top: 15px;
-  left: 20px;
+  left: 25px;
   display: block;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .bt-menu-trigger span {

@@ -1,6 +1,29 @@
 // -----------------------------------------------------------------------------
 // Employees
 
+.user-pic img {
+  transition: all .2s ease-out;
+}
+
+.member a,
+.user-info a {
+  display: block;
+
+  // Themes
+  @each $theme, $map in $themes {
+    .#{$theme} & {
+      color: map-get($map, $site-font-color);
+    }
+  }
+  
+  .user-pic {
+    border-radius: 100%;
+  }
+
+  &:hover img {
+    transform: scale(.85);
+  }
+}
 // Top leads
 // -----------------------------------------------------------------------------
 .leads,
@@ -44,6 +67,7 @@
 .managers {
   border-bottom: 0;
 }
+
 
 // All teams wrapper
 // -----------------------------------------------------------------------------
@@ -136,6 +160,7 @@
       @include font-size(15);
     }
   }
+
 }
 
 // Single Team list styles
@@ -167,7 +192,12 @@
 
     &:nth-child(2n+1),
     &:nth-child(-n+3) {
-      background: #dadada;
+      // Themes
+      @each $theme, $map in $themes {
+        .#{$theme} & {
+          border-right: 1px solid map-get($map, $header-divider);
+        }
+      }
     }
 
     &:first-child {

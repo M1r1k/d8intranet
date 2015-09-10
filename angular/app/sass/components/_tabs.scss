@@ -10,6 +10,11 @@
 
   .item {
     float: left;
+
+    @include susy-breakpoint(0 900px) {
+      width: 50%;
+      padding: 0;
+    }
   }
 
   .link {
@@ -17,8 +22,13 @@
     color: $tabs-color;
     display: block;
     padding: 20px 80px;
+    text-align: center;
     cursor: pointer;
     position: relative;
+
+    @include susy-breakpoint(0 900px) {
+      padding: 20px 0;
+    }
 
 
     &:hover,

@@ -1,0 +1,8 @@
+{
+  "checked":
+    {
+      "can_check_in": "false",
+      "button_state": "Check in",
+      "button_class": "check-out"
+    }
+}
